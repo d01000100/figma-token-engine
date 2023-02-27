@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://github.com/frog/figma-token-engine">
+  <a href="https://github.com/d01000100/figma-token-engine">
     <img src=".docs/logo.svg" alt="Logo" alt="Logo" width="256" height="256">
   </a>
 
@@ -66,7 +66,7 @@ FIGMA_FILE_URL=""
 Download this repository, install dependencies, build and link it to your global npm packages:
 
 ```sh
-git clone https://github.com/frog/figma-token-engine
+git clone https://github.com/d01000100/figma-token-engine
 cd figma-token-engine
 npm install
 npm run build
@@ -191,11 +191,7 @@ Contributions will open after the alpha release of this stack. Contact us if you
 
 ## 🧑‍💻 Team
 
-- [daniel.casado](mailto:daniel.casado@frogdesign.com) - [GitHub](https://github.com/daniel-casado) (Sr. Design Technologist)
+- [daniel.casado](mailto:jdanielca@gmail.com) - [GitHub](https://github.com/daniel-casado) (Sr. Design Technologist)
 - [jose.lugo](mailto:jose.lugo@frogdesign.com) - [GitHub](https://github.com/chepetime) (Sr. Design Technologist)
 
 <br/>
-
----
-
-Made by frog 🐸 Mexico 🇲🇽

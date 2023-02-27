@@ -4,13 +4,13 @@
   "description": "Transforms design tokens from Figma into stylesheets and other code representation",
   "license": "MIT",
   "author": "frog Mx",
-  "homepage": "https://github.com/frog/figma-token-engine#readme",
+  "homepage": "https://github.com/d01000100/figma-token-engine#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/frog/figma-token-engine.git"
+    "url": "git+https://github.com/d01000100/figma-token-engine.git"
   },
   "bugs": {
-    "url": "https://github.com/frog/figma-token-engine/issues"
+    "url": "https://github.com/d01000100/figma-token-engine/issues"
   },
   "main": "build/index.js",
   "bin": {
@@ -27,9 +27,9 @@
     "dev:api": "NODE_ENV=debug NODE_API=true tsc-watch --onFirstSuccess \"node .\"",
     "init": "./bin/figma-token-engine.js --init",
     "lint": "eslint --ext .js,.ts ./src",
+    "prettier": "prettier --write \"(src|bin)/**/*.+(js|ts|json)\"",
     "start": "tsc-watch --onSuccess \"node .\"",
-    "test": "jest",
-    "prettier": "prettier --write \"(src|bin)/**/*.+(js|ts|json)\""
+    "test": "jest"
   },
   "types": "./build/index.d.ts",
   "dependencies": {
