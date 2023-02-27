@@ -63,21 +63,32 @@ FIGMA_FILE_URL=""
 
 ## 🚀 How to use
 
-Download this repository, install dependencies, build and link it to your global npm packages:
+Install Figma Token Engine to your project:
 
 ```sh
-git clone https://github.com/d01000100/figma-token-engine
-cd figma-token-engine
-npm install
-npm run build
-npm link
+npm i figma-token-engine
 ```
 
-Now it can be used in stand-alone projects using `npx`.
+
+Generate .env anc config files:
 
 ```sh
 npx figma-token-engine --init
 ```
+
+Add your Figma API KEY, Document URL and configuration to the `.env` file and the `.tokens.config.json` files.
+
+Run the token engine using npm scripts:
+
+```json
+{
+  ...
+  "scripts": {
+    "token-engine:fetch": "figma-token-engine",
+  },
+}
+```
+
 
 <br/>
 
@@ -191,7 +202,7 @@ Contributions will open after the alpha release of this stack. Contact us if you
 
 ## 🧑‍💻 Team
 
-- [daniel.casado](mailto:jdanielca@gmail.com) - [GitHub](https://github.com/daniel-casado) (Sr. Design Technologist)
-- [jose.lugo](mailto:jose.lugo@frogdesign.com) - [GitHub](https://github.com/chepetime) (Sr. Design Technologist)
+- [daniel.casado](mailto:jdanielca@gmail.com) - [GitHub](https://github.com/daniel-casado) (Sr. Design Technologist at frog)
+- [jose.lugo](mailto:jose.lugo@frogdesign.com) - [GitHub](https://github.com/chepetime) (Associate Technology Director at frog)
 
 <br/>
