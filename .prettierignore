@@ -1,0 +1,9 @@
+.gitignore
+node_modules
+build
+.vscode
+.github
+package.json
+package-lock.json
+tsconfig.json
+jest.config.js

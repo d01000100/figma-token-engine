@@ -1,0 +1,16 @@
+{
+  "include": ["src", "bin"],
+  "compilerOptions": {
+    "target": "ES2020",
+    "declaration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": false,
+    "rootDir": "src",
+    "module": "commonjs",
+    "outDir": "build",
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "exclude": ["node_modules", "build", "test", "bin"],
+}
