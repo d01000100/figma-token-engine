@@ -1,6 +1,6 @@
 {
   "name": "figma-token-engine",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Transforms design tokens from Figma into stylesheets and other code representation",
   "license": "MIT",
   "author": "frog Mx",
