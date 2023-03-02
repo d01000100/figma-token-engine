@@ -1,3 +1,5 @@
+TEST
+
 <div align="center">
   <a href="https://github.com/d01000100/figma-token-engine">
     <img src=".docs/logo.svg" alt="Logo" alt="Logo" width="256" height="256">
@@ -63,20 +65,32 @@ FIGMA_FILE_URL=""
 
 ## 🚀 How to use
 
-Download this repository, install dependencies, build and link it to your global npm packages:
+### Install
 
 ```sh
-git clone https://github.com/d01000100/figma-token-engine
-cd figma-token-engine
-npm install
-npm run build
-npm link
+npm i figma-token-engine
 ```
 
-Now it can be used in stand-alone projects using `npx`.
+### Initialize
+
+Create default and examples of configuration and environment files
 
 ```sh
 npx figma-token-engine --init
+```
+
+### Run
+
+In terminal 
+
+```sh
+npx figma-token-engine
+```
+
+In npm scripts:
+
+```sh
+figma-token-engine
 ```
 
 <br/>
