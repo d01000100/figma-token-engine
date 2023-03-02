@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const fs = require('fs-extra')
+const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
 
@@ -103,7 +103,7 @@ function pathReducer(matches) {
 
 async function processConfigFile(filepath, options) {
   try {
-    const json = await fs.readJson(filepath)
+    const json = await JSON.parse(fs.readFileSync(filepath))
     runTokenEngine(json, options)
   } catch (error) {
     return { filepath, error }

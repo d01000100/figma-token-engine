@@ -12,9 +12,9 @@
   "bugs": {
     "url": "https://github.com/d01000100/figma-token-engine/issues"
   },
-  "main": "build/index.js",
+  "main": "bin/figma-token-engine.js",
   "bin": {
-    "token-engine": "bin/figma-token-engine.js"
+    "figma-token-engine": "bin/figma-token-engine.js"
   },
   "files": [
     "bin/",
@@ -42,7 +42,6 @@
     "dotenv": "^16.0.3",
     "figlet": "^1.5.2",
     "figma-js": "^1.16.0",
-    "fs-extra": "^11.1.0",
     "glob": "^8.1.0",
     "module-alias": "^2.2.2",
     "style-dictionary": "^3.7.2",
