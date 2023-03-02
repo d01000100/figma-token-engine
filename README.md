@@ -1,5 +1,3 @@
-TEST
-
 <div align="center">
   <a href="https://github.com/d01000100/figma-token-engine">
     <img src=".docs/logo.svg" alt="Logo" alt="Logo" width="256" height="256">
@@ -202,7 +200,7 @@ Contributions will open after the alpha release of this stack. Contact us if you
 
 ## 🧑‍💻 Team
 
-- [daniel.casado](mailto:jdanielca@gmail.com) - [GitHub](https://github.com/daniel-casado) (Sr. Design Technologist at frog)
-- [jose.lugo](mailto:jose.lugo@frogdesign.com) - [GitHub](https://github.com/chepetime) (Associate Technology Director at frog)
+- [daniel.casado](mailto:jdanielca@gmail.com) - [GitHub](https://github.com/d01000100) (Sr. Design Technologist at frog)
+- [jose.lugo](mailto:me@joselugo.dev) - [GitHub](https://github.com/chepetime) (Associate Technology Director at frog)
 
 <br/>
