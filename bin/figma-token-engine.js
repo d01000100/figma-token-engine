@@ -22,13 +22,13 @@ const DEFAULT_ENV_PARAMS = [
   [
     'FIGMA_FILE_URL',
     '',
-    '# URL of the Figma file with the Figma Tokens configured',
+    '# URL of the Figma file with the tokens',
   ],
 ]
 
 program
   .name('figma-token-engine')
-  .description('Transform Figma Tokens into usable development code')
+  .description('Transform design tokens into usable development code')
   .version(version)
   .arguments('[PATH...]')
   .option('--init', 'Init Figma Token Engine config files')

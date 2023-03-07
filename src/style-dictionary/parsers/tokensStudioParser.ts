@@ -60,7 +60,7 @@ function parseDesignToken(
  * @param route - The location of the "current token" on the token object. Optional. Used for recursive calls.
  * @returns TokenGroupParsed
  */
-export function parseFigmaTokens(
+export function parseTokensStudio(
   tokens: SDDesignTokens,
   route: string[] = []
 ): DesignTokens {
@@ -83,7 +83,7 @@ export function parseFigmaTokens(
           return {}
         }
       } else {
-        return { [name]: parseFigmaTokens(token, [...route, name]) }
+        return { [name]: parseTokensStudio(token, [...route, name]) }
       }
     }
   )

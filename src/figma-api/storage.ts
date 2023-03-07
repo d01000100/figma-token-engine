@@ -4,17 +4,20 @@ import path from 'path'
 
 import { logEvent, logError, logSuccessElement } from '../utils/logger'
 
-export function writeFigmaAPITokensExport(outDir: string, data: any) {
+export function writeFigmaAPITokensExport(outFile: string, data: any) {
   logEvent('Figma API - Write Figma API Tokens Export')
 
-  const completeOutDir = path.join(process.cwd(), outDir)
+  const completeOutLocation = path.join(process.cwd(), outFile)
+
+  const completeOutDir = path.dirname(completeOutLocation);
 
   try {
-    fs.writeFileSync(outDir, JSON.stringify(data, null, 2))
-    logSuccessElement(`Saved tokens at ${completeOutDir}`)
+    fs.mkdirSync(completeOutDir, {recursive: true})
+    fs.writeFileSync(outFile, JSON.stringify(data, null, 2))
+    logSuccessElement(`Saved tokens at ${completeOutLocation}`)
   } catch (error) {
     logError(
-      `Couldn't save file at set directory. Tried to save in: ${completeOutDir}` +
+      `Couldn't save file at set directory. Tried to save in: ${completeOutLocation}` +
         error
     )
   }

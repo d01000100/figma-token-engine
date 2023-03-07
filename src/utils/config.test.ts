@@ -4,9 +4,9 @@ test('generateTemplate returns consistent configuration file', (): void => {
   const generateTemplateResult = JSON.stringify(generateTemplate())
 
   const hardcodedTemplateResult = JSON.stringify({
-    tokenFormat: 'FigmaTokens',
+    tokenFormat: 'TokensStudio',
     figmaFileId: '',
-    inputFile: './figma-tokens.json',
+    inputFile: './tokens-studio.json',
     outputDir: './src/styles/tokens',
     platforms: [
       'css',

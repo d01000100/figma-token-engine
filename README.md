@@ -5,7 +5,7 @@
 
   <h3 align="center"><strong>Figma Tokens Engine</strong></h3>
   <p align="center">
-    Transform Figma Tokens into usable styles
+    Transform design tokens in Figma into usable styles
   </p>
 
 </div>
@@ -14,7 +14,7 @@
 
 ## 🚛 About Figma Token Engine
 
-The Figma Token Engine is a project dependency that transforms the export of [Figma Tokens](https://www.figma.com/community/plugin/843461159747178978/Figma-Tokens) into CSS styles thanks to [token-transformer](https://www.npmjs.com/package/token-transformer) and [style-dictionary](https://github.com/amzn/style-dictionary).
+The Figma Token Engine is a project dependency that transforms design tokens (either as Figma Styles of from [Token Studio](https://tokens.studio/) into CSS styles using [token-transformer](https://www.npmjs.com/package/token-transformer) and [style-dictionary](https://github.com/amzn/style-dictionary).
 
 <div align="center">
   <img src=".docs/engine-diagram.svg" alt="Logo" alt="Logo">
@@ -28,13 +28,13 @@ The Figma Token Engine (FTE) requires two files which can be created using `npx 
 
 The two files helps the FTE to access the Figma API and to know where to find and save the files you need.
 
-First, `.tokens.config.json` tells the FTE which approach will use (FigmaTokens or FigmaStyles), the output directory and the platforms we need to support.
+First, `.tokens.config.json` tells the FTE which approach will use (TokensStudio or FigmaStyles), the output directory and the platforms we need to support.
 
 ```json
 {
-  "tokenFormat": "FigmaTokens",
+  "tokenFormat": "TokenStudio",
   "figmaFileId": "",
-  "inputFile": "./figma-tokens.json",
+  "inputFile": "./tokens-studio.json",
   "outputDir": "./src/styles/tokens",
   "platforms": [
     "css",
@@ -55,7 +55,7 @@ Secondly, the `.env` exposes sensitive data we might not want to have in our rep
 # Your personal Figma Personal Access token https://www.figma.com/developers/api#access-tokens
 FIGMA_PERSONAL_ACCESS_TOKEN=""
 
-# URL of the Figma file with the Figma Tokens configured
+# URL of the Figma file with the design tokens
 FIGMA_FILE_URL=""
 ```
 

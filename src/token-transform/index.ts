@@ -4,13 +4,13 @@ import {
   logExternalLibrary,
   logSuccessElement,
 } from '../utils/logger'
-import { FigmaTokensArgs } from '../types'
+import { TokensStudioArgs } from '../types'
 import { fileExists } from '../utils/files'
 import * as tmp from 'tmp'
 
 /**
  * Runs the `token-transform` CLI to transform the tokens on `inputFile`
- * @param param0 : Pick<FigmaTokensArgs, 'inputFile' | 'sets' | 'excludes'>
+ * @param param0 : Pick<TokensStudioArgs, 'inputFile' | 'sets' | 'excludes'>
  *  - inputFile: File to transform
  *  - transformerOutput: Optional. The file in which to print the result. If undefined, will create a tmp file.
  *  - sets: Optional. The token sets from the FigmaToken data consider in the transformation. If undefined, uses all sets.
@@ -24,7 +24,7 @@ export async function start({
   transformerOutput,
   excludes,
 }: Pick<
-  FigmaTokensArgs,
+  TokensStudioArgs,
   'inputFile' | 'sets' | 'excludes' | 'transformerOutput'
 >): Promise<string | undefined> {
   logEvent('Token Transform')

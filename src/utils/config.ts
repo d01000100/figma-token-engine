@@ -6,10 +6,10 @@ import { TokenEngineConfigType } from './../types'
  */
 export function generateTemplate(): TokenEngineConfigType {
   return {
-    tokenFormat: 'FigmaTokens',
+    tokenFormat: 'TokensStudio',
     figmaFileId: '',
-    inputFile: './figma-tokens.json',
-    outputDir: './tmp',
+    inputFile: './tokens-studio.json',
+    outputDir: './src/styles/tokens',
     platforms: [
       'css',
       'cssAutocomplete',
