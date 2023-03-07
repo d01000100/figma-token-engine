@@ -1,7 +1,7 @@
 /** Union of all specific app arguments */
-export type TokenEngineConfigType = FigmaTokensArgs | FigmaStylesArgs
+export type TokenEngineConfigType = TokensStudioArgs | FigmaStylesArgs
 
-export type TokenFormat = 'FigmaTokens' | 'FigmaStyles'
+export type TokenFormat = 'TokensStudio' | 'FigmaStyles'
 
 export const Platforms = [
   '',
@@ -25,7 +25,7 @@ interface AppArgs {
   tokenFormat: TokenFormat
 }
 
-export interface FigmaTokensArgs extends AppArgs {
+export interface TokensStudioArgs extends AppArgs {
   figmaFileId: string
   excludes?: string[]
   sets?: string[]

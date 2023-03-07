@@ -5,9 +5,9 @@ import { writeFigmaAPITokensExport } from './storage'
 import { FigmaAPICredentialsType } from './types'
 
 /**
- * Start Figma API with Figma Tokens
+ * Start Figma API with Tokens Studio
  */
-export async function getFigmaTokens(tokensExportFile: string): Promise<void> {
+export async function getTokensStudio(tokensExportFile: string): Promise<void> {
   // Get ENV variables for the Figma API
   const credentials: FigmaAPICredentialsType = getFigmaAPICredentials()
 

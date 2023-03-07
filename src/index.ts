@@ -9,7 +9,7 @@ import { printAppName } from './utils/title'
 import { logEvent } from './utils/logger'
 import { generateTemplate } from './utils/config'
 
-import { processFigmaTokens } from './figma-tokens'
+import { processTokensStudio } from './tokens-studio'
 import { processFigmaStyles } from './figma-styles'
 
 import { TokenEngineConfigType } from './types'
@@ -37,8 +37,8 @@ export async function runTokenEngine(
   }
 
   // Start Figma tokens Process
-  if (global.tokenEngineConfig.tokenFormat === 'FigmaTokens') {
-    await processFigmaTokens()
+  if (global.tokenEngineConfig.tokenFormat === 'TokensStudio') {
+    await processTokensStudio()
   }
 
   return true

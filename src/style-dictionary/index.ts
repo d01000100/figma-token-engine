@@ -3,7 +3,7 @@ import { TokenEngineConfigType } from '../types'
 import { logEvent } from '../utils/logger'
 import { buildStyleDictionary } from './config'
 import { parseFigmaStyles } from './parsers/figmaStylesParser'
-import { parseFigmaTokens } from './parsers/figmaTokensParser'
+import { parseTokensStudio } from './parsers/tokensStudioParser'
 
 /**
  *
@@ -29,8 +29,8 @@ export function start({
     case 'FigmaStyles':
       parser = parseFigmaStyles
       break
-    case 'FigmaTokens':
-      parser = parseFigmaTokens
+    case 'TokensStudio':
+      parser = parseTokensStudio
       break
   }
 
