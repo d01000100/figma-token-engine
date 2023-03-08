@@ -37,6 +37,10 @@ program
   .option(
     '--dry-run',
     'Run Figma Token Engine without writing files in the system'
+    )
+  .option(
+    '--sd-config-file [config]',
+    'Specify a Style Dictionary configuration file to combine with the FTE configuration'
   )
   .action(start)
   .parse(process.argv)
@@ -49,6 +53,7 @@ function start(str, options) {
 
   const useAPI = options?.api
   const dryRun = options?.dryRun
+  const sdConfigFile = options?.sdConfigFile
 
   // Check if we have a readable file
   const globs =
@@ -58,7 +63,7 @@ function start(str, options) {
     .then(pathReducer)
     .then(paths =>
       Promise.all(
-        paths.map(filepath => processConfigFile(filepath, { useAPI, dryRun }))
+        paths.map(filepath => processConfigFile(filepath, { useAPI, dryRun, sdConfigFile }))
       )
     )
 }

@@ -16,13 +16,14 @@ import { TokenEngineConfigType } from './types'
 
 export async function runTokenEngine(
   opts: TokenEngineConfigType,
-  { useAPI, dryRun }: { useAPI: boolean; dryRun: boolean }
+  { useAPI, dryRun, sdConfigFile }: { useAPI: boolean; dryRun: boolean, sdConfigFile?: string }
 ) {
   printAppName()
 
   global.tokenEngineConfig = opts
   global.useAPI = useAPI
   global.dryRun = dryRun
+  global.sdConfigFile = sdConfigFile
 
   logEvent('Start Figma Token Engine')
 
