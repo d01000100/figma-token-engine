@@ -6,6 +6,7 @@ import {
   logError,
   logSuccessElement,
   logLoaderPlanet,
+  logWarning,
 } from '../utils/logger'
 
 import { FigmaAPICredentialsType } from './types'
@@ -40,8 +41,13 @@ export async function getFigmaFilePluginsData({
     stop()
 
     logSuccessElement('Figma API responded with success')
+    
     if (data?.document?.sharedPluginData?.tokens) {
       logSuccessElement('Plugin data present in API response')
+    } else {
+      logWarning(`No tokens found on plugin data on Figma file ${FIGMA_FILE_ID}`)
+      stop();
+      return;
     }
 
     return data.document.sharedPluginData.tokens
@@ -71,6 +77,13 @@ export async function getFigmaFileStylesData({
   try {
     const stylesResponse = await client.fileStyles(FIGMA_FILE_ID)
     const stylesMeta = stylesResponse.data.meta.styles
+
+    if (!stylesMeta?.length) {
+      logWarning(`There are no published styles defined in the Figma File ${FIGMA_FILE_ID}`)
+      stop();
+      return;
+    }
+
     const styleNodeIDs = stylesMeta.map(
       (styleMeta: { node_id: string }) => styleMeta.node_id
     )
