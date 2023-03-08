@@ -10,4 +10,5 @@ declare global {
   var tokenEngineConfig: TokenEngineConfigType
   var useAPI: boolean
   var dryRun: boolean
+  var sdConfigFile: string | undefined
 }

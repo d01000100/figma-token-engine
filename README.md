@@ -88,6 +88,90 @@ Run the token engine using npm scripts:
 }
 ```
 
+### CLI params
+
+- **--init**: Create necessary environment files (.env, .tokens.config.json) to run the token engine with example content.
+- **--sd-config-file**: Location of a [StyleDictionary configuration file](https://amzn.github.io/style-dictionary/#/config) to merge with the one FTE uses. This can be used to extend formats, formatters, transformers and more.
+  
+  Example of a config file:
+
+  <details>
+    <summary>As an js module</summary>
+
+    ```js
+    module.exports = {
+      "foo": "invalid",
+      "platforms": {
+        "swift": {
+          "transformGroup": "ios-swift",
+          "buildPath": "./ios/",
+          "files": [
+            {
+              "destination": "ios",
+              "format": "ios-swift/enum.swift",
+              "options": {
+                "fileHeader": () => ["This is a custom header"]
+              }
+            }
+          ]
+        },
+        "android": {
+          "transformGroup": "android",
+          "files": [
+            {
+              "destination": "android",
+              "format": 'android/resources',
+              "options": {
+                "fileHeader": () => ["This is a custom header"]
+              }
+            }
+          ]
+        }
+      }
+    }
+    ```
+  </details>
+
+  <details>
+    <summary>As a JSON:</summary>
+
+    ```json
+    {
+      "foo": "invalid",
+      "platforms": {
+        "swift": {
+          "transformGroup": "ios-swift",
+          "buildPath": "./ios/",
+          "files": [
+            {
+              "destination": "ios",
+              "format": "ios-swift/enum.swift",
+              "options": {
+                "fileHeader": "This is a custom header"
+              }
+            }
+          ]
+        },
+        "android": {
+          "transformGroup": "android",
+          "files": [
+            {
+              "destination": "android",
+              "format": "android/resources",
+            }
+          ]
+        }
+      }
+    }
+    ```
+
+    The custom configuration file will have priority over FTE's configuration, however some fields will be appended, rather than overwritten:
+    - Sources will be appended. StyleDictionary will still fetch the source specified in the .tokens.config.json
+    - Parsers will be appended. StyleDictionary will still run FTE's parsers
+    - Platforms will be appended and extended. FTE's premade platforms will still be configured. Custom configruation can add platforms or overwrite them, if specified. Also, FTE's buildPath (from the .tokens.config.json) and fileHeader will be added if not specified.
+    - All other settings are added without modifications
+  </details>
+
 <br/>
 
 ## 💻 Commands

@@ -11,7 +11,6 @@ import {
 import { FigmaAPICredentialsType } from './types'
 
 import type {
-  NodesDataObj,
   StyleNode,
   StyleNodesDataObj,
 } from '../style-dictionary/parsers/types/figmaStyleType'
