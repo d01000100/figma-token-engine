@@ -2,7 +2,7 @@ import { green, yellow } from 'colorette'
 import clear from 'clear'
 import figlet from 'figlet'
 
-const version = '0.1.0'
+const version = process.env.npm_package_version
 
 export function printAppName() {
   clear()
