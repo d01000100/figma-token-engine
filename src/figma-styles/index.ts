@@ -8,7 +8,9 @@ export async function processFigmaStyles() {
   const opts = global.tokenEngineConfig
 
   // Step 1: Get [FigmaStyles] from the Figma API and transform them to be ready for token-transform
-  await getFigmaStyles(opts.inputFile)
+  if(!(await getFigmaStyles(opts.inputFile))) {
+    return; // we return if there are no styles defined on the file
+  }
 
   // Step 3: Transfom [TokensStudio] using StyleDictionary, to be ready for css/js tools
   startStyleDictionary(opts)
