@@ -164,6 +164,12 @@ Run the token engine using npm scripts:
       }
     }
     ```
+
+    The custom configuration file will have priority over FTE's configuration, however some fields will be appended, rather than overwritten:
+    - Sources will be appended. StyleDictionary will still fetch the source specified in the .tokens.config.json
+    - Parsers will be appended. StyleDictionary will still run FTE's parsers
+    - Platforms will be appended and extended. FTE's premade platforms will still be configured. Custom configruation can add platforms or overwrite them, if specified. Also, FTE's buildPath (from the .tokens.config.json) and fileHeader will be added if not specified.
+    - All other settings are added without modifications
   </details>
 
 <br/>
