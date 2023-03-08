@@ -10,7 +10,9 @@ export async function processTokensStudio() {
   const opts = global.tokenEngineConfig
 
   // Step 1: Get [FigmaTokens] from the Figma API and transform them to be ready for token-transform
-  await getTokensStudio(opts.inputFile)
+  if(!(await getTokensStudio(opts.inputFile))) {
+   return; // we return if there's no tokens
+  }
 
   // Step 2: Transfom [FigmaTokens] using tokens-tranform, to be ready for StyleDictionary
   opts.inputFile =

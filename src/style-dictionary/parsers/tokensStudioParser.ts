@@ -93,6 +93,6 @@ export function parseTokensStudio(
       ...parsedTokens,
       ...nextToken,
     }
-  })
+  }, {})
   return parsedTokens
 }
