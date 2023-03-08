@@ -100,7 +100,6 @@ Run the token engine using npm scripts:
 
     ```js
     module.exports = {
-      "foo": "invalid",
       "platforms": {
         "swift": {
           "transformGroup": "ios-swift",
@@ -137,7 +136,6 @@ Run the token engine using npm scripts:
 
     ```json
     {
-      "foo": "invalid",
       "platforms": {
         "swift": {
           "transformGroup": "ios-swift",
