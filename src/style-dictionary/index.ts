@@ -30,6 +30,7 @@ export function start({
       parser = parseFigmaStyles
       break
     case 'TokensStudio':
+    case 'FigmaTokens':
       parser = parseTokensStudio
       break
   }

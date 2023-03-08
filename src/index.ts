@@ -38,7 +38,9 @@ export async function runTokenEngine(
   }
 
   // Start Figma tokens Process
-  if (global.tokenEngineConfig.tokenFormat === 'TokensStudio') {
+  if (global.tokenEngineConfig.tokenFormat === 'TokensStudio' ||
+    // left here for retro compatibility purposes
+    global.tokenEngineConfig.tokenFormat === 'FigmaTokens') {
     await processTokensStudio()
   }
 
