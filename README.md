@@ -63,6 +63,8 @@ FIGMA_FILE_URL=""
 
 ## 🚀 How to use
 
+> You can also check out the more practical [Quick Guide at Medium](https://medium.com/@jdanielca/figma-token-engine-quick-start-b6e0bc08a388)
+
 Install Figma Token Engine to your project:
 
 ```sh
