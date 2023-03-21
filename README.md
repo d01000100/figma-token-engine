@@ -93,7 +93,7 @@ Run the token engine using npm scripts:
 ### CLI params
 
 - **--init**: Create necessary environment files (.env, .tokens.config.json) to run the token engine with example content.
-- **--sd-config-file**: Location of a [StyleDictionary configuration file](https://amzn.github.io/style-dictionary/#/config) to merge with the one FTE uses. This can be used to extend formats, formatters, transformers and more.
+- **--sd-config-file**: Location of a [StyleDictionary configuration file](https://amzn.github.io/style-dictionary/#/config) to merge with the one FTE uses. This can be used to extend platforms, filters, tokens location, etc.
   
   Example of a config file:
 
