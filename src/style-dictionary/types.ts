@@ -48,6 +48,7 @@ export enum TokenType {
   size = 'size',
   space = 'space',
   textTransform = 'textTransform',
+  textDecoration = 'textDecoration',
   opacity = 'opacity',
 }
 

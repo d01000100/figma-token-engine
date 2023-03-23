@@ -19,7 +19,6 @@ const webTransformers = [
   Transformer.parseAspectRatioWeb,
   Transformer.parseShadowValueWeb,
   Transformer.toLowerCase,
-  Transformer.transformToRem,
 ]
 
 /**
