@@ -8,38 +8,40 @@ import {
   ShadowTokenSingleValue,
   ShadowType,
 } from './types'
-import { toNumber } from '../utils/utils'
+import { addPxUnit, toNumber } from '../utils/utils'
 
-const typesWithDefaultPxUnit: TokenType[] = []
+const typesWithDefaultPxUnit: TokenType[] = [
+  TokenType.borderRadius,
+  TokenType.borderWidth,
+  TokenType.breakpoint,
+  TokenType.fontSize,
+  TokenType.letterSpacing,
+  TokenType.lineHeight,
+  TokenType.size,
+  TokenType.space,
+]
 
 const typesWithRemUnit: TokenType[] = [
   TokenType.borderRadius,
   TokenType.borderWidth,
+  TokenType.breakpoint,
+  TokenType.fontSize,
+  TokenType.letterSpacing,
+  TokenType.lineHeight,
   TokenType.size,
   TokenType.space,
-  TokenType.fontSize,
-  TokenType.lineHeight,
-  TokenType.letterSpacing,
-  TokenType.breakpoint,
 ]
 
 const typesWithMsDefaultUnit: TokenType[] = [TokenType.motionDuration]
 
 const typesWithKeywordValues: TokenType[] = [
-  TokenType.letterSpacing,
-  TokenType.textTransform,
-  TokenType.lineHeight,
   TokenType.fontWeight,
+  TokenType.letterSpacing,
+  TokenType.lineHeight,
   TokenType.motionEasing,
+  TokenType.textTransform,
+  TokenType.textDecoration,
 ]
-
-/*
-  - Transform px to rems in typography, spaces and sizes
-  - Add px to breakpoints
-  
-  - Shadow
-  - Typography
-*/
 
 /**
  * Checks if a token should be added the 'px' unit at the end
@@ -97,11 +99,11 @@ function transformToRemMatcher(token: TransformedToken): boolean {
 function transformSingleShadowValueWeb(
   shadowValue: ShadowTokenSingleValue
 ): string {
-  const offsetX = transformToRem(shadowValue.x)
-  const offsetY = transformToRem(shadowValue.y)
-  const blur = transformToRem(shadowValue.blur)
+  const offsetX = addPxUnit(shadowValue.x)
+  const offsetY = addPxUnit(shadowValue.y)
+  const blur = addPxUnit(shadowValue.blur)
   const color = shadowValue.color
-  const spread = transformToRem(shadowValue.spread)
+  const spread = shadowValue.spread
   const insetString =
     shadowValue.type === ShadowType.innerShadow ? 'inset ' : ''
   return `${insetString}${offsetX} ${offsetY} ${blur} ${spread} ${color}`

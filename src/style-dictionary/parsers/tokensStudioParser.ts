@@ -25,15 +25,27 @@ function parseDesignToken(
     case 'spacing':
       parsedType = TokenType.space
       break
+    case 'dimension':
     case 'sizing':
       parsedType = TokenType.size
+      break
+    case 'lineHeights':
+      parsedType = TokenType.lineHeight
       break
     case 'textCase':
       parsedType = TokenType.textTransform
       break
+    case 'fontFamilies':
+      parsedType = TokenType.fontFamily
+      break;
+    case 'fontWeights':
+      parsedType = TokenType.fontWeight
+      break;
+    case 'fontSizes':
+      parsedType = TokenType.fontSize
+      break;
     case 'paragraphSpacing':
     case 'implicit':
-    case 'textDecoration':
       return null
     case 'other':
       /** The "other" tokens are identified by a keyword on their name */
