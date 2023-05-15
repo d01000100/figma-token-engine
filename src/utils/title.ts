@@ -1,8 +1,7 @@
 import { green, yellow } from 'colorette'
 import clear from 'clear'
 import figlet from 'figlet'
-
-const version = process.env.npm_package_version
+const { version } = require("../../package.json");
 
 export function printAppName() {
   clear()
