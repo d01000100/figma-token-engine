@@ -72,6 +72,39 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
 }
 
 /**
+ * Adds category and type attributes according to custom "type"
+ * property deduced from original source
+ * @param token 
+ */
+function customCTI(token: TransformedToken) {
+  const originalToken = token.original as DesignToken
+  let category : string | undefined;
+  let type : string | undefined;
+
+  switch (originalToken.type) {
+    case TokenType.fontSize:
+      category = 'size',
+      type = 'font'
+      break;
+    case TokenType.size:
+    case TokenType.space:
+      category = 'size';
+      break;
+    case TokenType.motionDuration:
+      category = 'time';
+      break;
+    default:
+      category = originalToken.type
+  }
+
+  return {
+    ...token.attributes,
+    category,
+    type,
+  }
+}
+
+/**
  * Checks if a token should be converted into 'rem'
  * Assumes all values come in pxs
  * @param token SingleTokenObjectParsed. The signature is `any` in order to use it in the transformer
@@ -167,6 +200,15 @@ export function registerTransformers(): void {
     transformer(token) {
       return `'${token.original.value}'`
     },
+  })
+  /**
+   * Adds category and type attributes according to custom "type"
+   * property deduced from original source
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.customCTI,
+    type: 'attribute',
+    transformer: customCTI,
   })
   /**
    * Adds 'px' to the end of numeric values of the token types whose

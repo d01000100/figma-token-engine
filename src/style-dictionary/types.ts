@@ -17,6 +17,7 @@ export enum Transformer {
   parseShadowValueWeb = 'shadowValue',
   transformToRem = 'transformToRem',
   toLowerCase = 'toLowerCase',
+  customCTI = 'attribute/customCTI'
 }
 
 /** File header names implemented for style dictionary */
