@@ -6,11 +6,13 @@ export enum TransformGroup {
   webSCSS = 'web-scss/custom',
   webLESS = 'web-less/custom',
   webJS = 'web-js/custom',
+  compose = 'compose',
 }
 
 /** Customm transformer names configured for StyleDictionary */
 export enum Transformer {
-  addFontFamilyQuotes = 'addQuotes',
+  addFontFamilySingleQuotes = 'addSingleQuotes',
+  addFontFamilyDoubleQuotes = 'addDoubleQuotes',
   addUnitPixels = 'addUnitPixels',
   addUnitMs = 'addUnitMs',
   parseAspectRatioWeb = 'parseAspectRatio',
@@ -18,6 +20,10 @@ export enum Transformer {
   transformToRem = 'transformToRem',
   toLowerCase = 'toLowerCase',
   customCTI = 'attribute/customCTI'
+}
+
+export enum Filter {
+  compose = 'compose'
 }
 
 /** File header names implemented for style dictionary */

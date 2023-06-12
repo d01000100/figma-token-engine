@@ -54,6 +54,7 @@ function cssAutocompleteFormatter({ dictionary }: FormatterArguments): string {
   const tokens = dictionary.allTokens.sort(compareTokens)
   tokens.forEach(token => {
     let description = tokenDescription(token)
+    console.log({ token })
     description = description.replace(/\n/g, '\\n')
     autocomplete[`--${token.name}`] = {
       prefix: `--${token.name}`,

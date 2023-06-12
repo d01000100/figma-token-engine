@@ -3,15 +3,17 @@ import { ParserOptions } from 'style-dictionary/types/Parser'
 import { registerFileHeaders } from './file-headers'
 import { registerFormatters } from './formatters'
 import { registerTransformGroups } from './transform-groups'
-import { FileHeader, TransformGroup } from './types'
+import { FileHeader, Filter, TransformGroup } from './types'
 import path from 'path'
 import { logError } from '../utils/logger'
 import { omit } from '../utils/utils'
+import { registerFilters } from './filters'
 
 function readCustomConfig(file: string) {
   let sdConfig;
   try {
     sdConfig = require(path.resolve(process.cwd(), file));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e : any) {
     logError(`Couldn't read style dictionary configuration file at ${file}`)
     return;
@@ -165,6 +167,19 @@ export function createStyleDictionaryConfig(
           },
         ],
       },
+      ['compose']: {
+        transformGroup: TransformGroup.compose,
+        buildPath: _outputFolder,        
+        files: [
+          {
+            packageName: 'com.example.tokens',
+            className: 'Tokens',
+            format: 'compose/object',
+            destination: 'tokens.kt',
+            filter: Filter.compose
+          }
+        ]
+      }
     }
   }
 }
@@ -250,6 +265,7 @@ export function buildStyleDictionary(
   registerFormatters()
   registerTransformGroups()
   registerFileHeaders()
+  registerFilters()
   const defaultConfig = createStyleDictionaryConfig(tokensSource, outputFolder, parser)
   let config = defaultConfig;
   if (global.sdConfigFile) {

@@ -83,11 +83,14 @@ function customCTI(token: TransformedToken) {
 
   switch (originalToken.type) {
     case TokenType.fontSize:
+    case TokenType.letterSpacing:
+    case TokenType.lineHeight:
       category = 'size',
       type = 'font'
       break;
     case TokenType.size:
     case TokenType.space:
+    case TokenType.borderRadius:
       category = 'size';
       break;
     case TokenType.motionDuration:
@@ -188,10 +191,10 @@ function transformToRem(valuePx: number | string): string {
 
 export function registerTransformers(): void {
   /**
-   * Adds quotes around a Font Family token
+   * Adds single quotes around a Font Family token
    */
   StyleDictionary.registerTransform({
-    name: Transformer.addFontFamilyQuotes,
+    name: Transformer.addFontFamilySingleQuotes,
     type: 'value',
     matcher: token => {
       const originalToken = token.original as DesignToken
@@ -199,6 +202,20 @@ export function registerTransformers(): void {
     },
     transformer(token) {
       return `'${token.original.value}'`
+    },
+  })
+  /**
+   * Adds double quotes around a Font Family token
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.addFontFamilyDoubleQuotes,
+    type: 'value',
+    matcher: token => {
+      const originalToken = token.original as DesignToken
+      return originalToken.type === TokenType.fontFamily
+    },
+    transformer(token) {
+      return `"${token.original.value}"`
     },
   })
   /**

@@ -10,7 +10,7 @@ const globalTransformers = [
 
 const stylesheetTransformers = [
   'name/cti/kebab',
-  Transformer.addFontFamilyQuotes,
+  Transformer.addFontFamilySingleQuotes,
 ]
 
 const webTransformers = [
@@ -63,4 +63,19 @@ export function registerTransformGroups(): void {
       'name/cti/constant',
     ],
   })
+
+  StyleDictionary.registerTransformGroup({
+    name: TransformGroup.compose,
+    transforms: [
+      ...globalTransformers,
+      'name/cti/camel',
+      'color/composeColor',
+      'size/pxToRem',
+      'size/compose/remToSp',
+      'size/compose/remToDp',
+      Transformer.addFontFamilyDoubleQuotes
+    ],
+  })
+
+  
 }
