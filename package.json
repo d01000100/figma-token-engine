@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "description": "Transforms design tokens from Figma into stylesheets and other code representation",
   "license": "MIT",
-  "author": "frog Mx",
+  "author": "jdanielca@gmail.com",
   "homepage": "https://github.com/d01000100/figma-token-engine#readme",
   "repository": {
     "type": "git",
