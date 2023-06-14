@@ -73,7 +73,9 @@ export function registerTransformGroups(): void {
       'size/pxToRem',
       'size/compose/remToSp',
       'size/compose/remToDp',
-      Transformer.addFontFamilyDoubleQuotes
+      Transformer.addFontFamilyDoubleQuotes,
+      Transformer.fontWeightToNumber,
+      Transformer.parseShadowValueWeb
     ],
   })
 

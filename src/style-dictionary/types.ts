@@ -19,7 +19,8 @@ export enum Transformer {
   parseShadowValueWeb = 'shadowValue',
   transformToRem = 'transformToRem',
   toLowerCase = 'toLowerCase',
-  customCTI = 'attribute/customCTI'
+  customCTI = 'attribute/customCTI',
+  fontWeightToNumber = 'fontWeightToNumber' 
 }
 
 export enum Filter {
