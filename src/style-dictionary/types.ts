@@ -18,6 +18,7 @@ export enum Transformer {
   addUnitPixels = 'addUnitPixels',
   customCTI = 'attribute/customCTI',
   durationToSeconds = 'duration/toSeconds',
+  fontWeightToNumber = 'fontWeight/toNumber',
   numberToCGFloat = 'numberToCGFloat',
   parseAspectRatio = 'parseAspectRatio',
   parseShadowValueWeb = 'shadowValue',

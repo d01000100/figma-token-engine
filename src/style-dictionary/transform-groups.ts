@@ -19,6 +19,7 @@ const webTransformers = [
   Transformer.parseAspectRatio,
   Transformer.parseShadowValueWeb,
   Transformer.toLowerCase,
+  Transformer.fontWeightToNumber
 ]
 
 /**
@@ -92,7 +93,7 @@ export function registerTransformGroups(): void {
       Transformer.parseAspectRatio,
       Transformer.durationToSeconds,
       Transformer.numberToCGFloat,
-      Transformer.fontWeightToNumber,
+      Transformer.fontWeightToNumber
     ],
   })
 
