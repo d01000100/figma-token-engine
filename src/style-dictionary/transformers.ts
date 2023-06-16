@@ -64,9 +64,10 @@ function addUnitPixelsMatcher(token: TransformedToken): boolean {
  */
 function addUnitMsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
+  const isDuration = typesWithMsDefaultUnit.includes(originalToken.type)
   return (
     typeof originalToken.value === 'number' &&
-    typesWithMsDefaultUnit.includes(originalToken.type) &&
+    isDuration &&
     originalToken.value !== 0
   )
 }
@@ -255,7 +256,7 @@ export function registerTransformers(): void {
    * Parse the value of an aspect ratio token to a web representation.
    */
   StyleDictionary.registerTransform({
-    name: Transformer.parseAspectRatioWeb,
+    name: Transformer.parseAspectRatio,
     type: 'value',
     matcher: token => {
       const originalToken = token.original as DesignToken
@@ -304,5 +305,27 @@ export function registerTransformers(): void {
     transformer(token) {
       return (token.original.value as string).toLowerCase()
     },
+  })
+
+  /**
+   * Assumes a time in milliseconds and divides it by 1000.
+   * Matches category === 'time' (set by customCTI) 
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.durationToSeconds,
+    type: 'value',
+    matcher: (token) => token.attributes?.category === 'time',
+    transformer: (token) => token.value / 1000,
+  })
+
+  /**
+   * Adds call to Swift's CGFloat to all numeric tokens.
+   * Recommended to use after all other transforms
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.numberToCGFloat,
+    type: 'value',
+    matcher: (token) => typeof token.value === 'number',
+    transformer: (token) => `CGFloat(${token.value})`,
   })
 }

@@ -7,23 +7,27 @@ export enum TransformGroup {
   webLESS = 'web-less/custom',
   webJS = 'web-js/custom',
   compose = 'compose',
+  swift = 'swift'
 }
 
 /** Customm transformer names configured for StyleDictionary */
 export enum Transformer {
-  addFontFamilySingleQuotes = 'addSingleQuotes',
   addFontFamilyDoubleQuotes = 'addDoubleQuotes',
-  addUnitPixels = 'addUnitPixels',
+  addFontFamilySingleQuotes = 'addSingleQuotes',
   addUnitMs = 'addUnitMs',
-  parseAspectRatioWeb = 'parseAspectRatio',
+  addUnitPixels = 'addUnitPixels',
+  customCTI = 'attribute/customCTI',
+  durationToSeconds = 'duration/toSeconds',
+  numberToCGFloat = 'numberToCGFloat',
+  parseAspectRatio = 'parseAspectRatio',
   parseShadowValueWeb = 'shadowValue',
-  transformToRem = 'transformToRem',
   toLowerCase = 'toLowerCase',
-  customCTI = 'attribute/customCTI'
+  transformToRem = 'transformToRem',
 }
 
 export enum Filter {
-  compose = 'compose'
+  compose = 'compose',
+  swift = 'swift'
 }
 
 /** File header names implemented for style dictionary */
