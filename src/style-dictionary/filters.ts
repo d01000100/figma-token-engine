@@ -57,7 +57,8 @@ export function registerFilters(): void {
       return !(
         isElevation(token) || 
         isBreakpoint(token) || 
-        isTokenType(token, TokenType.boxShadow)
+        isTokenType(token, TokenType.textDecoration) ||
+        isTokenType(token, TokenType.textTransform)
       )
     },
   });
