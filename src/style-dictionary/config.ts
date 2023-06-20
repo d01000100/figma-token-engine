@@ -7,7 +7,7 @@ import { FileHeader, Filter, TransformGroup } from './types'
 import path from 'path'
 import { logError } from '../utils/logger'
 import { omit } from '../utils/utils'
-import { registerFilters } from './filters'
+import { registerFilters, registerTokensByColor, registerTokensByFont, registerTokensBySpacing, registerTokensByOthers } from './filters'
 
 function readCustomConfig(file: string) {
   let sdConfig;
@@ -179,6 +179,36 @@ export function createStyleDictionaryConfig(
             filter: Filter.compose
           }
         ]
+      },
+      ['android/resources']: {
+        transformGroup: TransformGroup.androidResources,
+        buildPath: _outputFolder,        
+        files: [
+          {
+            format: 'android/resources',
+            destination: 'androidResources.xml'
+          },
+          {
+            format: 'android/resources',
+            destination: 'colors.xml',
+            filter: Filter.color
+          },
+          {
+            format: 'android/resources',
+            destination: 'fonts.xml',
+            filter: Filter.font
+          },
+          {
+            format: 'android/resources',
+            destination: 'spacing.xml',
+            filter: Filter.spacing
+          },
+          {
+            format: 'android/resources',
+            destination: 'others.xml',
+            filter: Filter.others
+          }
+        ]
       }
     }
   }
@@ -266,6 +296,10 @@ export function buildStyleDictionary(
   registerTransformGroups()
   registerFileHeaders()
   registerFilters()
+  registerTokensByColor()
+  registerTokensByFont()
+  registerTokensBySpacing()
+  registerTokensByOthers()
   const defaultConfig = createStyleDictionaryConfig(tokensSource, outputFolder, parser)
   let config = defaultConfig;
   if (global.sdConfigFile) {

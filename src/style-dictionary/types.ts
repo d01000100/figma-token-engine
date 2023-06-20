@@ -7,6 +7,7 @@ export enum TransformGroup {
   webLESS = 'web-less/custom',
   webJS = 'web-js/custom',
   compose = 'compose',
+  androidResources = 'androidResources',
 }
 
 /** Customm transformer names configured for StyleDictionary */
@@ -24,7 +25,11 @@ export enum Transformer {
 }
 
 export enum Filter {
-  compose = 'compose'
+  compose = 'compose',
+  color = 'color',
+  font = 'font',
+  spacing = 'spacing',
+  others = 'others',
 }
 
 /** File header names implemented for style dictionary */

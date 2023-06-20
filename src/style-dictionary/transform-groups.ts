@@ -79,5 +79,16 @@ export function registerTransformGroups(): void {
     ],
   })
 
-  
+  StyleDictionary.registerTransformGroup({
+    name: TransformGroup.androidResources,
+    transforms: [
+      ...globalTransformers,
+      'name/cti/snake',
+      'color/hex8android',
+      'size/pxToRem',
+      'size/compose/remToSp',
+      'size/compose/remToDp',
+      Transformer.fontWeightToNumber
+    ],
+  })
 }

@@ -32,27 +32,132 @@ import { Filter, SimpleDesignToken, TokenType } from './types';
     return originalToken.type === TokenType.breakpoint;
   }
 
- export function registerFilters(): void {
-   StyleDictionary.registerFilter({
-     name: Filter.compose,
-     matcher: (token) => {
-      return !(isElevation(token) || isBreakpoint(token))
-     },
-   });
- }
+  /**
+  * Detects colors tokens
+  * @param token
+  * @returns boolean
+  */
+   function isColor(token: TransformedToken): boolean {
+    const originalToken = token.original as SimpleDesignToken;
+    return originalToken.type === TokenType.color;
+  }
 
-/**
- * The next steps after defining a new filter are:
- * 1. Call the `registreFilters` function in the body of `createStyleDictionaryConfig` in `index.ts`
- * 2. Add the filter name to the file configurations that require them:
-      files: [
-          {
-            destination: 'tokens.css',
-            format: 'css/variables',
-            options: {
-              fileHeader: FileHeader.generatedByTokenEngine,
-            },
-            filter: Filter.exampleFilter,
-          },
-        ]
- */
+  /**
+  * Detects font family tokens
+  * @param token
+  * @returns boolean
+  */
+    function isFontFamily(token: TransformedToken): boolean {
+      const originalToken = token.original as SimpleDesignToken;
+      return originalToken.type === TokenType.fontFamily;
+    }
+  
+  /**
+  * Detects font weight tokens
+  * @param token
+  * @returns boolean
+  */
+      function isFontWeight(token: TransformedToken): boolean {
+        const originalToken = token.original as SimpleDesignToken;
+        return originalToken.type === TokenType.fontWeight;
+    }
+
+  /**
+  * Detects font size tokens
+  * @param token
+  * @returns boolean
+  */
+      function isFontSize(token: TransformedToken): boolean {
+        const originalToken = token.original as SimpleDesignToken;
+        return originalToken.type === TokenType.fontSize;
+    }
+
+  /**
+  * Detects font size tokens
+  * @param token
+  * @returns boolean
+  */
+      function isSpacing(token: TransformedToken): boolean {
+        const originalToken = token.original as SimpleDesignToken;
+        return originalToken.type === TokenType.letterSpacing;
+    }
+
+  /**
+  * Detects others lineHeight tokens
+  * @param token
+  * @returns boolean
+  */
+    function isLineheight(token: TransformedToken): boolean {
+      const originalToken = token.original as SimpleDesignToken;
+      return originalToken.type === TokenType.lineHeight;
+  }
+
+  /**
+  * Detects others lineHeight tokens
+  * @param token
+  * @returns boolean
+  */
+    function isBoxShadow(token: TransformedToken): boolean {
+      const originalToken = token.original as SimpleDesignToken;
+      return originalToken.type === TokenType.boxShadow;
+  }
+
+
+  /**
+   * Register tokens
+   */
+  export function registerFilters(): void {
+    StyleDictionary.registerFilter({
+      name: Filter.compose,
+      matcher: (token) => {
+        return !(isElevation(token) || isBreakpoint(token))
+      },
+    });
+  }
+   /**
+   * Register tokens filtered by Color
+   */
+ export function registerTokensByColor(): void {
+  StyleDictionary.registerFilter({
+    name: Filter.color,
+    matcher: (token) => {
+     return (isColor(token))
+    },
+  });
+}
+ /**
+   * Register tokens filtered by Font
+   */
+ export function registerTokensByFont(): void {
+  StyleDictionary.registerFilter({
+    name: Filter.font,
+    matcher: (token) => {
+     return (isFontFamily(token) || isFontSize(token) || isFontWeight(token))
+    },
+  });
+}
+
+ /**
+   * Register tokens filtered by Spacing
+   */
+ export function registerTokensBySpacing(): void {
+  StyleDictionary.registerFilter({
+    name: Filter.spacing,
+    matcher: (token) => {
+     return (isSpacing(token))
+    },
+  });
+}
+
+ /**
+   * Register tokens filtered by Others
+   */
+ export function registerTokensByOthers(): void {
+  StyleDictionary.registerFilter({
+    name: Filter.others,
+    matcher: (token) => {
+     return (isLineheight(token) || isBoxShadow(token))
+    },
+  });
+}
+
