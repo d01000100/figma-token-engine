@@ -180,7 +180,7 @@ export function createStyleDictionaryConfig(
           }
         ]
       },
-      ['swift']: {
+      ['ios-swift/class.swift']: {
         transformGroup: TransformGroup.swift,
         buildPath: _outputFolder,        
         files: [
