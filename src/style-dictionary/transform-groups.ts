@@ -25,8 +25,6 @@ const webTransformers = [
 const mobileTransformers = [
   'name/cti/camel',
   'size/pxToRem',
-  Transformer.addFontFamilyDoubleQuotes,
-  Transformer.addShadowTypeDoubleQuotes,
   Transformer.fontWeightToNumber
 ]
 
@@ -81,7 +79,8 @@ export function registerTransformGroups(): void {
       'color/composeColor',
       'size/compose/remToSp',
       'size/compose/remToDp',
-      Transformer.addFontFamilyDoubleQuotes
+      Transformer.addFontFamilyDoubleQuotes,
+      Transformer.addShadowTypeDoubleQuotes,
     ],
   })
 
@@ -98,6 +97,8 @@ export function registerTransformGroups(): void {
       Transformer.parseAspectRatio,
       Transformer.durationToSeconds,
       Transformer.numberToCGFloat,
+      Transformer.addFontFamilyDoubleQuotes,
+      Transformer.addShadowTypeDoubleQuotes,
     ],
   })
 
