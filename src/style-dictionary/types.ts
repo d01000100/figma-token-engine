@@ -14,6 +14,7 @@ export enum TransformGroup {
 export enum Transformer {
   addFontFamilyDoubleQuotes = 'addDoubleQuotes',
   addFontFamilySingleQuotes = 'addSingleQuotes',
+  addShadowTypeDoubleQuotes = 'addShadowTypeDoubleQuotes',
   addUnitMs = 'addUnitMs',
   addUnitPixels = 'addUnitPixels',
   customCTI = 'attribute/customCTI',

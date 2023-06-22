@@ -93,6 +93,10 @@ function customCTI(token: TransformedToken) {
     case TokenType.size:
     case TokenType.space:
     case TokenType.borderRadius:
+    case TokenType.shadowBlur:
+    case TokenType.shadowOffsetX:
+    case TokenType.shadowOffsetY:
+    case TokenType.shadowSpread:
       category = 'size';
       break;
     case TokenType.motionDuration:
@@ -345,5 +349,17 @@ export function registerTransformers(): void {
       token.attributes?.category === TokenType.fontWeight &&
       typeof token.value === "string",
     transformer: (token) => transformFontWeights(token.value),
+  })
+
+  /**
+   * Adds double quotes around shadowType tokens
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.addShadowTypeDoubleQuotes,
+    type: 'value',
+    matcher: (token) => 
+      token.attributes?.category === TokenType.shadowType &&
+      typeof token.value === "string",
+    transformer: (token) => `"${token.value}"`,
   })
 }

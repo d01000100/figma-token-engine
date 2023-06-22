@@ -22,6 +22,14 @@ const webTransformers = [
   Transformer.fontWeightToNumber
 ]
 
+const mobileTransformers = [
+  'name/cti/camel',
+  'size/pxToRem',
+  Transformer.addFontFamilyDoubleQuotes,
+  Transformer.addShadowTypeDoubleQuotes,
+  Transformer.fontWeightToNumber
+]
+
 /**
  * Register web transform groups
  * @returns
@@ -69,9 +77,8 @@ export function registerTransformGroups(): void {
     name: TransformGroup.compose,
     transforms: [
       ...globalTransformers,
-      'name/cti/camel',
+      ...mobileTransformers,
       'color/composeColor',
-      'size/pxToRem',
       'size/compose/remToSp',
       'size/compose/remToDp',
       Transformer.addFontFamilyDoubleQuotes
@@ -82,18 +89,15 @@ export function registerTransformGroups(): void {
     name: TransformGroup.swift,
     transforms: [
       ...globalTransformers,
-      'name/cti/camel',
+      ...mobileTransformers,
       'color/UIColorSwift',
       'content/swift/literal',
       'asset/swift/literal',
-      'size/pxToRem',
       'size/swift/remToCGFloat',
       'font/swift/literal',
-      Transformer.addFontFamilyDoubleQuotes,
       Transformer.parseAspectRatio,
       Transformer.durationToSeconds,
       Transformer.numberToCGFloat,
-      Transformer.fontWeightToNumber
     ],
   })
 
