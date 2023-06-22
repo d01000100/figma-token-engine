@@ -8,6 +8,8 @@ import { start as startStyleDictionary } from '../style-dictionary'
 export async function processTokensStudio() {
   logEvent(`Figma Tokens`)
 
+  const inputFile = global.tokenEngineConfig.inputFile;
+
   // Step 1: Get [FigmaTokens] from the Figma API and transform them to be ready for token-transform
   if(!(await getTokensStudio(global.tokenEngineConfig.inputFile))) {
    return; // we return if there's no tokens
@@ -22,6 +24,7 @@ export async function processTokensStudio() {
   // Step 2.2: Transfom [FigmaTokens] using StyleDictionary for web outputs
   startStyleDictionary(global.tokenEngineConfig)
 
+  global.tokenEngineConfig.inputFile = inputFile;
 
   // Step 3.1: Transfom [FigmaTokens] using tokens-tranform, to be ready for StyleDictionary
   // for web outputs
