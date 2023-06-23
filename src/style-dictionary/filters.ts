@@ -102,18 +102,6 @@ import { Filter, SimpleDesignToken, TokenType } from './types';
       return originalToken.type === TokenType.boxShadow;
   }
 
-
-  /**
-   * Register tokens
-   */
-  export function registerFilters(): void {
-    StyleDictionary.registerFilter({
-      name: Filter.compose,
-      matcher: (token) => {
-        return !(isElevation(token) || isBreakpoint(token))
-      },
-    });
-  }
    /**
    * Register tokens filtered by Color
    */
@@ -157,7 +145,37 @@ import { Filter, SimpleDesignToken, TokenType } from './types';
     name: Filter.others,
     matcher: (token) => {
      return (isLineheight(token) || isBoxShadow(token))
+    }
+  })
+}
+
+/**
+ * Checks if `token` is of type `type`
+ * @param token 
+ * @param type 
+ * @returns Boolean
+ */
+function isTokenType(token: TransformedToken, type: TokenType) {
+  const originalToken = token.original as SimpleDesignToken;
+  return originalToken.type === type;
+}
+
+export function registerFilters(): void {
+  StyleDictionary.registerFilter({
+    name: Filter.compose,
+    matcher: (token) => {
+      return !(isElevation(token) || isBreakpoint(token))
+    },
+  });
+  StyleDictionary.registerFilter({
+    name: Filter.swift,
+    matcher: (token) => {
+      return !(
+        isElevation(token) || 
+        isBreakpoint(token) || 
+        isTokenType(token, TokenType.textDecoration) ||
+        isTokenType(token, TokenType.textTransform)
+      )
     },
   });
 }
-

@@ -209,6 +209,22 @@ export function createStyleDictionaryConfig(
             filter: Filter.others
           }
         ]
+      },
+      ['ios-swift/class.swift']: {
+        transformGroup: TransformGroup.swift,
+        buildPath: _outputFolder,        
+        files: [
+          {
+            format: 'ios-swift/class.swift',
+            destination: 'tokens.swift',
+            filter: Filter.swift,
+            className: 'Tokens',
+            options: {
+              fileHeader: FileHeader.generatedByTokenEngine,
+              outputReferences: true,
+            },
+          }
+        ]
       }
     }
   }

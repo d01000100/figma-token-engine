@@ -16,9 +16,16 @@ const stylesheetTransformers = [
 const webTransformers = [
   Transformer.addUnitMs,
   Transformer.addUnitPixels,
-  Transformer.parseAspectRatioWeb,
+  Transformer.parseAspectRatio,
   Transformer.parseShadowValueWeb,
   Transformer.toLowerCase,
+  Transformer.fontWeightToNumber
+]
+
+const mobileTransformers = [
+  'name/cti/camel',
+  'size/pxToRem',
+  Transformer.fontWeightToNumber
 ]
 
 /**
@@ -68,14 +75,32 @@ export function registerTransformGroups(): void {
     name: TransformGroup.compose,
     transforms: [
       ...globalTransformers,
-      'name/cti/camel',
+      ...mobileTransformers,
       'color/composeColor',
-      'size/pxToRem',
       'size/compose/remToSp',
       'size/compose/remToDp',
       Transformer.addFontFamilyDoubleQuotes,
       Transformer.fontWeightToNumber,
-      Transformer.parseShadowValueWeb
+      Transformer.parseShadowValueWeb,
+      Transformer.addShadowTypeDoubleQuotes,
+    ],
+  })
+
+  StyleDictionary.registerTransformGroup({
+    name: TransformGroup.swift,
+    transforms: [
+      ...globalTransformers,
+      ...mobileTransformers,
+      'color/UIColorSwift',
+      'content/swift/literal',
+      'asset/swift/literal',
+      'size/swift/remToCGFloat',
+      'font/swift/literal',
+      Transformer.parseAspectRatio,
+      Transformer.durationToSeconds,
+      Transformer.numberToCGFloat,
+      Transformer.addFontFamilyDoubleQuotes,
+      Transformer.addShadowTypeDoubleQuotes,
     ],
   })
 

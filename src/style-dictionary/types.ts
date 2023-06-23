@@ -8,20 +8,24 @@ export enum TransformGroup {
   webJS = 'web-js/custom',
   compose = 'compose',
   androidResources = 'androidResources',
+  swift = 'swift'
 }
 
 /** Customm transformer names configured for StyleDictionary */
 export enum Transformer {
-  addFontFamilySingleQuotes = 'addSingleQuotes',
   addFontFamilyDoubleQuotes = 'addDoubleQuotes',
-  addUnitPixels = 'addUnitPixels',
+  addFontFamilySingleQuotes = 'addSingleQuotes',
+  addShadowTypeDoubleQuotes = 'addShadowTypeDoubleQuotes',
   addUnitMs = 'addUnitMs',
-  parseAspectRatioWeb = 'parseAspectRatio',
-  parseShadowValueWeb = 'shadowValue',
-  transformToRem = 'transformToRem',
-  toLowerCase = 'toLowerCase',
+  addUnitPixels = 'addUnitPixels',
   customCTI = 'attribute/customCTI',
-  fontWeightToNumber = 'fontWeightToNumber' 
+  durationToSeconds = 'duration/toSeconds',
+  fontWeightToNumber = 'fontWeight/toNumber',
+  numberToCGFloat = 'numberToCGFloat',
+  parseAspectRatio = 'parseAspectRatio',
+  parseShadowValueWeb = 'shadowValue',
+  toLowerCase = 'toLowerCase',
+  transformToRem = 'transformToRem',
 }
 
 export enum Filter {
@@ -30,6 +34,7 @@ export enum Filter {
   font = 'font',
   spacing = 'spacing',
   others = 'others',
+  swift = 'swift'
 }
 
 /** File header names implemented for style dictionary */
@@ -58,7 +63,12 @@ export enum TokenType {
   motionDuration = 'motionDuration',
   motionEasing = 'motionEasing',
   ratio = 'ratio',
-  size = 'size',
+  shadowBlur = 'blur',
+  shadowOffsetX = 'x',
+  shadowOffsetY = 'y',
+  shadowSpread = 'spread',
+  shadowType = 'type',
+  size = 'size',  
   space = 'space',
   textTransform = 'textTransform',
   textDecoration = 'textDecoration',
