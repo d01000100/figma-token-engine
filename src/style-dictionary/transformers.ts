@@ -331,12 +331,7 @@ export function registerTransformers(): void {
   StyleDictionary.registerTransform({
     name: Transformer.numberToCGFloat,
     type: 'value',
-    matcher: (token) => {
-      const originalToken = token.original as DesignToken;
-      return typeof token.value === 'number' && (
-        originalToken.type !== TokenType.fontWeight
-      )
-    },
+    matcher: (token) => (typeof token.value === 'number'),
     transformer: (token) => `CGFloat(${token.value})`,
   })
 
