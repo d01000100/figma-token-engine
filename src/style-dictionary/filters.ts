@@ -97,9 +97,14 @@ import { Filter, SimpleDesignToken, TokenType } from './types';
   * @param token
   * @returns boolean
   */
-    function isBoxShadow(token: TransformedToken): boolean {
+    function isShadow(token: TransformedToken): boolean {
       const originalToken = token.original as SimpleDesignToken;
-      return originalToken.type === TokenType.boxShadow;
+      return (originalToken.type === TokenType.boxShadow || 
+        originalToken.type === TokenType.shadowBlur ||
+        originalToken.type === TokenType.shadowOffsetX ||
+        originalToken.type === TokenType.shadowOffsetY ||
+        originalToken.type === TokenType.shadowSpread ||
+        originalToken.type === TokenType.shadowType);
   }
 
    /**
@@ -144,7 +149,7 @@ import { Filter, SimpleDesignToken, TokenType } from './types';
   StyleDictionary.registerFilter({
     name: Filter.others,
     matcher: (token) => {
-     return (isLineheight(token) || isBoxShadow(token))
+     return (isLineheight(token) || isShadow(token))
     }
   })
 }
