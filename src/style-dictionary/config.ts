@@ -186,27 +186,42 @@ export function createStyleDictionaryConfig(
         files: [
           {
             format: 'android/resources',
-            destination: 'androidResources.xml'
+            destination: 'androidResources.xml',
+            options: {
+              fileHeader: FileHeader.generatedByTokenEngine,
+            },
           },
           {
             format: 'android/resources',
             destination: 'colors.xml',
-            filter: Filter.color
+            filter: Filter.color,
+            options: {
+              fileHeader: FileHeader.generatedByTokenEngine,
+            },
           },
           {
             format: 'android/resources',
             destination: 'fonts.xml',
-            filter: Filter.font
+            filter: Filter.font,
+            options: {
+              fileHeader: FileHeader.generatedByTokenEngine,
+            },
           },
           {
             format: 'android/resources',
             destination: 'spacing.xml',
-            filter: Filter.spacing
+            filter: Filter.spacing,
+            options: {
+              fileHeader: FileHeader.generatedByTokenEngine,
+            },
           },
           {
             format: 'android/resources',
             destination: 'others.xml',
-            filter: Filter.others
+            filter: Filter.others,
+            options: {
+              fileHeader: FileHeader.generatedByTokenEngine,
+            },
           }
         ]
       },
