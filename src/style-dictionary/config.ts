@@ -186,7 +186,8 @@ export function createStyleDictionaryConfig(
         files: [
           {
             format: 'android/resources',
-            destination: 'androidResources.xml',
+            destination: 'android_resources.xml',
+            filter: Filter.androidResources,
             options: {
               fileHeader: FileHeader.generatedByTokenEngine,
             },
@@ -327,10 +328,6 @@ export function buildStyleDictionary(
   registerTransformGroups()
   registerFileHeaders()
   registerFilters()
-  registerTokensByColor()
-  registerTokensByFont()
-  registerTokensBySpacing()
-  registerTokensByOthers()
   const defaultConfig = createStyleDictionaryConfig(tokensSource, outputFolder, parser)
   let config = defaultConfig;
   if (global.sdConfigFile) {

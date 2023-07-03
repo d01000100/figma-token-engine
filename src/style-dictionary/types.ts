@@ -34,7 +34,8 @@ export enum Filter {
   font = 'font',
   spacing = 'spacing',
   others = 'others',
-  swift = 'swift'
+  swift = 'swift',
+  androidResources = 'androidResources'
 }
 
 /** File header names implemented for style dictionary */
