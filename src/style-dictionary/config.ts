@@ -7,7 +7,7 @@ import { FileHeader, Filter, TransformGroup } from './types'
 import path from 'path'
 import { logError } from '../utils/logger'
 import { omit } from '../utils/utils'
-import { registerFilters, registerTokensByColor, registerTokensByFont, registerTokensBySpacing, registerTokensByOthers } from './filters'
+import { registerFilters } from './filters'
 
 function readCustomConfig(file: string) {
   let sdConfig;
