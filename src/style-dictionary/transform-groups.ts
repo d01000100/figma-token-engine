@@ -4,21 +4,28 @@ import { registerTransformers } from './transformers'
 
 const globalTransformers = [
   // Style Dictionary default transformers
-  'attribute/cti',
+  Transformer.customCTI,
   Transformer.toLowerCase,
 ]
 
 const stylesheetTransformers = [
   'name/cti/kebab',
-  Transformer.addFontFamilyQuotes,
+  Transformer.addFontFamilySingleQuotes,
 ]
 
 const webTransformers = [
   Transformer.addUnitMs,
   Transformer.addUnitPixels,
-  Transformer.parseAspectRatioWeb,
+  Transformer.parseAspectRatio,
   Transformer.parseShadowValueWeb,
   Transformer.toLowerCase,
+  Transformer.fontWeightToNumber
+]
+
+const mobileTransformers = [
+  'name/cti/camel',
+  'size/pxToRem',
+  Transformer.fontWeightToNumber
 ]
 
 /**
@@ -61,6 +68,52 @@ export function registerTransformGroups(): void {
       ...globalTransformers,
       ...webTransformers,
       'name/cti/constant',
+    ],
+  })
+
+  StyleDictionary.registerTransformGroup({
+    name: TransformGroup.compose,
+    transforms: [
+      ...globalTransformers,
+      ...mobileTransformers,
+      'color/composeColor',
+      'size/compose/remToSp',
+      'size/compose/remToDp',
+      Transformer.addFontFamilyDoubleQuotes,
+      Transformer.fontWeightToNumber,
+      Transformer.parseShadowValueWeb,
+      Transformer.addShadowTypeDoubleQuotes,
+    ],
+  })
+
+  StyleDictionary.registerTransformGroup({
+    name: TransformGroup.swift,
+    transforms: [
+      ...globalTransformers,
+      ...mobileTransformers,
+      'color/UIColorSwift',
+      'content/swift/literal',
+      'asset/swift/literal',
+      'size/swift/remToCGFloat',
+      'font/swift/literal',
+      Transformer.parseAspectRatio,
+      Transformer.durationToSeconds,
+      Transformer.numberToCGFloat,
+      Transformer.addFontFamilyDoubleQuotes,
+      Transformer.addShadowTypeDoubleQuotes,
+    ],
+  })
+
+  StyleDictionary.registerTransformGroup({
+    name: TransformGroup.androidResources,
+    transforms: [
+      ...globalTransformers,
+      'name/cti/snake',
+      'color/hex8android',
+      'size/pxToRem',
+      'size/remToDp',
+      'size/remToSp',
+      Transformer.fontWeightToNumber
     ],
   })
 }

@@ -13,6 +13,10 @@ export const Platforms = [
   'js',
   'ts',
   'json',
+  'compose',
+  'swift',
+  'android/resources',
+  'ios-swift/class.swift'
 ] as const
 
 export type PlatformsType = typeof Platforms[number]

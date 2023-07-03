@@ -7,17 +7,7 @@ test('generateTemplate returns consistent configuration file', (): void => {
     tokenFormat: 'TokensStudio',
     figmaFileId: '',
     inputFile: './tokens-studio.json',
-    outputDir: './src/styles/tokens',
-    platforms: [
-      'css',
-      'cssAutocomplete',
-      'scss',
-      'scssMap',
-      'less',
-      'js',
-      'ts',
-      'json',
-    ],
+    outputDir: './src/styles/tokens'
   })
 
   expect(generateTemplateResult).toBe(hardcodedTemplateResult)

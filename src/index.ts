@@ -14,25 +14,12 @@ import { processFigmaStyles } from './figma-styles'
 
 import { TokenEngineConfigType } from './types'
 
-export async function runTokenEngine(
-  opts: TokenEngineConfigType,
-  { useAPI, dryRun, sdConfigFile }: { useAPI: boolean; dryRun: boolean, sdConfigFile?: string }
-) {
-  printAppName()
-
-  global.tokenEngineConfig = opts
-  global.useAPI = useAPI
-  global.dryRun = dryRun
-  global.sdConfigFile = sdConfigFile
-
-  logEvent('Start Figma Token Engine')
-
-  // Check if you want to dry-run the command
-  if (global.dryRun) {
-    logEvent(`Dry Run`)
-  }
-
-  // Start Figma Styles Process
+/**
+ * Runs the whole FTE pipeline depending of the entry format
+ * inputted on the config file
+ * (Assumes the config file info is already saved on global)
+ */
+export async function processByInputFormat() {
   if (global.tokenEngineConfig.tokenFormat === 'FigmaStyles') {
     await processFigmaStyles()
   }
@@ -45,6 +32,28 @@ export async function runTokenEngine(
   }
 
   return true
+}
+
+export async function runTokenEngine(
+  opts: TokenEngineConfigType,
+  { useAPI, dryRun, sdConfigFile }: { useAPI: boolean; dryRun: boolean, sdConfigFile?: string }
+) {
+  printAppName()
+
+  global.tokenEngineConfig = opts
+  global.useAPI = useAPI
+  global.dryRun = dryRun
+  global.sdConfigFile = sdConfigFile
+  global.originalPlatforms = opts.platforms
+
+  logEvent('Start Figma Token Engine')
+
+  // Check if you want to dry-run the command
+  if (global.dryRun) {
+    logEvent(`Dry Run`)
+  }
+
+  return processByInputFormat();
 }
 
 export function generateTokenTemplate() {

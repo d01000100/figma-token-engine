@@ -2,7 +2,7 @@ import { DesignTokens } from 'style-dictionary'
 import { TokenEngineConfigType } from '../types'
 import { logEvent } from '../utils/logger'
 import { buildStyleDictionary } from './config'
-import { parseFigmaStyles } from './parsers/figmaStylesParser'
+import { parseFigmaStyles } from './parsers/figmaStyles'
 import { parseTokensStudio } from './parsers/tokensStudioParser'
 
 /**

@@ -22,11 +22,8 @@ export async function start({
   inputFile,
   sets,
   transformerOutput,
-  excludes,
-}: Pick<
-  TokensStudioArgs,
-  'inputFile' | 'sets' | 'excludes' | 'transformerOutput'
->): Promise<string | undefined> {
+  excludes
+}: TokensStudioArgs): Promise<string | undefined> {
   logEvent('Token Transform')
 
   if (!fileExists(inputFile)) {
@@ -44,7 +41,7 @@ export async function start({
   const transformerLog = execSync(
     `token-transformer ${inputFile} ${resultFile} ${sets ?? ''} ${
       excludes ?? ''
-    } --expandTypography=true`
+    } --expandTypography=true${global.expandShadows ? ` --expandShadow=true` : ''}`
   )
   logExternalLibrary(transformerLog.toString().trim())
 

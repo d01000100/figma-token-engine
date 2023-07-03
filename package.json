@@ -1,9 +1,9 @@
 {
   "name": "figma-token-engine",
-  "version": "0.1.1",
+  "version": "0.2.0-alpha.3",
   "description": "Transforms design tokens from Figma into stylesheets and other code representation",
   "license": "MIT",
-  "author": "frog Mx",
+  "author": "jdanielca@gmail.com",
   "homepage": "https://github.com/d01000100/figma-token-engine#readme",
   "repository": {
     "type": "git",
@@ -44,6 +44,7 @@
     "figlet": "^1.5.2",
     "figma-js": "^1.16.0",
     "glob": "^8.1.0",
+    "lodash": "^4.17.21",
     "module-alias": "^2.2.2",
     "style-dictionary": "^3.7.2",
     "tmp": "^0.2.1",
@@ -53,6 +54,7 @@
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.5",
     "@types/jest": "^29.4.0",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^18.14.2",
     "@types/tmp": "^0.2.3",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
