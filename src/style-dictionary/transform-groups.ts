@@ -111,8 +111,8 @@ export function registerTransformGroups(): void {
       'name/cti/snake',
       'color/hex8android',
       'size/pxToRem',
-      'size/compose/remToSp',
-      'size/compose/remToDp',
+      'size/remToDp',
+      'size/remToSp',
       Transformer.fontWeightToNumber
     ],
   })
