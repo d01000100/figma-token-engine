@@ -1,6 +1,6 @@
 {
   "name": "figma-token-engine",
-  "version": "0.2.0-alpha.2",
+  "version": "0.2.0-alpha.3",
   "description": "Transforms design tokens from Figma into stylesheets and other code representation",
   "license": "MIT",
   "author": "jdanielca@gmail.com",
