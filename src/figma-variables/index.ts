@@ -1,3 +1,4 @@
+import { logEvent } from "../utils/logger";
 import { FigmaVariablesParser } from "./FigmaVariablesParser";
 import { readVariablesFromFile, writeParsedVariables } from "./storage";
 
@@ -11,7 +12,10 @@ const variableParser = new FigmaVariablesParser(figmaApiResponse)
 
 variableParser.divideAliasAndExplicitVariables();
 
+logEvent("Parsing explicit variables")
 variableParser.explicitVariables.forEach(variableParser.parseVariable, variableParser)
+logEvent("Parsing alias variables")
+variableParser.aliasVariables.forEach(variableParser.parseVariable, variableParser)
 
 writeParsedVariables("./tmp/parsed_variables.json",variableParser.result)
 

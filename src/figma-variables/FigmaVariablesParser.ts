@@ -3,6 +3,7 @@ import { DesignTokenValue, DesignTokens, SimpleDesignToken, TokenType } from "..
 import { CollectionObj, VariableAPIResponse } from "./types";
 import { getTypeFromName } from "../style-dictionary/parsers/common";
 import { addTokenIntoRoute, rgbaToHex } from "../style-dictionary/parsers/utils";
+import { logError, logEvent } from "../utils/logger";
 
 /**
  * Class to encapsulate and coordinate the pipeline for parsing Figma Variables
@@ -42,9 +43,10 @@ export class FigmaVariablesParser {
    */
   isAliasVariable(variable: Variable): boolean {
     const values = Object.values(variable.valuesByMode)
-    return values.some((value: VariableValue) => {
+    const isAlias = values.some((value: VariableValue) => {
       return typeof value === "object" && "type" in value && value.type === "VARIABLE_ALIAS"
     })
+    return isAlias;
   }
 
   divideAliasAndExplicitVariables() {
@@ -108,23 +110,54 @@ export class FigmaVariablesParser {
    * @param modeID 
    * @returns 
    */
-  private getValueFromMode(variable: Variable, modeID: string): DesignTokenValue | undefined {
-    const value = variable.valuesByMode[modeID];
-    if (!value) return;
-    if (variable.resolvedType === "COLOR") {
+  private getValueFromMode(variable: Variable, modeID: string): VariableValue | undefined {
+    return variable.valuesByMode[modeID];
+  }
+
+  /**
+   * Resolves the referenced value of an alias variable, from the rawData variables
+   * @param variable 
+   * @param modeID 
+   * @returns 
+   */
+  private getReferencedValue(variable : Variable, modeID : string) : VariableValue | undefined {
+    const referenceForMode = variable.valuesByMode[modeID] as VariableAlias;
+    if (!referenceForMode) return;
+    const baseVariableID = referenceForMode.id;
+    const baseVariable = this.rawData.meta.variables[baseVariableID]
+    if (!baseVariable) {
+      logError(`Can't find the base variable ${baseVariableID}, that variable ${variable.name} references to`)
+      return;
+    }
+    return this.getValueFromMode(baseVariable, modeID);
+  }
+
+  private transformValue(value : VariableValue, type : VariableResolvedDataType) : DesignTokenValue {
+    if (type === "COLOR") {
       return rgbaToHex(value as RGB | RGBA)
     }
     return value as number;
   }
 
+  /**
+   * Gets and transforms all the relevant properties to parse a Variable into a SimpleDesignToken
+   * @param variable 
+   * @param route 
+   * @param modeID 
+   * @returns 
+   */
   parseVariableToToken(variable: Variable, route: string[], modeID: string): SimpleDesignToken | undefined {
     const tokenType = this.parseVariableTypeToTokenType(variable.resolvedType, route)
     if (!tokenType) return;
-    const value = this.getValueFromMode(variable, modeID)
-    // TODO: get referenced value for alias nodes
+    let value : VariableValue | undefined;
+    if (this.isAliasVariable(variable)) {
+      value = this.getReferencedValue(variable, modeID);
+    } else {
+      value = this.getValueFromMode(variable, modeID)
+    }
     if (!value) return;
     return {
-      value: value,
+      value: this.transformValue(value,variable.resolvedType),
       description: variable.description,
       type: tokenType
     }
