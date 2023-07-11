@@ -71,11 +71,11 @@ export function rgbaToHex({
   r: number
   g: number
   b: number
-  a: number
+  a?: number
 }): string {
   const rgba = `rgba(${Math.round(r * 255)}, ${Math.round(
     g * 255
-  )}, ${Math.round(b * 255)}, ${a.toFixed(2)})`
+  )}, ${Math.round(b * 255)}, ${a?.toFixed(2) ?? 1})`
   return `#${rgbHex(rgba)}`
 }
 
