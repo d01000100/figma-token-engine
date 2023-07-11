@@ -51,6 +51,7 @@
     "token-transformer": "^0.0.30"
   },
   "devDependencies": {
+    "@figma/plugin-typings": "^1.70.0",
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.5",
     "@types/jest": "^29.4.0",
