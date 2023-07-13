@@ -13,6 +13,7 @@ import { processTokensStudio } from './tokens-studio'
 import { processFigmaStyles } from './figma-styles'
 
 import { TokenEngineConfigType } from './types'
+import { processFigmaVariables } from './figma-variables'
 
 /**
  * Runs the whole FTE pipeline depending of the entry format
@@ -20,15 +21,20 @@ import { TokenEngineConfigType } from './types'
  * (Assumes the config file info is already saved on global)
  */
 export async function processByInputFormat() {
-  if (global.tokenEngineConfig.tokenFormat === 'FigmaStyles') {
-    await processFigmaStyles()
-  }
 
-  // Start Figma tokens Process
-  if (global.tokenEngineConfig.tokenFormat === 'TokensStudio' ||
-    // left here for retro compatibility purposes
-    global.tokenEngineConfig.tokenFormat === 'FigmaTokens') {
-    await processTokensStudio()
+  switch (global.tokenEngineConfig.tokenFormat) {
+    case 'FigmaStyles':
+      await processFigmaStyles();
+      break;      
+    case 'TokensStudio':
+    case 'FigmaTokens': // left here for retro compatibility purposes
+      await processTokensStudio()
+      break;
+    case 'FigmaVariables':
+      await processFigmaVariables();
+      break;
+    default:
+      return false;
   }
 
   return true

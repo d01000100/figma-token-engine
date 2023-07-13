@@ -1,7 +1,7 @@
 import { logEvent } from './../utils/logger'
 import { getFigmaStyles } from './../figma-api'
 import { start as startStyleDictionary } from './../style-dictionary'
-import { setUpMobileGlobals, setUpWebGlobals } from '../web-mobile'
+import { setUpMobileGlobals, setUpWebGlobals } from '../web-mobile';
 
 export async function processFigmaStyles() {
   logEvent(`Figma Styles`)

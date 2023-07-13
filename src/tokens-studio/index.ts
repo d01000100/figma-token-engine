@@ -2,8 +2,8 @@ import { logEvent } from '../utils/logger'
 import { getTokensStudio } from '../figma-api'
 import { start as startTokenTransform } from '../token-transform'
 import { TokensStudioArgs } from '../types'
-import { setUpMobileGlobals, setUpWebGlobals } from '../web-mobile'
 import { start as startStyleDictionary } from '../style-dictionary'
+import { setUpMobileGlobals, setUpWebGlobals } from '../web-mobile'
 
 export async function processTokensStudio() {
   logEvent(`Figma Tokens`)
@@ -17,7 +17,7 @@ export async function processTokensStudio() {
 
   // Step 2.1: Transfom [FigmaTokens] using tokens-tranform, to be ready for StyleDictionary
   // for web outputs
-  setUpWebGlobals()
+  setUpWebGlobals();
   global.tokenEngineConfig.inputFile =
     (await startTokenTransform(global.tokenEngineConfig as TokensStudioArgs)) ?? global.tokenEngineConfig.inputFile
 
@@ -28,7 +28,7 @@ export async function processTokensStudio() {
 
   // Step 3.1: Transfom [FigmaTokens] using tokens-tranform, to be ready for StyleDictionary
   // for web outputs
-  setUpMobileGlobals()
+  setUpMobileGlobals();
   global.tokenEngineConfig.inputFile =
     (await startTokenTransform(global.tokenEngineConfig as TokensStudioArgs)) ?? global.tokenEngineConfig.inputFile
 

@@ -1,7 +1,7 @@
 /** Union of all specific app arguments */
 export type TokenEngineConfigType = TokensStudioArgs | FigmaStylesArgs
 
-export type TokenFormat = 'FigmaTokens' | 'TokensStudio' | 'FigmaStyles'
+export type TokenFormat = 'FigmaTokens' | 'TokensStudio' | 'FigmaStyles' | 'FigmaVariables'
 
 export const Platforms = [
   '',

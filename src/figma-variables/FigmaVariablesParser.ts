@@ -3,7 +3,11 @@ import { DesignTokenValue, DesignTokens, SimpleDesignToken, TokenType } from "..
 import { CollectionObj, VariableAPIResponse } from "./types";
 import { getTypeFromName } from "../style-dictionary/parsers/common";
 import { addTokenIntoRoute, rgbaToHex } from "../style-dictionary/parsers/utils";
-import { logError, logEvent } from "../utils/logger";
+import { logError } from "../utils/logger";
+
+export type ParsedVariables = DesignTokens & {
+  modes? : DesignTokens,
+}
 
 /**
  * Class to encapsulate and coordinate the pipeline for parsing Figma Variables
@@ -20,7 +24,7 @@ export class FigmaVariablesParser {
   public collections: CollectionObj;
   public explicitVariables: Variable[] = [];
   public aliasVariables: Variable[] = [];
-  public result: DesignTokens = {};
+  public result: ParsedVariables = {};
 
   public static supportedVariableTypes: VariableResolvedDataType[] = [
     "COLOR",

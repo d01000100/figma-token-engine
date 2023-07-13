@@ -23,7 +23,7 @@ const mobilePlatforms : PlatformsType[] = [
  */
 export function setUpWebGlobals() {
   logEvent("Setting up web globals")
-  global.tokenEngineConfig.platforms = global.tokenEngineConfig.platforms?.filter(
+  global.tokenEngineConfig.platforms = global.originalPlatforms?.filter(
     platform => webPlatforms.includes(platform)
   ) ?? webPlatforms;
   global.expandShadows = false;

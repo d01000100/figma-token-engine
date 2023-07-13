@@ -26,22 +26,3 @@ export function readVariablesFromFile(inFile : string) : VariableAPIResponse | u
     )
   }
 }
-
-export function writeParsedVariables(outFile: string, data: any) {
-  logEvent('Figma API - Write Figma API Variables Parsed')
-
-  const completeOutLocation = path.join(process.cwd(), outFile)
-
-  const completeOutDir = path.dirname(completeOutLocation);
-
-  try {
-    fs.mkdirSync(completeOutDir, {recursive: true})
-    fs.writeFileSync(outFile, JSON.stringify(data, null, 2))
-    logSuccessElement(`Saved tokens at ${completeOutLocation}`)
-  } catch (error) {
-    logError(
-      `Couldn't save file at set directory. Tried to save in: ${completeOutLocation}` +
-        error
-    )
-  }
-}
