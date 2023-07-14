@@ -2,6 +2,26 @@
 import { promises as fs } from 'fs'
 import path from 'path'
 import { logError } from '../utils/logger'
+import * as tmp from 'tmp'
+
+
+/**
+ * Creates a new temporary file to write to.
+ * Returns the location of the file
+ */
+export function createTmpFile() : string {
+  const tmpobj = tmp.fileSync()
+  return tmpobj.name
+}
+
+/**
+ * Creates a new temporary directory to write to.
+ * Returns the location of the directyro
+ */
+export function createTmpDir() : string {
+  const tmpobj = tmp.dirSync()
+  return tmpobj.name
+}
 
 export async function createDir(dir : string) {
   try {
@@ -14,7 +34,8 @@ export async function createDir(dir : string) {
 
 export async function writeToFile(outFile: string, data: any) {
   
-  const completeOutLocation = path.join(process.cwd(),outFile)
+  const isAbsolutePath = outFile.startsWith("/");
+  const completeOutLocation = isAbsolutePath ? outFile : path.join(process.cwd(),outFile)
   const completeOutDir = path.dirname(completeOutLocation);
 
   await createDir(completeOutDir);

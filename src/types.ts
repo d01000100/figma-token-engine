@@ -1,5 +1,5 @@
 /** Union of all specific app arguments */
-export type TokenEngineConfigType = TokensStudioArgs | FigmaStylesArgs
+export type TokenEngineConfigType = TokensStudioArgs | FigmaStylesArgs | FigmaVariablesArgs
 
 export type TokenFormat = 'FigmaTokens' | 'TokensStudio' | 'FigmaStyles' | 'FigmaVariables'
 
@@ -25,17 +25,23 @@ interface AppArgs {
   brandPrefix?: string
   inputFile: string
   outputDir: string
+  figmaFileId: string
   platforms?: Array<PlatformsType>
-  tokenFormat: TokenFormat
 }
 
 export interface TokensStudioArgs extends AppArgs {
-  figmaFileId: string
+  tokenFormat: 'TokensStudio' | 'FigmaTokens'
   excludes?: string[]
   sets?: string[]
   transformerOutput?: string
 }
 
 export interface FigmaStylesArgs extends AppArgs {
-  figmaFileId: string
+  tokenFormat: 'FigmaStyles'
+}
+
+export interface FigmaVariablesArgs extends AppArgs {
+  tokenFormat: 'FigmaVariables',
+  parsedVariablesDir?: string,
+  noModeOutputSubDir?: string,
 }
