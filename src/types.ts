@@ -14,7 +14,6 @@ export const Platforms = [
   'ts',
   'json',
   'compose',
-  'swift',
   'android/resources',
   'ios-swift/class.swift'
 ] as const
@@ -22,10 +21,10 @@ export const Platforms = [
 export type PlatformsType = typeof Platforms[number]
 
 interface AppArgs {
-  brandPrefix?: string
+  brandPrefix?: string // TODO: make it do something
   inputFile: string
   outputDir: string
-  figmaFileId: string
+  figmaFileId?: string // TODO: use it instead of .env variable
   platforms?: Array<PlatformsType>
 }
 
