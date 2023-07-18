@@ -1,0 +1,116 @@
+{
+  "light": {
+    "colors-example": {
+      "color-border-primary": {
+        "value": "#000000ff",
+        "type": "color",
+        "mode": "light"
+      },
+      "color-surface": {
+        "value": "#ffffffff",
+        "type": "color",
+        "mode": "light"
+      },
+      "color-accent": {
+        "value": "#699bf7ff",
+        "type": "color",
+        "mode": "light"
+      },
+      "color-text-primary": {
+        "value": "#000000ff",
+        "type": "color",
+        "mode": "light"
+      },
+      "input": {
+        "selected": {
+          "value": "#ff8577ff",
+          "type": "color",
+          "mode": "light"
+        },
+        "foreground-color": {
+          "value": "#000000ff",
+          "type": "color",
+          "mode": "light"
+        }
+      }
+    }
+  },
+  "dark": {
+    "colors-example": {
+      "color-border-primary": {
+        "value": "#757575ff",
+        "type": "color",
+        "mode": "dark"
+      },
+      "color-surface": {
+        "value": "#000000ff",
+        "type": "color",
+        "mode": "dark"
+      },
+      "color-accent": {
+        "value": "#699bf7ff",
+        "type": "color",
+        "mode": "dark"
+      },
+      "color-text-primary": {
+        "value": "#ffffffff",
+        "type": "color",
+        "mode": "dark"
+      },
+      "input": {
+        "selected": {
+          "value": "#ff8577ff",
+          "type": "color",
+          "mode": "dark"
+        },
+        "foreground-color": {
+          "value": "#ffffffff",
+          "type": "color",
+          "mode": "dark"
+        }
+      }
+    }
+  },
+  "tokens": {
+    "number": {
+      "radii": {
+        "sm": {
+          "value": 8,
+          "type": "borderRadius"
+        }
+      },
+      "space": {
+        "lg": {
+          "value": 24,
+          "type": "space"
+        },
+        "sm": {
+          "value": 12,
+          "type": "space"
+        }
+      }
+    },
+    "color": {
+      "color-violet": {
+        "value": "#c7b9ffff",
+        "type": "color"
+      },
+      "color-black": {
+        "value": "#000000ff",
+        "type": "color"
+      },
+      "button-label-primary": {
+        "value": "#000000ff",
+        "type": "color"
+      },
+      "button-background-primary": {
+        "value": "#c7b9ffff",
+        "type": "color"
+      },
+      "button-outline-primary": {
+        "value": "#000000ff",
+        "type": "color"
+      }
+    }
+  }
+}
