@@ -91,7 +91,8 @@ export type ShadowTokenSingleValue = {
 }
 
 interface DesignTokenCommon extends SDDesignToken {
-  description?: string
+  description?: string,
+  mode?: string,
 }
 
 export type ShadowDesignToken = DesignTokenCommon & {

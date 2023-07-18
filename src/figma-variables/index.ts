@@ -1,23 +1,13 @@
 /* eslint-disable no-var */
-import { FigmaVariablesArgs, PlatformsType, TokenEngineConfigType } from "../types";
-import { logEvent, logSuccessElement } from "../utils/logger";
-import { createDir, createTmpDir, writeToFile } from "../utils/storage";
+import { FigmaVariablesArgs, TokenEngineConfigType } from "../types";
+import { logSuccessElement } from "../utils/logger";
+import { createTmpDir, writeToFile } from "../utils/storage";
 import { setUpMobileGlobals, setUpWebGlobals } from "../web-mobile";
 import { FigmaVariablesParser } from "./FigmaVariablesParser";
 import { readVariablesFromFile } from "./storage";
 import { start as startStyleDictionary } from '../style-dictionary'
 import path from "path";
 import { VariableAPIResponse } from "./types";
-import { DesignTokens } from "../style-dictionary/types";
-declare global {
-  var tokenEngineConfig: TokenEngineConfigType
-  var originalPlatforms: PlatformsType[] | undefined
-  var modes: string[]
-  var useAPI: boolean
-  var dryRun: boolean
-  var sdConfigFile: string | undefined
-  var expandShadows: boolean
-}
 
 type ParsedVariablesMeta = {
   variableFile: string,
@@ -30,44 +20,46 @@ async function parseVariablesIntoFiles(variablesResponse: VariableAPIResponse): 
 
   // Parse variables into JSON
   const variableParser = new FigmaVariablesParser(variablesResponse)
-  variableParser.divideAliasAndExplicitVariables();
-  logEvent("Parsing explicit variables")
-  variableParser.explicitVariables.forEach(variableParser.parseVariable, variableParser)
-  logEvent("Parsing alias variables")
-  variableParser.aliasVariables.forEach(variableParser.parseVariable, variableParser)
+  variableParser.parseVariables();
 
   // Write parsed variables into files, for StyleDictionary to read from
   const completeOutDir = parsedVariablesDir ? path.join(process.cwd(), parsedVariablesDir) : createTmpDir();
-  const modeDir = "./modes/";
-  const completeModeDir = path.join(completeOutDir, modeDir);
+  
+  // TODO: Delete if exploration about merging modes into one file is successfull
+  //const modeDir = "./modes/";
+  //const completeModeDir = path.join(completeOutDir, modeDir);
 
-  if (variableParser.result.modes) {
-    await createDir(completeModeDir)
-    logSuccessElement("Created dir for modes")
+  //if (variableParser.result.modes) {
+  //  await createDir(completeModeDir)
+  //  logSuccessElement("Created dir for modes")
 
-    const parsedModes = Object.entries(variableParser.result.modes ?? {});
-    await Promise.all(parsedModes.map(async ([theme, tokens]) => {
-      const themeFile = path.join(completeModeDir, `${theme}.json`);
-      await writeToFile(themeFile, tokens)
-      tokenFilenames.push({
-        variableFile: themeFile,
-        outputSubDir: theme,
-      });
-      logSuccessElement(`Wrote tokens from ${theme} theme`)
-    }))
-  }
+  //  const parsedModes = Object.entries(variableParser.result.modes ?? {});
+  //  await Promise.all(parsedModes.map(async ([theme, tokens]) => {
+  //    const themeFile = path.join(completeModeDir, `${theme}.json`);
+  //    await writeToFile(themeFile, tokens)
+  //    tokenFilenames.push({
+  //      variableFile: themeFile,
+  //      outputSubDir: theme,
+  //    });
+  //    logSuccessElement(`Wrote tokens from ${theme} theme`)
+  //  }))
+  //}
 
-  delete variableParser.result.modes;
-  const noThemeFilename = path.join(completeOutDir, "variables_no_theme.json");
+  //delete variableParser.result.modes;
+
+  const noThemeFilename = path.join(completeOutDir, "parsed-variables.json");
   await writeToFile(noThemeFilename, variableParser.result)
+  // We add the modes found on the variables to global!
+  global.modes = Array.from(variableParser.modesSet)
   tokenFilenames.push({
     variableFile: noThemeFilename
   });
-  logSuccessElement(`Wrote tokens with no theme`)
+  logSuccessElement(`Wrote parsed variables into tokens on ${noThemeFilename}`)
 
   return tokenFilenames;
 }
 
+// TODO: Delete if expolration of merging modes into single file works out
 function processVariableFile({ variableFile, outputSubDir }: ParsedVariablesMeta): boolean {
 
   const { outputDir, noModeOutputSubDir } = global.tokenEngineConfig as FigmaVariablesArgs;

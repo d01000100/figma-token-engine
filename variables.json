@@ -21,8 +21,8 @@
         "name": "[ Colors ] - Example",
         "remote": false,
         "modes": [
-          { "modeId": "192:0", "name": "Light" },
-          { "modeId": "194:4", "name": "Dark" }
+          { "modeId": "192:0", "name": "Coppel" },
+          { "modeId": "194:4", "name": "Bancoppel" }
         ],
         "key": ""
       },
@@ -40,9 +40,9 @@
         "name": "[ Spacing ] - Example",
         "remote": false,
         "modes": [
-          { "modeId": "209:3", "name": "Standard" },
-          { "modeId": "209:4", "name": "Expanded" },
-          { "modeId": "209:5", "name": "Condensed" }
+          { "modeId": "209:3", "name": "Coppel" },
+          { "modeId": "209:4", "name": "Bancoppel" },
+          { "modeId": "209:5", "name": "CoppelMax" }
         ],
         "key": ""
       },
@@ -52,8 +52,8 @@
         "name": "[ Themes ]",
         "remote": false,
         "modes": [
-          { "modeId": "388:5", "name": "Light" },
-          { "modeId": "388:9", "name": "Dark" }
+          { "modeId": "388:5", "name": "Coppel" },
+          { "modeId": "388:9", "name": "Bancoppel" }
         ],
         "key": "8abbf3c93023f8cb10911fa45bfb8655e9476eab"
       }

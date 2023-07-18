@@ -1,12 +1,12 @@
 import { kebabCase } from "lodash";
 import { DesignTokenValue, DesignTokens, SimpleDesignToken, TokenType } from "../style-dictionary/types";
-import { CollectionObj, VariableAPIResponse } from "./types";
+import { CollectionObj, VariableAPIResponse, VariableObj } from "./types";
 import { getTypeFromName } from "../style-dictionary/parsers/common";
 import { addTokenIntoRoute, rgbaToHex } from "../style-dictionary/parsers/utils";
-import { logError } from "../utils/logger";
+import { logError, logEvent } from "../utils/logger";
 
 export type ParsedVariables = DesignTokens & {
-  modes? : DesignTokens,
+  modes?: DesignTokens,
 }
 
 /**
@@ -20,10 +20,38 @@ export class FigmaVariablesParser {
     this.collections = data.meta.variableCollections;
   }
 
+  /**
+   * The raw data read from the FigmaAPI endpoint of Variables
+   */
   public rawData: VariableAPIResponse;
+  /**
+   * The collections extracted from the FigmaAPI response
+   */
   public collections: CollectionObj;
-  public explicitVariables: Variable[] = [];
-  public aliasVariables: Variable[] = [];
+  /**
+   * List of variables that the TokenEngie supports parsing
+   * This array is filled up by calling getSupportedVariables
+   */
+  //public supportedVariables: Variable[] = []
+  /**
+   * The variables that only have explicit values on them (no references)
+   * This array is filled up by calling divideAliasAndExplicitVariables
+   */
+  //public explicitVariables: Variable[] = [];
+  /**
+   * The variables that have one or more values by references on them
+   * This array is filled up by calling divideAliasAndExplicitVariables
+   */
+  //public aliasVariables: Variable[] = [];
+  /**
+   * Set of the modes identified on the supported Variables+
+   * This set is filled up by calling getModes
+   */
+  public modesSet: Set<string> = new Set<string>();
+  /**
+   * Result of parsed tokens from the Figma Variables
+   * This object is filled up by calling `parseVariables`
+   */
   public result: ParsedVariables = {};
 
   public static supportedVariableTypes: VariableResolvedDataType[] = [
@@ -35,8 +63,8 @@ export class FigmaVariablesParser {
   /* =================
      === Filtering ===
      ================= */
-  getSupportedVariables(): Variable[] {
-    const variables = Object.values(this.rawData.meta.variables);
+  private getSupportedVariables(variableObj: VariableObj): Variable[] {
+    const variables = Object.values(variableObj);
     return variables.filter((variable) => (FigmaVariablesParser.supportedVariableTypes.includes(variable.resolvedType)))
   }
 
@@ -45,7 +73,7 @@ export class FigmaVariablesParser {
    * @param variable 
    * @param modeID 
    */
-  isAliasVariable(variable: Variable): boolean {
+  private isAliasVariable(variable: Variable): boolean {
     const values = Object.values(variable.valuesByMode)
     const isAlias = values.some((value: VariableValue) => {
       return typeof value === "object" && "type" in value && value.type === "VARIABLE_ALIAS"
@@ -53,17 +81,30 @@ export class FigmaVariablesParser {
     return isAlias;
   }
 
-  divideAliasAndExplicitVariables() {
-    const variables = this.getSupportedVariables();
-    this.explicitVariables = variables.filter((variable) => !this.isAliasVariable(variable))
-    this.aliasVariables = variables.filter(this.isAliasVariable)
-  }
+  //private divideAliasAndExplicitVariables(variables : Variable[]) : [Variable[], Variable[]] {
+  //  return [
+  //    variables.filter((variable) => !this.isAliasVariable(variable)),
+  //    variables.filter(this.isAliasVariable)
+  //  ]
+  //}
 
   /* ====================================
      === Single Variable Parsing Prep ===
      ==================================== */
 
-  getVariableCollection(variable: Variable): VariableCollection {
+  private getModes(variables: Variable[]): Set<string> {
+    const modeSet = new Set<string>;
+    variables.forEach((variable) => {
+      const variableCollection = this.getVariableCollection(variable);
+      const modes = variableCollection.modes
+      if (modes.length <= 1) return;
+      // We just add the mode, if the variable has more than 1
+      modes.forEach((mode) => modeSet.add(mode.name))
+    })
+    return modeSet;
+  }
+
+  private getVariableCollection(variable: Variable): VariableCollection {
     return this.collections[variable.variableCollectionId];
   }
 
@@ -73,7 +114,7 @@ export class FigmaVariablesParser {
    * @param collection 
    * @returns An array of strings, with each step on the route on each entry
    */
-  getVariableRoute(variable: Variable, collection: VariableCollection): string[] {
+  private getVariableRoute(variable: Variable, collection: VariableCollection): string[] {
     const collectionName = kebabCase(collection.name);
     const groupsAndName = variable.name.split(FigmaVariablesParser.groupDivider)
     return [collectionName, ...groupsAndName]
@@ -124,7 +165,7 @@ export class FigmaVariablesParser {
    * @param modeID 
    * @returns 
    */
-  private getReferencedValue(variable : Variable, modeID : string) : VariableValue | undefined {
+  private getReferencedValue(variable: Variable, modeID: string): VariableValue | undefined {
     const referenceForMode = variable.valuesByMode[modeID] as VariableAlias;
     if (!referenceForMode) return;
     const baseVariableID = referenceForMode.id;
@@ -136,7 +177,7 @@ export class FigmaVariablesParser {
     return this.getValueFromMode(baseVariable, modeID);
   }
 
-  private transformValue(value : VariableValue, type : VariableResolvedDataType) : DesignTokenValue {
+  private transformValue(value: VariableValue, type: VariableResolvedDataType): DesignTokenValue {
     if (type === "COLOR") {
       return rgbaToHex(value as RGB | RGBA)
     }
@@ -148,12 +189,14 @@ export class FigmaVariablesParser {
    * @param variable 
    * @param route 
    * @param modeID 
+   * @param modeName Optional. Pass to add the mode name to the token data. If the token only has one mode,
+   * do not pass it.
    * @returns 
    */
-  parseVariableToToken(variable: Variable, route: string[], modeID: string): SimpleDesignToken | undefined {
+  parseVariableToToken(variable: Variable, route: string[], modeID: string, modeName?: string): SimpleDesignToken | undefined {
     const tokenType = this.parseVariableTypeToTokenType(variable.resolvedType, route)
     if (!tokenType) return;
-    let value : VariableValue | undefined;
+    let value: VariableValue | undefined;
     if (this.isAliasVariable(variable)) {
       value = this.getReferencedValue(variable, modeID);
     } else {
@@ -161,9 +204,10 @@ export class FigmaVariablesParser {
     }
     if (!value) return;
     return {
-      value: this.transformValue(value,variable.resolvedType),
+      value: this.transformValue(value, variable.resolvedType),
       description: variable.description,
-      type: tokenType
+      type: tokenType,
+      mode: modeName,
     }
   }
 
@@ -175,18 +219,21 @@ export class FigmaVariablesParser {
    * @param modeName 
    * @returns Nothing. The result is stored in this.result
    */
-  addToResult(token: SimpleDesignToken, route: string[], modeName?: string) {
-    if (!modeName) {
-      this.result = addTokenIntoRoute(this.result, route, token)
-      return;
-    }
+  addToResult(token: SimpleDesignToken, route: string[]) {
+    this.result = addTokenIntoRoute(this.result, route, token)
 
-    // If there is a mode
-    if (!this.result["modes"]) {
-      this.result.modes = {}
-    }
+    // TODO: Delete this if the merging of modes exploration is successfull
+    //if (!modeName) {
+    //  this.result = addTokenIntoRoute(this.result, route, token)
+    //  return;
+    //}
 
-    this.result.modes = addTokenIntoRoute(this.result.modes, [modeName, ...route], token)
+    //// If there is a mode
+    //if (!this.result["modes"]) {
+    //  this.result.modes = {}
+    //}
+
+    //this.result.modes = addTokenIntoRoute(this.result.modes, [modeName, ...route], token)
   }
 
   /* ================================
@@ -194,24 +241,62 @@ export class FigmaVariablesParser {
      ================================ */
   /**
    * Full process to parse a variable and add it to the result TokenObject
-   * @param variable
+   * 
+   * Assumes `this.modesSet` is filled before by `this.getModes`
+   * @param variable   
+   *  
    */
-  parseVariable(variable: Variable) {
+  private parseVariable(variable: Variable) {
     const collection = this.getVariableCollection(variable)
     const modes = collection.modes;
     const route = this.getVariableRoute(variable, collection)
 
-    modes.forEach((mode) => {
-      const token = this.parseVariableToToken(variable, route, mode.modeId);
-      if (!token) return;
-      if (modes.length > 1) {
-        // If the variable has more than one mode, we add it with the mode to the result
-        this.addToResult(token, route, kebabCase(mode.name))
-        return;
-      }
+    if (modes.length > 1) {
+      modes.forEach((mode) => {
+        const token = this.parseVariableToToken(
+          variable,
+          route,
+          mode.modeId,
+          mode.name
+        );
+        if (!token) return;
+        this.addToResult(token, [mode.name, ...route])
+      })
+      return;
+    }
 
-      // If there's only 1 mode, we don't keep the mode in the result
-      this.addToResult(token, route)
+    // If the variable's collection only has 1 mode, we create a token
+    // from that variable for every mode that we detected on the Variables
+    const singleMode = modes[0];
+    this.modesSet.forEach((modeName) => {
+      const token = this.parseVariableToToken(
+        variable,
+        route,
+        singleMode.modeId,
+        modeName
+      )
+      if (!token) return;
+      this.addToResult(token, [modeName, ...route])
     })
+  }
+
+  /**
+   * Full pipeline to parse all variables found on `variablesResponse` into `result`
+   */
+  parseVariables() {
+    // 1. Filter the unsupported variables out
+    // They get stored in `self.supportedVariables`
+    const supportedVariables = this.getSupportedVariables(this.rawData.meta.variables);
+    // 2. Get all the modes of the supported variables
+    this.modesSet = this.getModes(supportedVariables)
+    // 3. Divide explicit and alias variables
+    const explicitVariables = supportedVariables.filter((variable) => !this.isAliasVariable(variable))
+    const aliasVariables = supportedVariables.filter(this.isAliasVariable)
+    // 4. Parse into tokens each of the arrays of variables
+    // these methods fill up `this.result`!
+    logEvent("Parsing explicit variables")
+    explicitVariables.forEach(this.parseVariable, this)
+    logEvent("Parsing alias variables")
+    aliasVariables.forEach(this.parseVariable, this)
   }
 }
