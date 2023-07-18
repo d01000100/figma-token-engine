@@ -44,6 +44,11 @@ export enum FileHeader {
   generatedByTokenEngine = 'generatedByTokenEngine',
 }
 
+export enum Format {
+  cssAutocomplete = 'json/cssAutocomplete',
+  cssThemed = 'css/variables-themed'
+}
+
 /*=== Custom Design Tokens ====*/
 /* Mimic StyleDictionary's design token type, but with specific `type` and `value`
   property types */

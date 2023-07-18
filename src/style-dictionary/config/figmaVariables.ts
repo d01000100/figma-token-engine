@@ -1,5 +1,5 @@
 import { Config, File } from 'style-dictionary'
-import { DesignToken, FileHeader, Filter, TransformGroup } from '../types'
+import { DesignToken, FileHeader, Filter, Format, TransformGroup } from '../types'
 
 /**
  * Builds file configs for web platforms according to how many modes
@@ -73,7 +73,7 @@ export default function createStyleDictionaryConfig(
         files: buildWebFileConfigsFromModes(
           {
             destination: 'tokens.css',
-            format: 'css/variables',
+            format: Format.cssThemed,
             options: {
               fileHeader: FileHeader.generatedByTokenEngine,
             },
@@ -86,7 +86,7 @@ export default function createStyleDictionaryConfig(
         files: buildWebFileConfigsFromModes(
           {
             destination: 'tokens-autocomplete-config.json',
-            format: 'cssAutocomplete',
+            format: Format.cssAutocomplete,
             options: {
               fileHeader: FileHeader.generatedByTokenEngine
             }

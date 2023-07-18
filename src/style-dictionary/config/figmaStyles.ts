@@ -1,6 +1,6 @@
 import { Config } from 'style-dictionary'
 import { ParserOptions } from 'style-dictionary/types/Parser'
-import { FileHeader, Filter, TransformGroup } from '../types'
+import { FileHeader, Filter, Format, TransformGroup } from '../types'
 import { parseFigmaStyles } from '../parsers/figmaStyles'
 
 /** Creates the necessary config of StyleDictioanry for the token-engine pipeline
@@ -55,7 +55,7 @@ export default function createStyleDictionaryConfig(
         files: [
           {
             destination: 'tokens-autocomplete-config.json',
-            format: 'cssAutocomplete',
+            format: Format.cssAutocomplete,
             options: {
               fileHeader: FileHeader.generatedByTokenEngine
             }

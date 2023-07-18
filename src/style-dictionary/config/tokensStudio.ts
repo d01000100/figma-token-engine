@@ -1,5 +1,5 @@
 import { Config } from 'style-dictionary'
-import { FileHeader, Filter, TransformGroup } from '../types'
+import { FileHeader, Filter, Format, TransformGroup } from '../types'
 import { parseTokensStudio } from '../parsers/tokensStudioParser'
 import { ParserOptions } from 'style-dictionary/types/Parser'
 
@@ -54,7 +54,7 @@ export default function createStyleDictionaryConfig(
         files: [
           {
             destination: 'tokens-autocomplete-config.json',
-            format: 'cssAutocomplete',
+            format: Format.cssAutocomplete,
             options: {
               fileHeader: FileHeader.generatedByTokenEngine
             }
