@@ -1,5 +1,44 @@
-import { Config } from 'style-dictionary'
-import { FileHeader, Filter, TransformGroup } from '../types'
+import { Config, File } from 'style-dictionary'
+import { DesignToken, FileHeader, Filter, TransformGroup } from '../types'
+
+/**
+ * Builds file configs for web platforms according to how many modes
+ * were detected on the Variables
+ * 
+ * @remarks
+ * - The modes are stored on global.modes
+ * - If there are no modes, the same `singleFileConfig` will be returned
+ * - A directory will be added to each destination with the name of the mode
+ * 
+ * @param singeFileConfig | Config that will be used as a base to create
+ * the config array
+ */
+function buildWebFileConfigsFromModes(singeFileConfig: File): File[] {
+  const modes = global.modes;
+
+  // If there are no modes, we return the same File config
+  if (!modes) {
+    return [{
+      ...singeFileConfig,
+      destination: `web/${singeFileConfig.destination}`
+    }]
+  }
+
+  return modes.map((modeName) => {
+    return {
+      ...singeFileConfig,
+      filter: (token) => {
+        const originalToken = token.original as DesignToken;
+        return originalToken.mode === modeName;
+      },
+      destination: `web/${modeName}/${singeFileConfig.destination}`,
+      options: {
+        ...singeFileConfig.options,
+        mode: modeName
+      }
+    }
+  })
+}
 
 /**
  * Creates the necessary config of StyleDictioanry for the token-engine pipeline
@@ -31,7 +70,7 @@ export default function createStyleDictionaryConfig(
       ['css']: {
         transformGroup: TransformGroup.webCSS,
         buildPath: _outputFolder,
-        files: [
+        files: buildWebFileConfigsFromModes(
           {
             destination: 'tokens.css',
             format: 'css/variables',
@@ -39,12 +78,12 @@ export default function createStyleDictionaryConfig(
               fileHeader: FileHeader.generatedByTokenEngine,
             },
           },
-        ],
+        ),
       },
       ['cssAutocomplete']: {
         transformGroup: TransformGroup.webCSS,
         buildPath: _outputFolder,
-        files: [
+        files: buildWebFileConfigsFromModes(
           {
             destination: 'tokens-autocomplete-config.json',
             format: 'cssAutocomplete',
@@ -52,12 +91,12 @@ export default function createStyleDictionaryConfig(
               fileHeader: FileHeader.generatedByTokenEngine
             }
           },
-        ],
+        ),
       },
       ['scss']: {
         transformGroup: TransformGroup.webSCSS,
         buildPath: _outputFolder,
-        files: [
+        files: buildWebFileConfigsFromModes(
           {
             destination: 'tokens.scss',
             format: 'scss/variables',
@@ -65,12 +104,12 @@ export default function createStyleDictionaryConfig(
               fileHeader: FileHeader.generatedByTokenEngine,
             },
           },
-        ],
+        ),
       },
       ['scssMap']: {
         transformGroup: TransformGroup.webSCSS,
         buildPath: _outputFolder,
-        files: [
+        files: buildWebFileConfigsFromModes(
           {
             destination: 'tokensMap.scss',
             format: 'scss/map-flat',
@@ -78,12 +117,12 @@ export default function createStyleDictionaryConfig(
               fileHeader: FileHeader.generatedByTokenEngine,
             },
           },
-        ],
+        ),
       },
       ['less']: {
         transformGroup: TransformGroup.webLESS,
         buildPath: _outputFolder,
-        files: [
+        files: buildWebFileConfigsFromModes(
           {
             destination: 'tokens.less',
             format: 'less/variables',
@@ -91,12 +130,12 @@ export default function createStyleDictionaryConfig(
               fileHeader: FileHeader.generatedByTokenEngine,
             },
           },
-        ],
+        ),
       },
       ['js']: {
         transformGroup: TransformGroup.webJS,
         buildPath: _outputFolder,
-        files: [
+        files: buildWebFileConfigsFromModes(
           {
             destination: 'tokens.js',
             format: 'javascript/es6',
@@ -104,12 +143,12 @@ export default function createStyleDictionaryConfig(
               fileHeader: FileHeader.generatedByTokenEngine,
             },
           },
-        ],
+        ),
       },
       ['ts']: {
         transformGroup: TransformGroup.webJS,
         buildPath: _outputFolder,
-        files: [
+        files: buildWebFileConfigsFromModes(
           {
             destination: 'tokens.ts',
             format: 'javascript/es6',
@@ -117,7 +156,7 @@ export default function createStyleDictionaryConfig(
               fileHeader: FileHeader.generatedByTokenEngine,
             },
           },
-        ],
+        ),
       },
       ['json']: {
         transformGroup: TransformGroup.webJS,
@@ -131,7 +170,7 @@ export default function createStyleDictionaryConfig(
       },
       ['compose']: {
         transformGroup: TransformGroup.compose,
-        buildPath: _outputFolder,        
+        buildPath: _outputFolder,
         files: [
           {
             packageName: 'com.example.tokens',
@@ -144,7 +183,7 @@ export default function createStyleDictionaryConfig(
       },
       ['android/resources']: {
         transformGroup: TransformGroup.androidResources,
-        buildPath: _outputFolder,        
+        buildPath: _outputFolder,
         files: [
           {
             format: 'android/resources',
@@ -190,7 +229,7 @@ export default function createStyleDictionaryConfig(
       },
       ['ios-swift/class.swift']: {
         transformGroup: TransformGroup.swift,
-        buildPath: _outputFolder,        
+        buildPath: _outputFolder,
         files: [
           {
             format: 'ios-swift/class.swift',

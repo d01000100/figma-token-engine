@@ -26,6 +26,7 @@ export enum Transformer {
   parseShadowValueWeb = 'shadowValue',
   toLowerCase = 'toLowerCase',
   transformToRem = 'transformToRem',
+  webStylesheetNameTransform = 'name/path/web-stylesheet'
 }
 
 export enum Filter {

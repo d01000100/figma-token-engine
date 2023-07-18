@@ -1,4 +1,4 @@
-import { Config, DesignTokens } from 'style-dictionary'
+import { Config } from 'style-dictionary'
 import { ParserOptions } from 'style-dictionary/types/Parser'
 import { FileHeader, Filter, TransformGroup } from '../types'
 import { parseFigmaStyles } from '../parsers/figmaStyles'

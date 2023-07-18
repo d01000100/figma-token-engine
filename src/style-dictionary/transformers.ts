@@ -10,6 +10,7 @@ import {
 } from './types'
 import { addPxUnit, toNumber } from '../utils/utils'
 import { transformFontWeights } from './transforms/transformFontWeight'
+import { webStylesheetNameTransform } from './transforms/nameTransforms'
 
 const typesWithDefaultPxUnit: TokenType[] = [
   TokenType.borderRadius,
@@ -196,6 +197,12 @@ function transformToRem(valuePx: number | string): string {
 }
 
 export function registerTransformers(): void {
+  
+  StyleDictionary.registerTransform({
+    name: Transformer.webStylesheetNameTransform,
+    type: 'name',
+    transformer: webStylesheetNameTransform,
+  })
   /**
    * Adds single quotes around a Font Family token
    */

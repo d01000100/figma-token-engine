@@ -9,7 +9,7 @@ const globalTransformers = [
 ]
 
 const stylesheetTransformers = [
-  'name/cti/kebab',
+  Transformer.webStylesheetNameTransform,
   Transformer.addFontFamilySingleQuotes,
 ]
 

@@ -29,21 +29,6 @@ export class FigmaVariablesParser {
    */
   public collections: CollectionObj;
   /**
-   * List of variables that the TokenEngie supports parsing
-   * This array is filled up by calling getSupportedVariables
-   */
-  //public supportedVariables: Variable[] = []
-  /**
-   * The variables that only have explicit values on them (no references)
-   * This array is filled up by calling divideAliasAndExplicitVariables
-   */
-  //public explicitVariables: Variable[] = [];
-  /**
-   * The variables that have one or more values by references on them
-   * This array is filled up by calling divideAliasAndExplicitVariables
-   */
-  //public aliasVariables: Variable[] = [];
-  /**
    * Set of the modes identified on the supported Variables+
    * This set is filled up by calling getModes
    */
@@ -80,13 +65,6 @@ export class FigmaVariablesParser {
     })
     return isAlias;
   }
-
-  //private divideAliasAndExplicitVariables(variables : Variable[]) : [Variable[], Variable[]] {
-  //  return [
-  //    variables.filter((variable) => !this.isAliasVariable(variable)),
-  //    variables.filter(this.isAliasVariable)
-  //  ]
-  //}
 
   /* ====================================
      === Single Variable Parsing Prep ===
