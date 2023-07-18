@@ -1,9 +1,6 @@
-import { DesignTokens } from 'style-dictionary'
 import { TokenEngineConfigType } from '../types'
 import { logEvent } from '../utils/logger'
 import { buildStyleDictionary } from './config'
-import { parseFigmaStyles } from './parsers/figmaStyles'
-import { parseTokensStudio } from './parsers/tokensStudioParser'
 
 /**
  *
@@ -22,20 +19,7 @@ export function start({
 >) {
   logEvent('Style Dictionary')
 
-  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  let parser: ((tokens: any) => DesignTokens) | undefined;
-
-  switch (tokenFormat) {
-    case 'FigmaStyles':
-      parser = parseFigmaStyles
-      break
-    case 'TokensStudio':
-    case 'FigmaTokens':
-      parser = parseTokensStudio
-      break
-  }
-
-  const generator = buildStyleDictionary(inputFile, outputDir, parser)
+  const generator = buildStyleDictionary(inputFile, outputDir, tokenFormat)
 
   if (platforms) {
     platforms.forEach(platform => {

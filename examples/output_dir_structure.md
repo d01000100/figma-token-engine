@@ -4,7 +4,13 @@
     - tokens.css
     ...
   - Bancoppel
+    - tokens.scss
+    - tokens.css
+    ...
   - CoppelMax
+    - tokens.scss
+    - tokens.css
+    ...
 - android
   - styles.xml
   - attrs.xml
