@@ -28,26 +28,60 @@ The Figma Token Engine (FTE) requires two files which can be created using `npx 
 
 The two files helps the FTE to access the Figma API and to know where to find and save the files you need.
 
-First, `.tokens.config.json` tells the FTE which approach will use (TokensStudio or FigmaStyles), the output directory and the platforms we need to support.
+### .tokens.config.json
+
+First, `.tokens.config.json` has the custom configuration of the FTE pipeline:
+
+<details>
+  <summary>See more</summary>
+  
+- **tokenFormat:** The type of data we're going to read from the Figma file. The current version supports the following formats:
+  - **FigmaStyles** The Style library published by the Figma file. It read the colors, typographies and shadows and uses the name of the styles as is to name the generated variables.
+  - **TokensStudio** Reads the tokens from the [Tokens Studio plugin](tokens.studio). The current version combines all tokens sets into the same output and does not support themes or theme groups.
+  - **FigmaVariables** *(beta)* Reads the Figma Variables defined on the Figma file. (Needs an enterprise license to use the API) Parses the color and numeric variables. It will divide the outputs on different modes defined on the variables [*Further reading*](./docs/figma_variables_support.md)
+- **inputFile** The file where the tokens read from Figma will be written to and read by StyleDictionary
+- **outputDir** The location where the FTE will output the processed tokens.
+- **platforms** *optional* The specified platforms (called [formats on StyleDictionary](https://amzn.github.io/style-dictionary/#/formats)) that the FTE will generate. The current version supports:
+  - `css`. Using css custom variables. Outputs to `tokens.css`
+  - `scss`. Outputs to `tokens.scss`
+  - `scssMap`. Creates a sass map with the tokens names as keys and the tokens values as the map values. Outputs to `tokensMap.scss`
+  - `less`. Outputs to `tokens.less`
+  - `jsp`. Outputs js variables to `tokens.js`
+  - `ts`. Outputs ts variables to `tokens.ts`
+  - `json`. Outputs a JSON, whose structure is the same as the source. Outputs to `tokens.json`
+  - `compose`. Creates a kotlin object declaring values for each token. Outputs to `tokens.kt`
+  - `ios-swift/class.swift`. [Pre-defined on StyleDictionary](https://amzn.github.io/style-dictionary/#/formats?id=ios-swiftclassswift) Creates a swift class, declaring static constants for each token. Outputs to `tokens.swift`
+  - `android/resources`. [Pre-defined on StyleDictionary](https://amzn.github.io/style-dictionary/#/formats?id=androidresources). Declares a `<resources>` XML object, declaring an item for each tokens.
+  
+    This format also separates the tokens into different categories, generating several files:
+    - `colors.xml` Color tokens
+    - `fonts.xml` Font tokens like font family or font weight
+    - `spacing.xml` Letter spacing tokens
+    - `others.xml` All the other tokens
+    - `android_resources.xml` All the tokens
+
+*Example*
 
 ```json
 {
-  "tokenFormat": "TokenStudio",
-  "figmaFileId": "",
+  "tokenFormat": "FigmaVariable",
   "inputFile": "./tokens-studio.json",
   "outputDir": "./src/styles/tokens",
   "platforms": [
     "css",
-    "cssAutocomplete",
     "scss",
     "scssMap",
     "less",
     "js",
     "ts",
-    "json"
+    "json",
+    "compose"
   ]
 }
 ```
+</details>
+
+### .env
 
 Secondly, the `.env` exposes sensitive data we might not want to have in our repository such as the Figma API Key and the Figma file which we are pulling data from.
 
@@ -92,8 +126,9 @@ Run the token engine using npm scripts:
 
 ### CLI params
 
-- **--init**: Create necessary environment files (.env, .tokens.config.json) to run the token engine with example content.
-- **--sd-config-file**: Location of a [StyleDictionary configuration file](https://amzn.github.io/style-dictionary/#/config) to merge with the one FTE uses. This can be used to extend platforms, filters, tokens location, etc.
+- **`figma-token-engine TOKEN_CONFIG_FILENAME`** A single flagless param will specify a custom `.tokens.config.json` file to read the FTE configuration from.
+- **`--init`**: Create necessary environment files (.env, .tokens.config.json) to run the token engine with example content.
+- **`--sd-config-file SD_CONFIG_FILENAME`**: Location of a [StyleDictionary configuration file](https://amzn.github.io/style-dictionary/#/config) to merge with the one FTE uses. This can be used to extend platforms, filters, tokens location, etc.
   
   Example of a config file:
 
@@ -174,7 +209,7 @@ Run the token engine using npm scripts:
 
 <br/>
 
-## 💻 Commands
+<!-- ## 💻 Commands
 
 ### **Default**
 
@@ -228,7 +263,13 @@ If you want to fetch data from the Figma API, use:
 npx figma-token-engine
 ```
 
-<br/>
+<br/> -->
+
+## Architecture
+
+*TODO: Complete architecutre documentation of the pipeline*
+
+*[Go to architecture](./docs/architecture.md)*
 
 ## 📝 Example: Create a React App and install Figma token Engine
 
@@ -247,6 +288,8 @@ If you added the FIGMA_PERSONAL_ACCESS_TOKEN and FIGMA_FILE_URL you can fetch th
 ```sh
 npx figma-token-engine
 ```
+
+*More detailed guide: [Quick Guide at Medium](https://medium.com/@jdanielca/figma-token-engine-quick-start-b6e0bc08a388)*
 
 <br/>
 

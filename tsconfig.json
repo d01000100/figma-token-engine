@@ -9,8 +9,13 @@
     "rootDir": "src",
     "module": "commonjs",
     "outDir": "build",
+    "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ]
   },
   "exclude": ["node_modules", "build", "test", "bin"],
 }

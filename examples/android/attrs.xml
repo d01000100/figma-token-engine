@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <attr name="colors_example_color_border_primary" format="reference|color" />
+  <attr name="colors_example_color_surface" format="reference|color" />
+  <attr name="colors_example_color_accent" format="reference|color" />
+  <attr name="colors_example_color_text_primary" format="reference|color" />
+  <attr name="colors_example_color_surface_faint" format="reference|color" />
+  <attr name="colors_example_color_brand" format="reference|color" />
+
+  <attr name="border_radii_md" format="dimension" />
+  <attr name="border_radii_sm" format="dimension" />
+  <attr name="spacing_example_space_xl" format="dimension" />
+  <attr name="spacing_example_space_lg" format="dimension" />
+  <attr name="spacing_example_space_sm" format="dimension" />
+  <attr name="spacing_example_space_md" format="dimension" />
+  <attr name="spacing_example_space_xs" format="dimension" />
+</resources>

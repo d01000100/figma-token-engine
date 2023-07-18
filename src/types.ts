@@ -1,7 +1,7 @@
 /** Union of all specific app arguments */
-export type TokenEngineConfigType = TokensStudioArgs | FigmaStylesArgs
+export type TokenEngineConfigType = TokensStudioArgs | FigmaStylesArgs | FigmaVariablesArgs
 
-export type TokenFormat = 'FigmaTokens' | 'TokensStudio' | 'FigmaStyles'
+export type TokenFormat = 'FigmaTokens' | 'TokensStudio' | 'FigmaStyles' | 'FigmaVariables'
 
 export const Platforms = [
   '',
@@ -13,25 +13,34 @@ export const Platforms = [
   'js',
   'ts',
   'json',
+  'compose',
+  'android/resources',
+  'ios-swift/class.swift'
 ] as const
 
 export type PlatformsType = typeof Platforms[number]
 
 interface AppArgs {
-  brandPrefix?: string
+  brandPrefix?: string // TODO: make it do something
   inputFile: string
   outputDir: string
+  figmaFileId?: string // TODO: use it instead of .env variable
   platforms?: Array<PlatformsType>
-  tokenFormat: TokenFormat
 }
 
 export interface TokensStudioArgs extends AppArgs {
-  figmaFileId: string
+  tokenFormat: 'TokensStudio' | 'FigmaTokens'
   excludes?: string[]
   sets?: string[]
   transformerOutput?: string
 }
 
 export interface FigmaStylesArgs extends AppArgs {
-  figmaFileId: string
+  tokenFormat: 'FigmaStyles'
+}
+
+export interface FigmaVariablesArgs extends AppArgs {
+  tokenFormat: 'FigmaVariables',
+  parsedVariablesDir?: string,
+  noModeOutputSubDir?: string,
 }

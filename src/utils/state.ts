@@ -1,6 +1,6 @@
 /* eslint-disable no-var */
 
-import { TokenEngineConfigType } from './../types'
+import { PlatformsType, TokenEngineConfigType } from './../types'
 
 /*
   Register Global state objects, it should only be used
@@ -8,7 +8,12 @@ import { TokenEngineConfigType } from './../types'
   */
 declare global {
   var tokenEngineConfig: TokenEngineConfigType
+  var originalPlatforms: PlatformsType[] | undefined
+  var modes : string[]
   var useAPI: boolean
   var dryRun: boolean
   var sdConfigFile: string | undefined
+  var expandShadows: boolean
 }
+
+export type GlobalState = typeof globalThis;

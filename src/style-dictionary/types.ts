@@ -6,22 +6,47 @@ export enum TransformGroup {
   webSCSS = 'web-scss/custom',
   webLESS = 'web-less/custom',
   webJS = 'web-js/custom',
+  compose = 'compose',
+  androidResources = 'androidResources',
+  swift = 'swift'
 }
 
 /** Customm transformer names configured for StyleDictionary */
 export enum Transformer {
-  addFontFamilyQuotes = 'addQuotes',
-  addUnitPixels = 'addUnitPixels',
+  addFontFamilyDoubleQuotes = 'addDoubleQuotes',
+  addFontFamilySingleQuotes = 'addSingleQuotes',
+  addShadowTypeDoubleQuotes = 'addShadowTypeDoubleQuotes',
   addUnitMs = 'addUnitMs',
-  parseAspectRatioWeb = 'parseAspectRatio',
+  addUnitPixels = 'addUnitPixels',
+  customCTI = 'attribute/customCTI',
+  durationToSeconds = 'duration/toSeconds',
+  fontWeightToNumber = 'fontWeight/toNumber',
+  numberToCGFloat = 'numberToCGFloat',
+  parseAspectRatio = 'parseAspectRatio',
   parseShadowValueWeb = 'shadowValue',
-  transformToRem = 'transformToRem',
   toLowerCase = 'toLowerCase',
+  transformToRem = 'transformToRem',
+  webStylesheetNameTransform = 'name/path/web-stylesheet'
+}
+
+export enum Filter {
+  compose = 'compose',
+  color = 'color',
+  font = 'font',
+  spacing = 'spacing',
+  others = 'others',
+  swift = 'swift',
+  androidResources = 'androidResources'
 }
 
 /** File header names implemented for style dictionary */
 export enum FileHeader {
   generatedByTokenEngine = 'generatedByTokenEngine',
+}
+
+export enum Format {
+  cssAutocomplete = 'json/cssAutocomplete',
+  cssThemed = 'css/variables-themed'
 }
 
 /*=== Custom Design Tokens ====*/
@@ -45,7 +70,12 @@ export enum TokenType {
   motionDuration = 'motionDuration',
   motionEasing = 'motionEasing',
   ratio = 'ratio',
-  size = 'size',
+  shadowBlur = 'blur',
+  shadowOffsetX = 'x',
+  shadowOffsetY = 'y',
+  shadowSpread = 'spread',
+  shadowType = 'type',
+  size = 'size',  
   space = 'space',
   textTransform = 'textTransform',
   textDecoration = 'textDecoration',
@@ -67,7 +97,8 @@ export type ShadowTokenSingleValue = {
 }
 
 interface DesignTokenCommon extends SDDesignToken {
-  description?: string
+  description?: string,
+  mode?: string,
 }
 
 export type ShadowDesignToken = DesignTokenCommon & {

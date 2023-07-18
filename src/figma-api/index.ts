@@ -22,7 +22,7 @@ export async function getTokensStudio(tokensExportFile: string): Promise<boolean
   const exportedTokens = processFigmaAPIResponse(figmaApiResponse)
 
   // Save exported tokens into destination file
-  writeFigmaAPITokensExport(tokensExportFile, exportedTokens)
+  await writeFigmaAPITokensExport(tokensExportFile, exportedTokens)
 
   return true;
 }
@@ -43,7 +43,7 @@ export async function getFigmaStyles(tokensExportFile: string): Promise<boolean>
   }
 
   // Save exported tokens into destination file
-  writeFigmaAPITokensExport(tokensExportFile, figmaApiResponse)
+  await writeFigmaAPITokensExport(tokensExportFile, figmaApiResponse)
 
   return true;
 }

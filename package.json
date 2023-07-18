@@ -1,9 +1,9 @@
 {
   "name": "figma-token-engine",
-  "version": "0.1.1",
+  "version": "0.2.0-alpha.3",
   "description": "Transforms design tokens from Figma into stylesheets and other code representation",
   "license": "MIT",
-  "author": "frog Mx",
+  "author": "jdanielca@gmail.com",
   "homepage": "https://github.com/d01000100/figma-token-engine#readme",
   "repository": {
     "type": "git",
@@ -29,12 +29,13 @@
     "lint": "eslint --ext .js,.ts ./src",
     "prettier": "prettier --write \"(src|bin)/**/*.+(js|ts|json)\"",
     "start": "tsc-watch --onSuccess \"node .\"",
-    "once": "tsc; node .",
+    "once": "rm -rf dist && rm -rf ./tmp && tsc && node .",
     "test": "jest"
   },
   "types": "./build/index.d.ts",
   "dependencies": {
     "axios": "^1.3.4",
+    "change-case": "^4.1.2",
     "clear": "^0.1.0",
     "cli-loading-animation": "^1.0.6",
     "cli-spinners": "^2.7.0",
@@ -44,15 +45,18 @@
     "figlet": "^1.5.2",
     "figma-js": "^1.16.0",
     "glob": "^8.1.0",
+    "lodash": "^4.17.21",
     "module-alias": "^2.2.2",
     "style-dictionary": "^3.7.2",
     "tmp": "^0.2.1",
     "token-transformer": "^0.0.30"
   },
   "devDependencies": {
+    "@figma/plugin-typings": "^1.70.0",
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.5",
     "@types/jest": "^29.4.0",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^18.14.2",
     "@types/tmp": "^0.2.3",
     "@typescript-eslint/eslint-plugin": "^5.54.0",

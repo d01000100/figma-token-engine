@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="BaseTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <item name="colors_example_color_border_primary">?attr/colors_example_color_border_primary</item>
+    <item name="colors_example_color_surface">?attr/colors_example_color_surface</item>
+    <item name="colors_example_color_accent">?attr/colors_example_color_accent</item>
+    <item name="colors_example_color_text_primary">?attr/colors_example_color_text_primary</item>
+    <item name="colors_example_color_surface_faint">?attr/colors_example_color_surface_faint</item>
+    <item name="colors_example_color_brand">?attr/colors_example_color_brand</item>
+
+    <item name="border_radii_md">?attr/border_radii_md</item>
+    <item name="border_radii_sm">?attr/border_radii_sm</item>
+    <item name="spacing_example_space_xl">?attr/spacing_example_space_xl</item>
+    <item name="spacing_example_space_lg">?attr/spacing_example_space_lg</item>
+    <item name="spacing_example_space_sm">?attr/spacing_example_space_sm</item>
+    <item name="spacing_example_space_md">?attr/spacing_example_space_md</item>
+    <item name="spacing_example_space_xs">?attr/spacing_example_space_xs</item>
+  </style>
+
+  <style name="Coppel" parent="BaseTheme">
+    <item name="colors_example_color_border_primary">@color/coppel_colors_example_color_border_primary</item>
+    <item name="colors_example_color_surface">@color/coppel_colors_example_color_surface</item>
+    <item name="colors_example_color_accent">@color/coppel_colors_example_color_accent</item>
+    <item name="colors_example_color_text_primary">@color/coppel_colors_example_color_text_primary</item>
+    <item name="colors_example_color_surface_faint">@color/coppel_colors_example_color_surface_faint</item>
+    <item name="colors_example_color_brand">@color/coppel_colors_example_color_brand</item>
+
+    <item name="border_radii_sm">@dimen/coppel_border_radii_sm</item>
+    <item name="border_radii_md">@dimen/coppel_border_radii_md</item>
+    <item name="spacing_example_space_xl">@dimen/coppel_spacing_example_space_xl</item>
+    <item name="spacing_example_space_lg">@dimen/coppel_spacing_example_space_lg</item>
+    <item name="spacing_example_space_sm">@dimen/coppel_spacing_example_space_sm</item>
+    <item name="spacing_example_space_md">@dimen/coppel_spacing_example_space_md</item>
+    <item name="spacing_example_space_xs">@dimen/coppel_spacing_example_space_xs</item>
+  </style>
+
+  <style name="Bancoppel" parent="BaseTheme">
+    <item name="colors_example_color_border_primary">@color/bancoppel_colors_example_color_border_primary</item>
+    <item name="colors_example_color_surface">@color/bancoppel_colors_example_color_surface</item>
+    <item name="colors_example_color_accent">@color/bancoppel_colors_example_color_accent</item>
+    <item name="colors_example_color_text_primary">@color/bancoppel_colors_example_color_text_primary</item>
+    <item name="colors_example_color_surface_faint">@color/bancoppel_colors_example_color_surface_faint</item>
+    <item name="colors_example_color_brand">@color/bancoppel_colors_example_color_brand</item>
+
+    <item name="border_radii_sm">@dimen/bancoppel_border_radii_sm</item>
+    <item name="border_radii_md">@dimen/bancoppel_border_radii_md</item>
+    <item name="spacing_example_space_xl">@dimen/bancoppel_spacing_example_space_xl</item>
+    <item name="spacing_example_space_lg">@dimen/bancoppel_spacing_example_space_lg</item>
+    <item name="spacing_example_space_sm">@dimen/bancoppel_spacing_example_space_sm</item>
+    <item name="spacing_example_space_md">@dimen/bancoppel_spacing_example_space_md</item>
+    <item name="spacing_example_space_xs">@dimen/bancoppel_spacing_example_space_xs</item>
+  </style>
+</resources>

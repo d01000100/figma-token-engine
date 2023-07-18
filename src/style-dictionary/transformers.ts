@@ -9,6 +9,8 @@ import {
   ShadowType,
 } from './types'
 import { addPxUnit, toNumber } from '../utils/utils'
+import { transformFontWeights } from './transforms/transformFontWeight'
+import { webStylesheetNameTransform } from './transforms/nameTransforms'
 
 const typesWithDefaultPxUnit: TokenType[] = [
   TokenType.borderRadius,
@@ -64,11 +66,52 @@ function addUnitPixelsMatcher(token: TransformedToken): boolean {
  */
 function addUnitMsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
+  const isDuration = typesWithMsDefaultUnit.includes(originalToken.type)
   return (
     typeof originalToken.value === 'number' &&
-    typesWithMsDefaultUnit.includes(originalToken.type) &&
+    isDuration &&
     originalToken.value !== 0
   )
+}
+
+/**
+ * Adds category and type attributes according to custom "type"
+ * property deduced from original source
+ * @param token 
+ */
+function customCTI(token: TransformedToken) {
+  const originalToken = token.original as DesignToken
+  let category : string | undefined;
+  let type : string | undefined;
+
+  switch (originalToken.type) {
+    case TokenType.fontSize:
+    case TokenType.letterSpacing:
+    case TokenType.lineHeight:
+      category = 'size',
+      type = 'font'
+      break;
+    case TokenType.size:
+    case TokenType.space:
+    case TokenType.borderRadius:
+    case TokenType.shadowBlur:
+    case TokenType.shadowOffsetX:
+    case TokenType.shadowOffsetY:
+    case TokenType.shadowSpread:
+      category = 'size';
+      break;
+    case TokenType.motionDuration:
+      category = 'time';
+      break;
+    default:
+      category = originalToken.type
+  }
+
+  return {
+    ...token.attributes,
+    category,
+    type,
+  }
 }
 
 /**
@@ -154,11 +197,17 @@ function transformToRem(valuePx: number | string): string {
 }
 
 export function registerTransformers(): void {
+  
+  StyleDictionary.registerTransform({
+    name: Transformer.webStylesheetNameTransform,
+    type: 'name',
+    transformer: webStylesheetNameTransform,
+  })
   /**
-   * Adds quotes around a Font Family token
+   * Adds single quotes around a Font Family token
    */
   StyleDictionary.registerTransform({
-    name: Transformer.addFontFamilyQuotes,
+    name: Transformer.addFontFamilySingleQuotes,
     type: 'value',
     matcher: token => {
       const originalToken = token.original as DesignToken
@@ -167,6 +216,29 @@ export function registerTransformers(): void {
     transformer(token) {
       return `'${token.original.value}'`
     },
+  })
+  /**
+   * Adds double quotes around a Font Family token
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.addFontFamilyDoubleQuotes,
+    type: 'value',
+    matcher: token => {
+      const originalToken = token.original as DesignToken
+      return originalToken.type === TokenType.fontFamily
+    },
+    transformer(token) {
+      return `"${token.original.value}"`
+    },
+  })
+  /**
+   * Adds category and type attributes according to custom "type"
+   * property deduced from original source
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.customCTI,
+    type: 'attribute',
+    transformer: customCTI,
   })
   /**
    * Adds 'px' to the end of numeric values of the token types whose
@@ -196,7 +268,7 @@ export function registerTransformers(): void {
    * Parse the value of an aspect ratio token to a web representation.
    */
   StyleDictionary.registerTransform({
-    name: Transformer.parseAspectRatioWeb,
+    name: Transformer.parseAspectRatio,
     type: 'value',
     matcher: token => {
       const originalToken = token.original as DesignToken
@@ -245,5 +317,52 @@ export function registerTransformers(): void {
     transformer(token) {
       return (token.original.value as string).toLowerCase()
     },
+  })
+
+  /**
+   * Transforms fontweight tokens from keywords to numbers 
+   * Assumes a time in milliseconds and divides it by 1000.
+   * Matches category === 'time' (set by customCTI) 
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.durationToSeconds,
+    type: 'value',
+    matcher: (token) => token.attributes?.category === 'time',
+    transformer: (token) => token.value / 1000,
+  })
+
+  /**
+   * Adds call to Swift's CGFloat to all numeric tokens.
+   * Recommended to use after all other transforms
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.numberToCGFloat,
+    type: 'value',
+    matcher: (token) => (typeof token.value === 'number'),
+    transformer: (token) => `CGFloat(${token.value})`,
+  })
+
+  /**
+   * Transforms fontWeights keywords to number values.
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.fontWeightToNumber,
+    type: 'value',
+    matcher: (token) => 
+      token.attributes?.category === TokenType.fontWeight &&
+      typeof token.value === "string",
+    transformer: (token) => transformFontWeights(token.value),
+  })
+
+  /**
+   * Adds double quotes around shadowType tokens
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.addShadowTypeDoubleQuotes,
+    type: 'value',
+    matcher: (token) => 
+      token.attributes?.category === TokenType.shadowType &&
+      typeof token.value === "string",
+    transformer: (token) => `"${token.value}"`,
   })
 }
