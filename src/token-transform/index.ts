@@ -36,7 +36,7 @@ export async function start({
   let resultFile = transformerOutput
   if (transformerOutput === undefined) {
     /* Creating temporal file to write the tokens to */
-    const tmpobj = tmp.fileSync()
+    const tmpobj = tmp.fileSync({postfix: ".json"})
     resultFile = tmpobj.name
   }
 
