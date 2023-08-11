@@ -1,10 +1,10 @@
 import StyleDictionary, { Formatter, formatHelpers } from 'style-dictionary'
 import { TransformedToken } from 'style-dictionary'
 import { FormatterArguments } from 'style-dictionary/types/Format'
-import { PlatformsType } from '../types'
 import { formatJSON } from '../utils/json-formatter'
 import { DesignToken, Format } from './types'
 import { paramCase } from 'change-case'
+import { androidAttrs, androidStyles } from './formatters/androidStyles'
 
 /**
  * Compares two design tokens according to the alphabetical order of their `path`s
@@ -65,14 +65,14 @@ function cssAutocompleteFormatter({ dictionary }: FormatterArguments): string {
   return formatJSON(autocomplete)
 }
 
-const cssThemed : Formatter = (args) => {
-  const { dictionary, options, platform, file } = args;
+const cssThemed: Formatter = (args) => {
+  const { dictionary, options, file } = args;
   const mode = options.mode ? paramCase(options.mode) : undefined;
   let content = '';
   // 1. Add the generic file header
-  content += formatHelpers.fileHeader({file});
+  content += formatHelpers.fileHeader({ file });
   // 2. Add the selector
-  if (mode) {  
+  if (mode) {
     content += `:root .${mode},
 :root [data-theme="${mode}"] {`
   } else {
@@ -106,5 +106,15 @@ export function registerFormatters(): void {
   StyleDictionary.registerFormat({
     name: Format.cssThemed,
     formatter: cssThemed,
+  })
+
+  StyleDictionary.registerFormat({
+    name: Format.androidAttrs,
+    formatter: androidAttrs
+  })
+
+  StyleDictionary.registerFormat({
+    name: Format.androidStyles,
+    formatter: androidStyles
   })
 }

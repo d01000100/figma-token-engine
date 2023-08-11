@@ -1,9 +1,9 @@
-import { kebabCase } from "lodash";
 import { DesignTokenValue, DesignTokens, SimpleDesignToken, TokenType } from "../style-dictionary/types";
 import { CollectionObj, VariableAPIResponse, VariableObj } from "./types";
 import { getTypeFromName } from "../style-dictionary/parsers/common";
 import { addTokenIntoRoute, rgbaToHex } from "../style-dictionary/parsers/utils";
 import { logError, logEvent } from "../utils/logger";
+import { paramCase } from "change-case";
 
 export type ParsedVariables = DesignTokens & {
   modes?: DesignTokens,
@@ -93,7 +93,7 @@ export class FigmaVariablesParser {
    * @returns An array of strings, with each step on the route on each entry
    */
   private getVariableRoute(variable: Variable, collection: VariableCollection): string[] {
-    const collectionName = kebabCase(collection.name);
+    const collectionName = paramCase(collection.name);
     const groupsAndName = variable.name.split(FigmaVariablesParser.groupDivider)
     return [collectionName, ...groupsAndName]
   }

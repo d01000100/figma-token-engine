@@ -4,7 +4,7 @@ import { SimpleDesignToken, TokenType } from "../../../types";
 import { StyleNode } from "../../types/figmaStyleType";
 import { FIGMA_STYLES_NAME_DIVIDER } from "..";
 import { rgbaToHex } from "../../utils";
-import { camelCase } from "lodash"
+import { camelCase } from "change-case";
 
 function getShadowValueByType(
   effect: ShadowEffect,

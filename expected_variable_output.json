@@ -1,0 +1,66 @@
+{
+  "modes": {
+    "light": {
+      "[-colors-]-example": {
+        "color-border-primary": {
+          "id": "VariableID:194:2067",
+          "value": { "r": 0, "g": 0, "b": 0, "a": 1 },
+          "type": "color",
+          "name": "color-border-primary",
+          "description": "variable without a group, with a theme (light), with an explicit value (not an alias)",
+          "theme": "light"
+        },
+        "color-brand": {
+          "id": "VariableID:388:1686",
+          "description": "characteristics: - without a group, - with a theme (light), - with an explicit value (not an alias)",
+          "value": "#C7B9FFFF"
+        },
+        "button": {
+          "background-primary": {
+            "id": "VariableID:388:1688",
+            "description": "variable with a group (button): - with a theme (light), - with an alias value VariableID:388:1686 (light/colors/color-brand)",
+            "value": "#C7B9FFFF",
+          }
+        }
+      }
+    },
+    "dark": {
+      "[-colors-]-example": {
+        "color-border-primary": {
+          "id": "VariableID:194:2067",
+          "value": {
+            "r": 0.4588235318660736,
+            "g": 0.4588235318660736,
+            "b": 0.4588235318660736,
+            "a": 1
+          },
+          "type": "color",
+          "name": "color-border-primary",
+          "description": "variable without a group, with a theme (dark), with an explicit value (not an alias)"
+        },
+        "button": {
+          "background-primary": {
+            "id": "VariableID:388:1688",
+            "description": "variable with a group (button): - with a theme (dark) - with an alias value VariableID:388:1686 (dark/colors/color-brand)",
+            "value": {
+              "r": 0.503333330154419,
+              "g": 0.3791666626930237,
+              "b": 1,
+              "a": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  "tokens": {
+    "number": {
+      "id": "VariableID:307:1790",
+      "spacing-sm": {
+        "value": 12,
+        "description": "color token: - explicit value, - no theme (one theme on the collection), - with a group (number)",
+        "type": "space"
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { Config, File } from 'style-dictionary'
 import { DesignToken, FileHeader, Filter, Format, TransformGroup } from '../types'
+import { FILE_CONFIGS } from './utils';
 
 /**
  * Builds file configs for web platforms according to how many modes
@@ -184,46 +185,19 @@ export default function createStyleDictionaryConfig(
       ['android/resources']: {
         transformGroup: TransformGroup.androidResources,
         buildPath: _outputFolder,
+        options: {
+          fileHeader: FileHeader.generatedByTokenEngine,
+        },
         files: [
+          FILE_CONFIGS.android.xml.colors,
+          FILE_CONFIGS.android.xml.dimens,
           {
-            format: 'android/resources',
-            destination: 'android_resources.xml',
-            filter: Filter.androidResources,
-            options: {
-              fileHeader: FileHeader.generatedByTokenEngine,
-            },
+            format: Format.androidAttrs,
+            destination: 'android/attrs.xml',
           },
           {
-            format: 'android/resources',
-            destination: 'colors.xml',
-            filter: Filter.color,
-            options: {
-              fileHeader: FileHeader.generatedByTokenEngine,
-            },
-          },
-          {
-            format: 'android/resources',
-            destination: 'fonts.xml',
-            filter: Filter.font,
-            options: {
-              fileHeader: FileHeader.generatedByTokenEngine,
-            },
-          },
-          {
-            format: 'android/resources',
-            destination: 'spacing.xml',
-            filter: Filter.spacing,
-            options: {
-              fileHeader: FileHeader.generatedByTokenEngine,
-            },
-          },
-          {
-            format: 'android/resources',
-            destination: 'others.xml',
-            filter: Filter.others,
-            options: {
-              fileHeader: FileHeader.generatedByTokenEngine,
-            },
+            format: Format.androidStyles,
+            destination: 'android/styles.xml',
           }
         ]
       },

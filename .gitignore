@@ -1,6 +1,7 @@
 build
 ./tmp/*
-./tmp
+tmp
+parsed-variables
 
 # Logs
 logs

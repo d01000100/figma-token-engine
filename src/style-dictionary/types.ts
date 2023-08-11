@@ -46,7 +46,9 @@ export enum FileHeader {
 
 export enum Format {
   cssAutocomplete = 'json/cssAutocomplete',
-  cssThemed = 'css/variables-themed'
+  cssThemed = 'css/variables-themed',
+  androidAttrs = 'android/attrs',
+  androidStyles = 'android/styles'
 }
 
 /*=== Custom Design Tokens ====*/

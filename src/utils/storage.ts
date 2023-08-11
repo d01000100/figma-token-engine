@@ -9,8 +9,8 @@ import * as tmp from 'tmp'
  * Creates a new temporary file to write to.
  * Returns the location of the file
  */
-export function createTmpFile() : string {
-  const tmpobj = tmp.fileSync()
+export function createTmpFile(extension: string) : string {
+  const tmpobj = tmp.fileSync({postfix: extension})
   return tmpobj.name
 }
 

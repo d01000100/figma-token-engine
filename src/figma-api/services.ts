@@ -34,7 +34,7 @@ export async function getFigmaFilePluginsData({
       `https://api.figma.com/v1/files/${FIGMA_FILE_ID}?plugin_data=shared`,
       {
         headers: {
-          'X-Figma-Token': FIGMA_PERSONAL_ACCESS_TOKEN,
+          'X-Figmaasdf-Token': FIGMA_PERSONAL_ACCESS_TOKEN,
         },
       }
     )

@@ -6,7 +6,6 @@ import {
 } from '../utils/logger'
 import { TokensStudioArgs } from '../types'
 import { fileExists } from '../utils/files'
-import * as tmp from 'tmp'
 import { createTmpFile } from '../utils/storage'
 
 /**
@@ -34,7 +33,7 @@ export async function start({
   let resultFile = transformerOutput
   if (transformerOutput === undefined) {
     /* Creating temporal file to write the tokens to */
-    resultFile = createTmpFile();
+    resultFile = createTmpFile(".json")
   }
 
   // `token-transformer` is only exported with a CLI, so we need to execute it from the "terminal"
