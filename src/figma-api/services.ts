@@ -31,7 +31,7 @@ export async function getFigmaFilePluginsData({
 
   try {
     const { data } = await axios(
-      `https://api.figma.com/v1/files/${FIGMA_FILE_ID}?plugin_data=shared`,
+      `https://api.figma.com/v1/files/${FIGMA_FILE_ID}?plugin_data=shared&depth=1`,
       {
         headers: {
           'X-Figma-Token': FIGMA_PERSONAL_ACCESS_TOKEN,
