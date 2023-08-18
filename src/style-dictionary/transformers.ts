@@ -52,6 +52,8 @@ function addUnitPixelsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
   return (
     typeof originalToken.value === 'number' &&
+    // TODO: check if this transformer is still necessary 
+    originalToken.type !== undefined &&
     typesWithDefaultPxUnit.includes(originalToken.type) &&
     originalToken.value !== 0
   )
@@ -66,6 +68,8 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
   return (
     typeof originalToken.value === 'number' &&
+    // TODO: check if this transformer is still necessary
+    originalToken.type !== undefined &&
     typesWithMsDefaultUnit.includes(originalToken.type) &&
     originalToken.value !== 0
   )
@@ -79,6 +83,8 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
  */
 function transformToRemMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
+  // TODO: check if this transformer is still necessary
+  if(!originalToken.type) return false;
   if (!typesWithRemUnit.includes(originalToken.type)) {
     return false
   }

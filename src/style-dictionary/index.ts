@@ -23,7 +23,7 @@ export function start({
   logEvent('Style Dictionary')
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  let parser: (tokens: any) => DesignTokens
+  let parser: (tokens: any) => DesignTokens = (tokens) => tokens
 
   switch (tokenFormat) {
     case 'FigmaStyles':

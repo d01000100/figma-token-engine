@@ -1,0 +1,190 @@
+{
+  "version": "1.0.4",
+  "metadata": {},
+  "collections": [
+    {
+      "name": "base",
+      "modes": [
+        {
+          "name": "Mode 1",
+          "variables": [
+            {
+              "name": "color/blue/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#009BD0"
+            },
+            {
+              "name": "color/blue/50",
+              "type": "color",
+              "isAlias": false,
+              "value": "#0078BE"
+            },
+            {
+              "name": "color/blue/40",
+              "type": "color",
+              "isAlias": false,
+              "value": "#00639B"
+            },
+            {
+              "name": "color/blue/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#004A76"
+            },
+            {
+              "name": "color/blue/20",
+              "type": "color",
+              "isAlias": false,
+              "value": "#003353"
+            },
+            {
+              "name": "color/blue/10",
+              "type": "color",
+              "isAlias": false,
+              "value": "#001D33"
+            },
+            {
+              "name": "color/neutral/95",
+              "type": "color",
+              "isAlias": false,
+              "value": "#F9FAFB"
+            },
+            {
+              "name": "color/blue/90",
+              "type": "color",
+              "isAlias": false,
+              "value": "#CEE5FF"
+            },
+            {
+              "name": "color/neutral/70",
+              "type": "color",
+              "isAlias": false,
+              "value": "#9CA3AF"
+            },
+            {
+              "name": "color/neutral/60",
+              "type": "color",
+              "isAlias": false,
+              "value": "#6B7280"
+            },
+            {
+              "name": "color/neutral/50",
+              "type": "color",
+              "isAlias": false,
+              "value": "#4B5563"
+            },
+            {
+              "name": "color/neutral/40",
+              "type": "color",
+              "isAlias": false,
+              "value": "#374151"
+            },
+            {
+              "name": "color/neutral/20",
+              "type": "color",
+              "isAlias": false,
+              "value": "#111827"
+            },
+            {
+              "name": "color/blue/98",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EFF7FD"
+            },
+            {
+              "name": "color/neutral/10",
+              "type": "color",
+              "isAlias": false,
+              "value": "#141414"
+            },
+            {
+              "name": "color/neutral/30",
+              "type": "color",
+              "isAlias": false,
+              "value": "#1F2937"
+            },
+            {
+              "name": "color/blue/70",
+              "type": "color",
+              "isAlias": false,
+              "value": "#54B2FE"
+            },
+            {
+              "name": "radii/circle",
+              "type": "number",
+              "isAlias": false,
+              "value": 999
+            },
+            {
+              "name": "radii/xs",
+              "type": "number",
+              "isAlias": false,
+              "value": 2
+            },
+            {
+              "name": "radii/none",
+              "type": "number",
+              "isAlias": false,
+              "value": 0
+            },
+            {
+              "name": "color/neutral/90",
+              "type": "color",
+              "isAlias": false,
+              "value": "#EBEDF1"
+            },
+            {
+              "name": "color/neutral/80",
+              "type": "color",
+              "isAlias": false,
+              "value": "#D1D5DB"
+            },
+            {
+              "name": "color/blue/80",
+              "type": "color",
+              "isAlias": false,
+              "value": "#97CBFF"
+            },
+            {
+              "name": "radii/lg",
+              "type": "number",
+              "isAlias": false,
+              "value": 20
+            },
+            {
+              "name": "radii/sm",
+              "type": "number",
+              "isAlias": false,
+              "value": 4
+            },
+            {
+              "name": "radii/2xl",
+              "type": "number",
+              "isAlias": false,
+              "value": 40
+            },
+            {
+              "name": "radii/xl",
+              "type": "number",
+              "isAlias": false,
+              "value": 24
+            },
+            {
+              "name": "color/blue/95",
+              "type": "color",
+              "isAlias": false,
+              "value": "#E8F2FF"
+            },
+            {
+              "name": "radii/md",
+              "type": "number",
+              "isAlias": false,
+              "value": 8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

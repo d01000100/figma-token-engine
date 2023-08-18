@@ -78,7 +78,7 @@ export type ShadowDesignToken = DesignTokenCommon & {
 export type DesignTokenValue = string | number
 
 export type SimpleDesignToken = DesignTokenCommon & {
-  type: TokenType
+  type?: TokenType
   value: DesignTokenValue
 }
 
