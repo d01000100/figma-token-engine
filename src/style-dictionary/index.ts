@@ -4,6 +4,7 @@ import { logEvent } from '../utils/logger'
 import { buildStyleDictionary } from './config'
 import { parseFigmaStyles } from './parsers/figmaStylesParser'
 import { parseTokensStudio } from './parsers/tokensStudioParser'
+import { parseVariables2JSON } from './parsers/variables2json'
 
 /**
  *
@@ -33,6 +34,8 @@ export function start({
     case 'FigmaTokens':
       parser = parseTokensStudio
       break
+      case 'variables2json':
+      parser = parseVariables2JSON
   }
 
   const generator = buildStyleDictionary(inputFile, outputDir, parser)

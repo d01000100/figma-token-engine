@@ -52,9 +52,7 @@ function addUnitPixelsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
   return (
     typeof originalToken.value === 'number' &&
-    // TODO: check if this transformer is still necessary 
-    originalToken.type !== undefined &&
-    typesWithDefaultPxUnit.includes(originalToken.type) &&
+    token.attributes?.category === "size" &&
     originalToken.value !== 0
   )
 }
@@ -68,11 +66,49 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
   return (
     typeof originalToken.value === 'number' &&
-    // TODO: check if this transformer is still necessary
-    originalToken.type !== undefined &&
-    typesWithMsDefaultUnit.includes(originalToken.type) &&
+    token.attributes?.category === "time" &&
     originalToken.value !== 0
   )
+}
+
+/**
+ * Adds category and type attributes according to custom "type"
+ * property deduced from original source
+ * @param token 
+ */
+function customCTI(token: TransformedToken) {
+  const originalToken = token.original as DesignToken
+  let category : string | undefined;
+  let type : string | undefined;
+
+  switch (originalToken.type) {
+    case TokenType.fontSize:
+    case TokenType.letterSpacing:
+    case TokenType.lineHeight:
+      category = 'size',
+      type = 'font'
+      break;
+    case TokenType.size:
+    case TokenType.space:
+    case TokenType.borderRadius:
+    case TokenType.shadowBlur:
+    case TokenType.shadowOffsetX:
+    case TokenType.shadowOffsetY:
+    case TokenType.shadowSpread:
+      category = 'size';
+      break;
+    case TokenType.motionDuration:
+      category = 'time';
+      break;
+    default:
+      category = originalToken.type
+  }
+
+  return {
+    ...token.attributes,
+    category,
+    type,
+  }
 }
 
 /**
@@ -83,11 +119,7 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
  */
 function transformToRemMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
-  // TODO: check if this transformer is still necessary
-  if(!originalToken.type) return false;
-  if (!typesWithRemUnit.includes(originalToken.type)) {
-    return false
-  }
+  if(token.attributes?.category !== "size") return false;
   if (typeof originalToken.value === 'number') {
     return true
   }
@@ -109,7 +141,7 @@ function transformSingleShadowValueWeb(
   const offsetY = addPxUnit(shadowValue.y)
   const blur = addPxUnit(shadowValue.blur)
   const color = shadowValue.color
-  const spread = shadowValue.spread
+  const spread = addPxUnit(shadowValue.spread)
   const insetString =
     shadowValue.type === ShadowType.innerShadow ? 'inset ' : ''
   return `${insetString}${offsetX} ${offsetY} ${blur} ${spread} ${color}`
@@ -197,6 +229,15 @@ export function registerTransformers(): void {
     transformer(token) {
       return `${token.original.value}ms`
     },
+  })
+  /**
+   * Adds category and type attributes according to custom "type"
+   * property deduced from original source
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.customCTI,
+    type: 'attribute',
+    transformer: customCTI,
   })
   /**
    * Parse the value of an aspect ratio token to a web representation.

@@ -13,7 +13,7 @@ function parseVariable({name, type, isAlias, value} : Variable) : DesignToken | 
       attributes = { category: "color"}
       break;
     case "number":
-      attributes = { category: "number"}
+      attributes = { category: "size"}
       break;
     default:
       // We don't support any other type of variable
@@ -25,7 +25,7 @@ function parseVariable({name, type, isAlias, value} : Variable) : DesignToken | 
   }
 }
 
-export function variables2jsonParser(data : ExportType) : DesignTokens {
+export function parseVariables2JSON(data : ExportType) : DesignTokens {
   let tokens : DesignTokens = {};
 
   data.collections.forEach(({modes,name : collectionName}) => {
@@ -43,7 +43,7 @@ export function variables2jsonParser(data : ExportType) : DesignTokens {
 }
 
 // Testing
-import fs from "fs";
-const variablesData = JSON.parse(fs.readFileSync("../../../../variables2json/foundations_1mode_no-alias_no-styles.json").toString());
-const tokens = variables2jsonParser(variablesData);
-fs.writeFileSync("../../../../variables2json/tokens.json",JSON.stringify(tokens,undefined,2))
+//import fs from "fs";
+//const variablesData = JSON.parse(fs.readFileSync("../../../../variables2json/foundations_1mode_no-alias_no-styles.json").toString());
+//const tokens = parseVariables2JSON(variablesData);
+//fs.writeFileSync("../../../../variables2json/tokens.json",JSON.stringify(tokens,undefined,2))
