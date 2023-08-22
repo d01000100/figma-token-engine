@@ -1,9 +1,27 @@
-export interface Variable {
+export interface AliasValue {
+  collection: string,
   name: string,
-  type: "color" | "number" | "boolean" | "text",
-  isAlias: boolean,
+}
+
+export type VariableType = "color" | "number" | "boolean" | "text"
+
+interface BaseVariable {
+  name: string,
+  type: VariableType,
+  collectionName?: string,
+}
+
+export interface AliasVariable extends BaseVariable {
+  isAlias: true,
+  value: AliasValue
+}
+
+export interface ExplicitVariable extends BaseVariable {
+  isAlias: false,
   value: string | number | boolean,
 }
+
+export type Variable = AliasVariable | ExplicitVariable;
 
 export interface Mode {
   name: string,

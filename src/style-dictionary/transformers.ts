@@ -52,8 +52,9 @@ function addUnitPixelsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
   return (
     typeof originalToken.value === 'number' &&
-    token.attributes?.category === "size" &&
-    originalToken.value !== 0
+    originalToken.value !== 0 &&
+    ((originalToken.type && typesWithDefaultPxUnit.includes(originalToken.type)) ||
+      token.attributes?.category === "size")
   )
 }
 
@@ -66,8 +67,9 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
   return (
     typeof originalToken.value === 'number' &&
-    token.attributes?.category === "time" &&
-    originalToken.value !== 0
+    originalToken.value !== 0 &&
+    ((originalToken.type && typesWithMsDefaultUnit.includes(originalToken.type)) ||
+    token.attributes?.category === "time")
   )
 }
 
@@ -78,15 +80,15 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
  */
 function customCTI(token: TransformedToken) {
   const originalToken = token.original as DesignToken
-  let category : string | undefined;
-  let type : string | undefined;
+  let category: string | undefined;
+  let type: string | undefined;
 
   switch (originalToken.type) {
     case TokenType.fontSize:
     case TokenType.letterSpacing:
     case TokenType.lineHeight:
       category = 'size',
-      type = 'font'
+        type = 'font'
       break;
     case TokenType.size:
     case TokenType.space:
@@ -119,7 +121,10 @@ function customCTI(token: TransformedToken) {
  */
 function transformToRemMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
-  if(token.attributes?.category !== "size") return false;
+  if (originalToken.type && typesWithRemUnit.includes(originalToken.type)) {
+    return true;
+  }
+  if (token.attributes?.category !== "size") return false;
   if (typeof originalToken.value === 'number') {
     return true
   }
