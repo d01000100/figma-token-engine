@@ -9,6 +9,7 @@ interface BaseVariable {
   name: string,
   type: VariableType,
   collectionName?: string,
+  modeName?: string,
 }
 
 export interface AliasVariable extends BaseVariable {

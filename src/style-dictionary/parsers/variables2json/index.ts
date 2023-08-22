@@ -24,6 +24,11 @@ function parseVarAttributes({type} : Variable) : DesignToken["attributes"] | und
  return attributes;
 }
 
+function getRoute({name, collectionName, modeName} : Variable) : string[] {
+  return [collectionName, modeName, ...name.split(NAME_DIVIDER)]
+    .filter(x => x !== undefined) as string[];
+}
+
 export function parseVariables2JSON(data : ExportType) : DesignTokens {
   let result : DesignTokens = {};
   let pending : Variable[] = [];
@@ -57,15 +62,19 @@ export function parseVariables2JSON(data : ExportType) : DesignTokens {
   }
 
   data.collections.forEach(({modes,name : collectionName}) => {
-    if (modes.length === 1) {
-      modes[0].variables.forEach((variable) => {
+    modes.forEach((mode) => {
+      const modeName = mode.name
+      mode.variables.forEach((variable) => {
         const _variable = {...variable, collectionName}
+        if (modes.length > 1) {
+          _variable.modeName = modeName
+        }
         const token = parseVariable(_variable)
         if (!token) return;
-        const route = [collectionName, ..._variable.name.split(NAME_DIVIDER)]
+        const route = getRoute(_variable)
         result = addTokenIntoRoute(result,route,token)
       })
-    }
+    })
   })
 
 
@@ -84,11 +93,9 @@ export function parseVariables2JSON(data : ExportType) : DesignTokens {
     const _pending = [...pending];
     pending = [];
     _pending.forEach((variable) => {
-      const { collectionName, name } = variable;
       const token = parseVariable(variable);
       if (!token) return;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const route = [collectionName!, ...name.split(NAME_DIVIDER)]
+      const route = getRoute(variable)
       result = addTokenIntoRoute(result,route,token)
     })
   }
@@ -97,8 +104,8 @@ export function parseVariables2JSON(data : ExportType) : DesignTokens {
 }
 
 // Testing
-//import fs from "fs";
-//const filename = "../../../../variables2json/foundations_1mode_w-alias_no-styles.json";
-//const variablesData = JSON.parse(fs.readFileSync(filename).toString());
-//const tokens = parseVariables2JSON(variablesData);
-//fs.writeFileSync("../../../../variables2json/tokens.json",JSON.stringify(tokens,undefined,2))
+import fs from "fs";
+const filename = "../../../../variables2json/foundations-2modes-w-alias_no-styles.json";
+const variablesData = JSON.parse(fs.readFileSync(filename).toString());
+const tokens = parseVariables2JSON(variablesData);
+fs.writeFileSync("../../../../variables2json/tokens.json",JSON.stringify(tokens,undefined,2))
