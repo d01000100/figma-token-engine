@@ -28,8 +28,8 @@ export enum FileHeader {
 /*=== Custom Design Tokens ====*/
 /* Mimic StyleDictionary's design token type, but with specific `type` and `value`
   property types */
-
 /** Valid types for the design tokens */
+
 export enum TokenType {
   borderRadius = 'borderRadius',
   borderWidth = 'borderWidth',
@@ -56,6 +56,7 @@ export enum TokenType {
   textTransform = 'textTransform',
   textDecoration = 'textDecoration',
   opacity = 'opacity',
+  number = "number"
 }
 
 export enum ShadowType {

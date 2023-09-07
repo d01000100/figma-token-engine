@@ -1,27 +1,25 @@
 import { ExportType, Variable } from "./types"
-import { logError, logWarning } from "../../../utils/logger";
-import { DesignTokens } from "../../types"
+import { logWarning } from "../../../utils/logger";
+import { DesignTokens, TokenType } from "../../types"
 import { DesignToken } from "style-dictionary";
 import { addTokenIntoRoute } from "../utils";
 import lodash from "lodash";
+import { Variables2JsonArgs } from "../../../types";
+import { writeFile } from "fs";
 
 const NAME_DIVIDER = "/"
 
-function parseVarAttributes({type} : Variable) : DesignToken["attributes"] | undefined {
+function getVarType({type} : Variable) : TokenType | undefined {
   // Determine attributes according to type
-  let attributes : DesignToken["attributes"];
   switch(type) {
     case "color":
-      attributes = { category: "color"}
-      break;
+      return TokenType.color
     case "number":
-      attributes = { category: "size"}
-      break;
+      return TokenType.number
     default:
       // We don't support any other type of variable
       return;
   }
- return attributes;
 }
 
 function getRoute({name, collectionName, modeName} : Variable) : string[] {
@@ -35,13 +33,13 @@ export function parseVariables2JSON(data : ExportType) : DesignTokens {
 
   function parseVariable(variable : Variable) : DesignToken | undefined {
     const {name, type, isAlias, value} = variable;
-    const attributes = parseVarAttributes(variable)
-    if (!attributes) return;
+    const tokenType = getVarType(variable)
+    if (!tokenType) return;
 
     if (!isAlias) {
       return {
         value,
-        attributes
+        type: tokenType
       }
     }
 
@@ -57,7 +55,7 @@ export function parseVariables2JSON(data : ExportType) : DesignTokens {
     // If we have parsed the base token, we use its value
     return {
       value: baseToken.value,
-      attributes
+      type: tokenType
     }
   }
 
@@ -100,12 +98,18 @@ export function parseVariables2JSON(data : ExportType) : DesignTokens {
     })
   }
 
+  const parsedTokensFile = (global.tokenEngineConfig as Variables2JsonArgs).parsedTokensFile
+  if(parsedTokensFile) {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    writeFile(parsedTokensFile, JSON.stringify(result,undefined,2),() => {});
+  }
+
   return result;
 }
 
 // Testing
-import fs from "fs";
-const filename = "../../../../variables2json/foundations-2modes-w-alias_no-styles.json";
-const variablesData = JSON.parse(fs.readFileSync(filename).toString());
-const tokens = parseVariables2JSON(variablesData);
-fs.writeFileSync("../../../../variables2json/tokens.json",JSON.stringify(tokens,undefined,2))
+//import fs from "fs";
+//const filename = "../../../../variables2json/foundations-2modes-w-alias_no-styles.json";
+//const variablesData = JSON.parse(fs.readFileSync(filename).toString());
+//const tokens = parseVariables2JSON(variablesData);
+//fs.writeFileSync("../../../../variables2json/tokens.json",JSON.stringify(tokens,undefined,2))

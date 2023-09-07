@@ -69,7 +69,7 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
     typeof originalToken.value === 'number' &&
     originalToken.value !== 0 &&
     ((originalToken.type && typesWithMsDefaultUnit.includes(originalToken.type)) ||
-    token.attributes?.category === "time")
+      token.attributes?.category === "time")
   )
 }
 
@@ -97,6 +97,7 @@ function customCTI(token: TransformedToken) {
     case TokenType.shadowOffsetX:
     case TokenType.shadowOffsetY:
     case TokenType.shadowSpread:
+    case TokenType.number:
       category = 'size';
       break;
     case TokenType.motionDuration:
