@@ -263,7 +263,7 @@ function buildTokenGroup(tokens: DesignToken[]): DesignTokens {
  * @param styles - List of Figma Styles
  * @returns A multilevel object of DesignTokens
  */
-export function parseFigmaStyles(styles: StyleNode[]): DesignTokens {
+function parseFigmaStyles(styles: StyleNode[]): DesignTokens {
   const parsedStyles = styles
     .map(style => {
       let parsedToken: DesignToken | null
@@ -290,3 +290,5 @@ export function parseFigmaStyles(styles: StyleNode[]): DesignTokens {
     .flat()
   return buildTokenGroup([...parsedStyles, ...typographyStyles])
 }
+
+export { parseFigmaStyles, parseShadowValue }

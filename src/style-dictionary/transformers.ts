@@ -9,6 +9,7 @@ import {
   ShadowType,
 } from './types'
 import { addPxUnit, toNumber } from '../utils/utils'
+import { transformFontWeights } from './transformers/transformFontWeight'
 
 const typesWithDefaultPxUnit: TokenType[] = [
   TokenType.borderRadius,
@@ -298,5 +299,17 @@ export function registerTransformers(): void {
     transformer(token) {
       return (token.original.value as string).toLowerCase()
     },
+  })
+
+  /**
+   * Transforms fontWeights keywords to number values.
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.fontWeightToNumber,
+    type: 'value',
+    matcher: (token) => 
+      token.attributes?.category === TokenType.fontWeight &&
+      typeof token.value === "string",
+    transformer: (token) => transformFontWeights(token.value),
   })
 }

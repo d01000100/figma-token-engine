@@ -9,6 +9,7 @@ export enum TransformGroup {
 }
 
 /** Customm transformer names configured for StyleDictionary */
+
 export enum Transformer {
   addFontFamilyQuotes = 'addQuotes',
   addUnitPixels = 'addUnitPixels',
@@ -18,6 +19,7 @@ export enum Transformer {
   parseShadowValueWeb = 'shadowValue',
   transformToRem = 'transformToRem',
   toLowerCase = 'toLowerCase',
+  fontWeightToNumber = "value/fontWeightToNumber"
 }
 
 /** File header names implemented for style dictionary */
