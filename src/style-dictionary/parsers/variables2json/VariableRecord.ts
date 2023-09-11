@@ -6,7 +6,7 @@ import lodash from "lodash";
 /**
  * Variable Type plus additional data needed for the alias resolution algorithm * 
 */
- export type RecordedVariable = Variable & {
+export type RecordedVariable = Variable & {
   /**
    * Aggregate of modes of the variable and the referenced variables
    */
@@ -14,9 +14,9 @@ import lodash from "lodash";
 }
 
 class VariableRecord {
-  private record: RecordedVariable[] = [];
+  record: RecordedVariable[] = [];
 
-  public static recordSingleton : VariableRecord = new VariableRecord();
+  public static recordSingleton: VariableRecord = new VariableRecord();
 
   /**
    * Fills the record from the variables data
@@ -26,7 +26,7 @@ class VariableRecord {
   createRecord(data: ExportType) {
     this.record = [];
     data.collections.forEach((collection) => {
-      const { name : collectionName } = collection
+      const { name: collectionName } = collection
       const { modes } = collection;
       const multipleModes = modes.length > 1;
       modes.forEach((mode) => {
@@ -38,12 +38,12 @@ class VariableRecord {
             this.record.push({
               ...variable,
               collectionName,
+              modeName: (multipleModes ? modeName : undefined),
               modes: (multipleModes ? [modeName] : [])
             })
           })
       })
     })
-    writeFileSync("./VariableRecord.json", toJSON(this.record))
   }
 
   /**
@@ -54,8 +54,10 @@ class VariableRecord {
     this.record.push(variable)
   }
 
-  private _isVariableEqual(v1 : RecordedVariable, v2 : RecordedVariable) : boolean {
-    return v1.name === v2.name && v1.collectionName === v2.collectionName && lodash.isEqual(v1.modes, v2.modes)
+  private _isVariableEqual(v1: RecordedVariable, v2: RecordedVariable): boolean {
+    return v1.name === v2.name &&
+      v1.collectionName === v2.collectionName &&
+      v1.modeName === v2.modeName
   }
 
   /**

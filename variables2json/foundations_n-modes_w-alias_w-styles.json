@@ -1372,6 +1372,22 @@
               }
             },
             {
+              "name": "surface/double",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "name": "surface/single"
+              }
+            },
+            {
+              "name": "surface/single",
+              "type": "color",
+              "isAlias": true,
+              "value": {
+                "name": "surface/missing"
+              }
+            },
+            {
               "name": "feedback/neutral-weak",
               "type": "color",
               "isAlias": true,

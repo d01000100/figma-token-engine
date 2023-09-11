@@ -4,7 +4,7 @@ import { DesignToken, DesignTokens, TokenType } from "../../types"
 import { addTokenIntoRoute } from "../utils";
 import lodash from "lodash";
 import { Variables2JsonArgs } from "../../../types";
-import { writeFile } from "fs";
+import { writeFile, writeFileSync } from "fs";
 import { parseFigmaStyle } from "./styleParsing";
 import { toJSON } from "../../../utils/utils";
 import VariableRecord, { RecordedVariable } from "./VariableRecord";
@@ -43,7 +43,6 @@ function addToResult(
         return;
       }
 
-      console.log(toJSON(singleToken))
       _result = addTokenIntoRoute(result, route, singleToken as DesignToken)
     })
 
@@ -113,11 +112,11 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
     // If we didn't reduced the pending list on the last pass
     // the remaining tokens are unresolvable
     if (lastPendingCount === PendingAlias.pending.length) {
-      logWarning(`Unresolved alias tokens without base ${JSON.stringify(PendingAlias.pending.map(x => x.name))}`)
-      return result;
+      logWarning(`Unresolvable alias tokens ${JSON.stringify(PendingAlias.pending.map(x => x.name))}`)
+      break;
     }
 
-    lastPendingCount = pending.length;
+    lastPendingCount = PendingAlias.pending.length;
     const _pending = [...PendingAlias.pending];
     PendingAlias.pending = [];
     _pending.forEach((variable) => {
@@ -126,6 +125,8 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
       result = addToResult({ token, result })
     })
   }
+
+  writeFileSync("./VariableRecord.json", toJSON(VariableRecord.recordSingleton.record))
 
   const parsedTokensFile = (global?.tokenEngineConfig as Variables2JsonArgs)?.parsedTokensFile
   if (parsedTokensFile) {

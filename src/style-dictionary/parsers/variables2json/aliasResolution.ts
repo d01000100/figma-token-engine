@@ -28,10 +28,6 @@ function parseAliasVariable(variable : AliasVariable) : ParsingResult {
   
   if(matches.length === 0) {
     warningUnresolved(variable);
-    console.log(toJSON({
-      variable,
-      matches
-    }))
     return;
   }
 
@@ -77,7 +73,6 @@ function parseAliasVariable(variable : AliasVariable) : ParsingResult {
       collectionName,
       modes: resolvedModes
     })
-
   })
 
   return results;
