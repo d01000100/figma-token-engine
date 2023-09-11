@@ -69,3 +69,7 @@ export function pick(object: any, ...pickedKeys: string[]): any {
     pickedKeys.filter((key) => key in object).map((key) => [key, object[key]])
   );
 }
+
+export function toJSON(data : any) : string {
+  return JSON.stringify(data, undefined, 2)
+}

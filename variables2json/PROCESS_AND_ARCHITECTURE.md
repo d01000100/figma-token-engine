@@ -96,3 +96,116 @@
          2. Insert or create levels on the result object, starting with collection, mode (if there's more than 1) and for each part of the divided name
          3. Insert token on the final level
    8. For each variable in pending, repeat until no variables in pending anymore
+
+## Variables and Styles, with alias, n modes, (n collections) with external references
+
+### Requirements
+
+- Tokens cannot have repeated names (considering the levels). Not even inside different collections or files
+
+### Strategy
+
+- Each alias variable has the name of the variable it references, no collection or modes
+- ¿Do we need to assume the variable names are unique?
+  
+  If they're not, we could identify what collection/mode do they come from
+- **We need to merge the two files before entering the parser**
+  - We just need to append the collections array on each one
+- We could search the variable name on the existing parsed variables and get the modes and collections of matches (they are already added when we process the variables)
+- For each match, we create a different token, and add the collection and mode to their route
+
+- **¿What happens if an alias is referrencing another alias that hasn't been resolved yet?**
+  - It wouldn't be on the _resolved_ array
+  - ¿Could we make a map/dictionary of variables first by name?
+    - And check there if there's a resolved value
+    - Also, updating the value when resolving
+
+- Consider using the referenced collection, if we have it
+  - Fetch the variable from the Record, for that specific collection
+
+### Algorithm
+
+1. **First pass**
+   1. Add each variable to a **variableRecord**, that will keep track if a variable has been resolved or not.
+     - Each variable should have:º
+       - name
+       - isAlias
+       - collection
+       - mode (if there's more than 1)
+       - value, either explicit or as a reference to other variable
+2. For each colection:
+   1. Take the name of the collection
+   2. For the rest of the collections
+   3. Count the modes 
+   4. If there's 1 mode, ignore it
+   5. If there's more than 1, store the name of the mode
+   6. For each variable in the mode:
+      1. If alias: **Run the resolving single alias token algorithm**
+      2. If explicit:
+         1. Check if the type is either typography, effect or grid
+            1. If it's Typography, parse it using the styles parser
+            2. If it's Effects, parse it using the styles parser
+            3. If it's Grids, ignore
+         2. If it's any other type, Create StyleDictionary token
+            1. Determine StyleDictionary compatible attributes
+               1. type === "color" => attributes.category = color
+               2. type === "number" => attributes.category = size
+            2. If not alias, copy value
+         3. Put in result object 
+            1. Divide the name by /
+            2. Insert or create levels on the result object, starting with collection, mode (if there's more than 1) and for each part of the divided name
+            3. Insert token on the final level
+   7. For each variable in pending, repeat **alias resolving algorithm** until no variables in pending anymore or pending array didn't change from the last pass
+
+#### Resolving single alias token
+
+1. Store the collection as `baseCollection`
+2. If the collection has more than 1 mode, store the Mode as `baseMode`
+3. Search the **variableRecord** for variables with the referred name
+   1. If no matches, **log warning about no matches** **EXIT**
+   2. If some matches are alias, add alias variable to pending **EXIT**
+   3. If all the matches are explicit, remove og variable entry from the **variableRecord**
+   4. Store if there's more than 1 collection or modes
+   5. For each match:
+      1. If it's an explicit value, extract `collection`, `mode`, `isAlias` and `value`
+      2. Create the route
+         1. Add the `baseCollection` and the `baseMode` (if there are more than 2 modes in the og var)
+         2. ~~If in the matches, there are more than 1 collection, we add the name of the collection~~
+         3. If in the matches, there are more than 1 mode, we add the modes of the match
+         4. Split og name by divider
+      3. Create a new token with:
+         ```ts
+         {
+           route,
+           value: referred.value,
+           collection, // Maybe for filtering purposes
+           modes: [
+            ogMode /* If the og variable belongs to more than one mode */,
+            matchMode /* If the matches have more than 1 mode */
+          ],
+         }
+         ```
+      4. Add it to the result
+      5. Remove the variable from pending (if it's there)
+      6. Update **variableMap**:
+         1. Add the variable again, with:
+            1. isAlias = false
+            2. The referred variable's value
+            3. ogCollection
+            4. modes: [
+            ogMode /* If the og variable belongs to more than one mode */,
+            ...matchModes /* If the matches have more than 1 mode */
+          ]
+
+#### Variable Record
+
+**Operations**
+
+- addVariable(v : Variable)
+- removeVariable(v : Variable)
+  
+  It removes the variable from the record that matches with v on collection, mode, and name
+- updateVariable(v : Variable)
+  
+  It updates the variable on the record that matches with v on collection, mode, and name and replaces the rest of v's properties
+- searchReferences(name : string, collection? : string) : Variable[]

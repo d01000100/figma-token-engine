@@ -6,6 +6,8 @@ import lodash from "lodash";
 import { Variables2JsonArgs } from "../../../types";
 import { writeFile } from "fs";
 import { parseFigmaStyle } from "./styleParsing";
+import { toJSON } from "../../../utils/utils";
+import { RecordedVariable } from "./VariableRecord";
 
 const NAME_DIVIDER = "/"
 
@@ -29,6 +31,7 @@ function getRoute({ name, collectionName, modeName }: Variable): string[] {
 
 export function parseVariables2JSON(data: ExportType): DesignTokens {
   let result: DesignTokens = {};
+  let resolved: Variable[] = [];
   let pending: Variable[] = [];
 
   function parseVariable(variable: Variable): DesignToken | DesignToken[] | undefined {
@@ -43,6 +46,10 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
     if (!tokenType) return;
 
     if (!isAlias) {
+      resolved.push({
+        ...variable,
+        value
+      })
       return {
         value,
         type: tokenType
@@ -59,6 +66,10 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
     }
 
     // If we have parsed the base token, we use its value
+    resolved.push({
+      ...variable,
+      value: baseToken.value
+    })
     return {
       value: baseToken.value,
       type: tokenType
@@ -113,6 +124,8 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
       result = addTokenIntoRoute(result, route, token as DesignToken)
     })
   }
+
+  console.log(toJSON(resolved.map(variable => variable.name)))
 
   const parsedTokensFile = (global?.tokenEngineConfig as Variables2JsonArgs)?.parsedTokensFile
   if (parsedTokensFile) {

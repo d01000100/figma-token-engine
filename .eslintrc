@@ -5,7 +5,7 @@
     "sourceType": "module",
     "project": ["./tsconfig.json"]
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -18,5 +18,5 @@
   },
   "overrides": [],
 
-  "rules": {}
+  "rules": {"tsdoc/syntax": "warn"}
 }

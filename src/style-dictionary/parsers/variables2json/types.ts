@@ -1,5 +1,5 @@
 export interface AliasValue {
-  collection: string,
+  collection?: string,
   name: string,
 }
 
@@ -7,6 +7,7 @@ export type VariableType = "color" | "number" | "boolean" | "text" | "grid";
 
 interface BaseVariable {
   name: string,
+  fullName?: string,
   collectionName?: string,
   modeName?: string,
 }
