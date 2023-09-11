@@ -134,12 +134,10 @@
        - mode (if there's more than 1)
        - value, either explicit or as a reference to other variable
 2. For each colection:
-   1. Take the name of the collection
-   2. For the rest of the collections
-   3. Count the modes 
-   4. If there's 1 mode, ignore it
-   5. If there's more than 1, store the name of the mode
-   6. For each variable in the mode:
+   1. Count the modes 
+   2. If there's 1 mode, ignore it
+   3. If there's more than 1, store the name of the mode
+   4. For each variable in the mode:
       1. If alias: **Run the resolving single alias token algorithm**
       2. If explicit:
          1. Check if the type is either typography, effect or grid
@@ -155,7 +153,7 @@
             1. Divide the name by /
             2. Insert or create levels on the result object, starting with collection, mode (if there's more than 1) and for each part of the divided name
             3. Insert token on the final level
-   7. For each variable in pending, repeat **alias resolving algorithm** until no variables in pending anymore or pending array didn't change from the last pass
+   5. For each variable in pending, repeat **alias resolving algorithm** until no variables in pending anymore or pending array didn't change from the last pass
 
 #### Resolving single alias token
 
@@ -179,6 +177,7 @@
            route,
            value: referred.value,
            collection, // Maybe for filtering purposes
+           // For filtering purposes
            modes: [
             ogMode /* If the og variable belongs to more than one mode */,
             matchMode /* If the matches have more than 1 mode */
@@ -186,8 +185,8 @@
          }
          ```
       4. Add it to the result
-      5. Remove the variable from pending (if it's there)
-      6. Update **variableMap**:
+      5. ~~Remove the variable from pending (if it's there)~~ (The pending array will be deleted every time we process it)
+      6. Update **VariableRecord**:
          1. Add the variable again, with:
             1. isAlias = false
             2. The referred variable's value

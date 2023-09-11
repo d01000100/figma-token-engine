@@ -20,7 +20,7 @@ export async function runTokenEngine(
   opts: TokenEngineConfigType,
   { useAPI, dryRun, sdConfigFile }: { useAPI: boolean; dryRun: boolean, sdConfigFile?: string }
 ) {
-  printAppName()
+  //printAppName()
 
   global.tokenEngineConfig = opts
   global.useAPI = useAPI

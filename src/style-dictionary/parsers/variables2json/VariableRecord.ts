@@ -1,20 +1,12 @@
+import { writeFileSync } from "fs";
+import { toJSON } from "../../../utils/utils";
 import { ExportType, Variable } from "./types";
 import lodash from "lodash";
 
 /**
  * Variable Type plus additional data needed for the alias resolution algorithm * 
- */
-export type RecordedVariable = Variable & {
-  /**
-   * Original collection of the variable data.
-   * 
-   * May be redundant
-   */
-  ogCollection: string,
-  /**
-   * Original mode of the variable data. Null if there's only one mode in the collection
-   */
-  ogMode?: string,
+*/
+ export type RecordedVariable = Variable & {
   /**
    * Aggregate of modes of the variable and the referenced variables
    */
@@ -24,10 +16,18 @@ export type RecordedVariable = Variable & {
 class VariableRecord {
   private record: RecordedVariable[] = [];
 
-  private _createRecord(data: ExportType) {
+  public static recordSingleton : VariableRecord = new VariableRecord();
+
+  /**
+   * Fills the record from the variables data
+   * @param data - The export of variables2json
+   * (after combining the collections if you have multiple files)
+   */
+  createRecord(data: ExportType) {
     this.record = [];
     data.collections.forEach((collection) => {
-      const { name: collectionName, modes } = collection;
+      const { name : collectionName } = collection
+      const { modes } = collection;
       const multipleModes = modes.length > 1;
       modes.forEach((mode) => {
         const { name: modeName, variables } = mode;
@@ -37,22 +37,13 @@ class VariableRecord {
           .forEach(variable => {
             this.record.push({
               ...variable,
-              ogCollection: collectionName,
-              ogMode: (multipleModes ? modeName : undefined),
+              collectionName,
               modes: (multipleModes ? [modeName] : [])
             })
           })
       })
     })
-  }
-
-  /**
-   * Fills the record from the variables data
-   * @param data - The export of variables2json
-   * (after combining the collections if you have multiple files)
-   */
-  constructor(data: ExportType) {
-    this._createRecord(data)
+    writeFileSync("./VariableRecord.json", toJSON(this.record))
   }
 
   /**
@@ -64,7 +55,7 @@ class VariableRecord {
   }
 
   private _isVariableEqual(v1 : RecordedVariable, v2 : RecordedVariable) : boolean {
-    return v1.name === v2.name && v1.ogCollection === v2.ogCollection && lodash.isEqual(v1.modes, v2.modes)
+    return v1.name === v2.name && v1.collectionName === v2.collectionName && lodash.isEqual(v1.modes, v2.modes)
   }
 
   /**

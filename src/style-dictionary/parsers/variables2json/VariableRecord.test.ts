@@ -7,7 +7,6 @@ const BASE_COLOR: RecordedVariable = {
   type: "color",
   value: "#AAFF00",
   collectionName: "base",
-  ogCollection: "base",
   modes: []
 }
 
@@ -17,8 +16,6 @@ const BASE_COLOR_LIGHT: RecordedVariable = {
   type: "color",
   value: "#AAFF00",
   collectionName: "theme",
-  ogCollection: "theme",
-  ogMode: "onLight",
   modes: ["onLight"]
 }
 
@@ -28,8 +25,6 @@ const BASE_COLOR_DARK: RecordedVariable = {
   type: "color",
   value: "#AAFF00",
   collectionName: "theme",
-  ogCollection: "theme",
-  ogMode: "onDark",
   modes: ["onDark"]
 }
 
@@ -41,11 +36,11 @@ const ALIAS_COLOR: RecordedVariable = {
     name: "foo/100"
   },
   collectionName: "alias",
-  ogCollection: "alias",
 }
 
 test('add a variable', () => {
-  const record = new VariableRecord({ collections: [] })
+  const record = new VariableRecord()
+  record.createRecord({ collections: [] })
 
   record.addVariable(BASE_COLOR);
 
@@ -55,7 +50,8 @@ test('add a variable', () => {
 })
 
 test('single match', () => {
-  const record = new VariableRecord({ collections: [] })
+  const record = new VariableRecord()
+  record.createRecord({ collections: [] })
 
   record.addVariable(BASE_COLOR);
   record.addVariable(ALIAS_COLOR);
@@ -66,7 +62,8 @@ test('single match', () => {
 })
 
 test('multiple match', () => {
-  const record = new VariableRecord({ collections: [] })
+  const record = new VariableRecord()
+  record.createRecord({ collections: [] })
 
   record.addVariable(BASE_COLOR);
   record.addVariable(BASE_COLOR_LIGHT);
@@ -80,7 +77,8 @@ test('multiple match', () => {
 })
 
 test('mode count', () => {
-  const record = new VariableRecord({ collections: [] })
+  const record = new VariableRecord()
+  record.createRecord({ collections: [] })
 
   record.addVariable(BASE_COLOR_DARK);
   record.addVariable(BASE_COLOR_LIGHT);
@@ -93,7 +91,8 @@ test('mode count', () => {
 })
 
 test('match with collection', () => {
-  const record = new VariableRecord({ collections: [] })
+  const record = new VariableRecord()
+  record.createRecord({ collections: [] })
 
   record.addVariable(BASE_COLOR);
   record.addVariable(BASE_COLOR_LIGHT);
@@ -105,7 +104,8 @@ test('match with collection', () => {
 })
 
 test('remove a variable with different name', () => {
-  const record = new VariableRecord({ collections: [] })
+  const record = new VariableRecord()
+  record.createRecord({ collections: [] })
 
   record.addVariable(BASE_COLOR);
   record.addVariable(ALIAS_COLOR);
@@ -119,7 +119,8 @@ test('remove a variable with different name', () => {
 })
 
 test('remove a variable with same name and different mode', () => {
-  const record = new VariableRecord({ collections: [] })
+  const record = new VariableRecord()
+  record.createRecord({ collections: [] })
 
   record.addVariable(BASE_COLOR);
   record.addVariable(BASE_COLOR_LIGHT);

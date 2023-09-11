@@ -1,3 +1,5 @@
+import { DesignToken } from "../../types";
+
 export interface AliasValue {
   collection?: string,
   name: string,
@@ -18,7 +20,7 @@ export interface AliasVariable extends BaseVariable {
   value: AliasValue
 }
 
-export interface ExplicitVariable extends BaseVariable {
+export interface SimpleVariable extends BaseVariable {
   isAlias: false,
   type: VariableType,
   value: string | number,
@@ -62,7 +64,21 @@ export interface ShadowStyleVariable extends BaseVariable {
   }
 }
 
-export type Variable = AliasVariable | ExplicitVariable | TypographyStyleVariable | ShadowStyleVariable;
+export type ExplicitVariable = SimpleVariable | TypographyStyleVariable | ShadowStyleVariable;
+
+export type Variable = AliasVariable | ExplicitVariable;
+
+export type ParsedVariable =  Omit<DesignToken, "route"> & Required<Pick<DesignToken, "route">>
+
+/**
+ * A result when parsing a Variable to token(s).
+ * 
+ * It may be:
+ * - a single token
+ * - an array of tokens (from a typography style)
+ * - or undefined, in case it's a not supported variable
+ */
+export type ParsingResult = ParsedVariable | ParsedVariable[] | undefined;
 
 export interface Mode {
   name: string,

@@ -1,4 +1,4 @@
-import { ExportType, Variable } from "./types"
+import { ExportType, Variable, ExplicitVariable, ParsingResult as ParsingResult } from "./types"
 import { logWarning } from "../../../utils/logger";
 import { DesignToken, DesignTokens, TokenType } from "../../types"
 import { addTokenIntoRoute } from "../utils";
@@ -7,74 +7,81 @@ import { Variables2JsonArgs } from "../../../types";
 import { writeFile } from "fs";
 import { parseFigmaStyle } from "./styleParsing";
 import { toJSON } from "../../../utils/utils";
-import { RecordedVariable } from "./VariableRecord";
+import VariableRecord, { RecordedVariable } from "./VariableRecord";
+import { NAME_DIVIDER, getVarType } from "./utils";
+import { parseAliasVariable, PendingAlias } from "./aliasResolution";
 
-const NAME_DIVIDER = "/"
-
-function getVarType({ type }: Variable): TokenType | undefined {
-  // Determine attributes according to type
-  switch (type) {
-    case "color":
-      return TokenType.color
-    case "number":
-      return TokenType.number
-    default:
-      // We don't support any other type of variable
-      return;
-  }
-}
-
+/**
+ * Construct the route into the result token object from a variable
+ * 
+ * Considers the collection, modes and name parts
+ * @param param0 - Variable
+ * @returns Every step of the route as an array
+ */
 function getRoute({ name, collectionName, modeName }: Variable): string[] {
   return [collectionName, modeName, ...name.split(NAME_DIVIDER)]
     .filter(x => x !== undefined) as string[];
 }
 
+/**
+ * Adds the parsed `token` into the `result` token object into the specified `route`
+ * @param param0 - \{route, token, result\}
+ * @returns New result token object.
+ */
+function addToResult(
+  { token, result }: { token: ParsingResult, result: DesignTokens }
+): DesignTokens {
+  if (!token) { return result; }
+  if (Array.isArray(token)) {
+    let _result = { ...result };
+    /* It's an array of tokens */
+    token.forEach((singleToken) => {
+      const route = singleToken.route;
+      if(singleToken.type === "typography") {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        _result = addTokenIntoRoute(result, [...route, singleToken.type!], singleToken as DesignToken)
+        return;
+      }
+
+      console.log(toJSON(singleToken))
+      _result = addTokenIntoRoute(result, route, singleToken as DesignToken)
+    })
+
+    return _result;
+  }
+
+  /* If it's a single token */
+  const route = token.route;
+  return addTokenIntoRoute(result, route, token as DesignToken)
+}
+
 export function parseVariables2JSON(data: ExportType): DesignTokens {
   let result: DesignTokens = {};
-  let resolved: Variable[] = [];
-  let pending: Variable[] = [];
 
-  function parseVariable(variable: Variable): DesignToken | DesignToken[] | undefined {
-    const { type, isAlias, value } = variable;
+  function parseExplicitVariable(variable: ExplicitVariable): ParsingResult {
+    const { type, value } = variable;
+    const route = getRoute(variable);
 
     /* If it's a Figma Style */
     if (type === "typography" || type === "effect" || type === "grid") {
-      return parseFigmaStyle(variable);
+      return {
+        ...parseFigmaStyle(variable),
+        route
+      };
     }
 
     const tokenType = getVarType(variable)
     if (!tokenType) return;
 
-    if (!isAlias) {
-      resolved.push({
-        ...variable,
-        value
-      })
-      return {
-        value,
-        type: tokenType
-      }
-    }
-
-    // If it's an alias token, we search for it's referenced token on the result
-    const route = [value.collection, ...value.name.split(NAME_DIVIDER)]
-    const baseToken = lodash.get(result, route);
-    if (!baseToken) {
-      // If we haven't parsed the base token, we add it to pending
-      pending.push(variable);
-      return;
-    }
-
-    // If we have parsed the base token, we use its value
-    resolved.push({
-      ...variable,
-      value: baseToken.value
-    })
     return {
-      value: baseToken.value,
-      type: tokenType
+      value,
+      type: tokenType,
+      route
     }
   }
+
+  // Add each variable to the record (it filters Figma Styles)
+  VariableRecord.recordSingleton.createRecord(data);
 
   data.collections.forEach(({ modes, name: collectionName }) => {
     modes.forEach((mode) => {
@@ -82,55 +89,48 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
       mode.variables.forEach((variable) => {
         const _variable = { ...variable, collectionName }
         if (modes.length > 1) {
-          _variable.modeName = modeName
+          _variable.modeName = modeName;
         }
-        const token = parseVariable(_variable)
-        if (!token) return;
-        const route = getRoute(_variable)
-        if (Array.isArray(token)) {
-          /* It's an array of tokens (coming from a typography style) */
-          token.map((singleToken) => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            result = addTokenIntoRoute(result, [...route, singleToken.type!], singleToken)
-          })
-        } else {
-          /* If it's a single token */
-          result = addTokenIntoRoute(result, route, token as DesignToken)
+        let token: ParsingResult;
+        if (!_variable.isAlias) {
+          token = parseExplicitVariable(_variable);
+          result = addToResult({ token, result })
+          return;
         }
+        
+        // If it's an alias..
+        token = parseAliasVariable(_variable)
+        result = addToResult({ token, result })
       })
     })
   })
 
 
   /** Number to keep track if we reduce the pending list with each pass */
-  let lastPendingCount = pending.length + 1;
+  let lastPendingCount = PendingAlias.pending.length + 1;
 
-  while (pending.length > 0) {
+  while (PendingAlias.pending.length > 0) {
     // If we didn't reduced the pending list on the last pass
     // the remaining tokens are unresolvable
-    if (lastPendingCount === pending.length) {
-      logWarning(`Unresolved alias tokens without base ${JSON.stringify(pending.map(x => x.name))}`)
+    if (lastPendingCount === PendingAlias.pending.length) {
+      logWarning(`Unresolved alias tokens without base ${JSON.stringify(PendingAlias.pending.map(x => x.name))}`)
       return result;
     }
 
     lastPendingCount = pending.length;
-    const _pending = [...pending];
-    pending = [];
+    const _pending = [...PendingAlias.pending];
+    PendingAlias.pending = [];
     _pending.forEach((variable) => {
-      const token = parseVariable(variable);
+      const token = parseAliasVariable(variable);
       if (!token) return;
-      const route = getRoute(variable)
-      // There are no typography tokens on pending, so we can assume all are single tokens
-      result = addTokenIntoRoute(result, route, token as DesignToken)
+      result = addToResult({ token, result })
     })
   }
-
-  console.log(toJSON(resolved.map(variable => variable.name)))
 
   const parsedTokensFile = (global?.tokenEngineConfig as Variables2JsonArgs)?.parsedTokensFile
   if (parsedTokensFile) {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    writeFile(parsedTokensFile, JSON.stringify(result, undefined, 2), () => { });
+    writeFile(parsedTokensFile, toJSON(result), () => { });
   }
 
   return result;
