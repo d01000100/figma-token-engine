@@ -23,3 +23,15 @@ export function getVarType({ type }: Variable): TokenType | undefined {
       return;
   }
 }
+
+/**
+ * Construct the route into the result token object from a variable
+ * 
+ * Considers the collection, modes and name parts
+ * @param param0 - Variable
+ * @returns Every step of the route as an array
+ */
+export function getRoute({ name, collectionName, modeName }: Variable): string[] {
+  return [collectionName, modeName, ...name.split(NAME_DIVIDER)]
+    .filter(x => x !== undefined) as string[];
+}

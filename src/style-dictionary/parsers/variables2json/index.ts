@@ -7,20 +7,8 @@ import { writeFile } from "fs";
 import { parseFigmaStyle } from "./styleParsing";
 import { toJSON } from "../../../utils/utils";
 import VariableRecord from "./VariableRecord";
-import { NAME_DIVIDER, getVarType } from "./utils";
+import { NAME_DIVIDER, getRoute, getVarType } from "./utils";
 import { parseAliasVariable, PendingAlias } from "./aliasResolution";
-
-/**
- * Construct the route into the result token object from a variable
- * 
- * Considers the collection, modes and name parts
- * @param param0 - Variable
- * @returns Every step of the route as an array
- */
-function getRoute({ name, collectionName, modeName }: Variable): string[] {
-  return [collectionName, modeName, ...name.split(NAME_DIVIDER)]
-    .filter(x => x !== undefined) as string[];
-}
 
 /**
  * Adds the parsed `token` into the `result` token object into the specified `route`
@@ -35,10 +23,12 @@ function addToResult(
     let _result = { ...result };
     /* It's an array of tokens */
     token.forEach((singleToken) => {
+      //if ((singleToken as DesignToken).name === "label/md-bold") {
+      //}
       const route = singleToken.route;
-      if(singleToken.type === "typography") {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        _result = addTokenIntoRoute(result, [...route, singleToken.type!], singleToken as DesignToken)
+      if (singleToken.type === "typography") {
+        console.log({ singleToken })
+        _result = addTokenIntoRoute(result, [...route, singleToken.type], singleToken as DesignToken)
         return;
       }
 
@@ -62,10 +52,7 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
 
     /* If it's a Figma Style */
     if (type === "typography" || type === "effect" || type === "grid") {
-      return {
-        ...parseFigmaStyle(variable),
-        route
-      };
+      return parseFigmaStyle(variable);
     }
 
     const tokenType = getVarType(variable)
@@ -95,7 +82,7 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
           result = addToResult({ token, result })
           return;
         }
-        
+
         // If it's an alias..
         token = parseAliasVariable(_variable)
         result = addToResult({ token, result })

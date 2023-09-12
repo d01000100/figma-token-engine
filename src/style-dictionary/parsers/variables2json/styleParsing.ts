@@ -1,8 +1,8 @@
 import { Effect } from "figma-js"
-import { DesignToken } from "style-dictionary"
-import { TokenType, SimpleDesignToken, ShadowDesignToken } from "../../types"
+import { TokenType } from "../../types"
 import { parseShadowValue } from "../figmaStylesParser"
-import { ShadowStyleVariable, TypographyStyleVariable, Variable } from "./types"
+import { ParsedVariable, ParsingResult, ShadowStyleVariable, TypographyStyleVariable, Variable } from "./types"
+import { getRoute } from "./utils"
 
 function parseTextCaseValue(value: string): string {
   const figma2css: Record<string, string> = {
@@ -16,7 +16,7 @@ function parseTextCaseValue(value: string): string {
 function parseSingleTypographyToken(
   variable: Variable,
   tokenType: TokenType
-): SimpleDesignToken | null {
+): ParsedVariable | null {
   /*
     {
       "name": "display/lg",
@@ -50,13 +50,15 @@ function parseSingleTypographyToken(
   if (tokenType === TokenType.textTransform) {
     typeValue = parseTextCaseValue(typeValue)
   }
+  const route = getRoute(variable);
   return {
     type: tokenType,
     value: typeValue,
+    route: [...route, tokenType]
   }
 }
 
-function parseTypographyStyle(variable: TypographyStyleVariable): SimpleDesignToken[] {
+function parseTypographyStyle(variable: TypographyStyleVariable): ParsedVariable[] {
   /*
     {
       "name": "display/lg",
@@ -85,20 +87,22 @@ function parseTypographyStyle(variable: TypographyStyleVariable): SimpleDesignTo
   ]
   return typographyTypes
     .map(type => parseSingleTypographyToken(variable, type))
-    .filter(Boolean) as SimpleDesignToken[]
+    .filter(Boolean) as ParsedVariable[]
 }
 
-function parseShadowStyle(variable: ShadowStyleVariable): ShadowDesignToken {
+function parseShadowStyle(variable: ShadowStyleVariable): ParsedVariable {
+  const route = getRoute(variable);
   return {
     type: TokenType.boxShadow,
     value: variable.value.effects.map(
       (shadowValue) =>
         parseShadowValue(shadowValue as Effect & { spread?: number })
-      )
+      ),
+    route,
   }
 }
 
-function parseFigmaStyle(variable: Variable): DesignToken | DesignToken[] | undefined {
+function parseFigmaStyle(variable: Variable): ParsingResult {
   const { type } = variable
 
   switch (type) {
