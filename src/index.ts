@@ -5,7 +5,6 @@ dotenv.config()
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const NODE_API = process.env.NODE_API || false
 
-import { printAppName } from './utils/title'
 import { logEvent } from './utils/logger'
 import { generateTemplate } from './utils/config'
 
@@ -14,14 +13,14 @@ import { processFigmaStyles } from './figma-styles'
 
 import { TokenEngineConfigType } from './types'
 
-import { start as startStyleDictionary } from "./style-dictionary"
 import { processVariables2JSON } from './variables-2-json'
+import { printAppName } from './utils/title'
 
 export async function runTokenEngine(
   opts: TokenEngineConfigType,
   { useAPI, dryRun, sdConfigFile }: { useAPI: boolean; dryRun: boolean, sdConfigFile?: string }
 ) {
-  //printAppName()
+  printAppName()
 
   global.tokenEngineConfig = opts
   global.useAPI = useAPI
