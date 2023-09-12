@@ -17,8 +17,8 @@ export function fileExists(filePath: string, errorMessage?: string): boolean {
 /**
  * Checks if a file is not empty. Throws an Error if it is with `errorMessage` or default message.
  * Assumes the file exists
- * @param filePath string. The file to check
- * @param errorMessage? string. Custom error message
+ * @param filePath - string. The file to check
+ * @param errorMessage - string?. Custom error message
  * @returns boolean. If the file is not empty.
  */
 export function isFileNotEmpty(

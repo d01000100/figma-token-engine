@@ -126,8 +126,6 @@ export function parseVariables2JSON(data: ExportType): DesignTokens {
     })
   }
 
-  writeFileSync("./VariableRecord.json", toJSON(VariableRecord.recordSingleton.record))
-
   const parsedTokensFile = (global?.tokenEngineConfig as Variables2JsonArgs)?.parsedTokensFile
   if (parsedTokensFile) {
     // eslint-disable-next-line @typescript-eslint/no-empty-function

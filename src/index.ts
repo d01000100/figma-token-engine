@@ -15,6 +15,7 @@ import { processFigmaStyles } from './figma-styles'
 import { TokenEngineConfigType } from './types'
 
 import { start as startStyleDictionary } from "./style-dictionary"
+import { processVariables2JSON } from './variables-2-json'
 
 export async function runTokenEngine(
   opts: TokenEngineConfigType,
@@ -48,7 +49,7 @@ export async function runTokenEngine(
 
   if(global.tokenEngineConfig.tokenFormat === 'variables2json') {
     // No fetching or preprocessing necessary. Export from plugin is stored in inputFile
-    startStyleDictionary(global.tokenEngineConfig)
+    await processVariables2JSON()
   }
 
   return true

@@ -7,10 +7,10 @@ import { parseTokensStudio } from './parsers/tokensStudioParser'
 import { parseVariables2JSON } from './parsers/variables2json'
 
 /**
- *
- * @param inputFile
- * @param outputDir
- * @param platforms
+ * Start the StyleDictionary process
+ * @param inputFile - The filename where the tokens are
+ * @param outputDir - The directory where to write the parsed tokens
+ * @param platforms - Optional. The platforms to output. If undefined, will export to all supported platforms
  */
 export function start({
   tokenFormat,

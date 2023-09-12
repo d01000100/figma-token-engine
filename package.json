@@ -29,7 +29,7 @@
     "lint": "eslint --ext .js,.ts ./src",
     "prettier": "prettier --write \"(src|bin)/**/*.+(js|ts|json)\"",
     "start": "tsc-watch --onSuccess \"node .\"",
-    "once": "tsc; node .",
+    "once": "rm -rf dist && rm -rf ./tmp && tsc && node .",
     "test": "jest"
   },
   "types": "./build/index.d.ts",
