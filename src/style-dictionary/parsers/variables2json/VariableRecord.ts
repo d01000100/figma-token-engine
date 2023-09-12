@@ -1,7 +1,4 @@
-import { writeFileSync } from "fs";
-import { toJSON } from "../../../utils/utils";
 import { ExportType, Variable } from "./types";
-import lodash from "lodash";
 
 /**
  * Variable Type plus additional data needed for the alias resolution algorithm * 

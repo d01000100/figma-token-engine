@@ -1,9 +1,7 @@
-import { readFile, readFileSync } from "fs";
-import { getTokensStudio } from "../figma-api";
+import { readFileSync } from "fs";
 import { ExportType } from "../style-dictionary/parsers/variables2json/types";
-import { TokensStudioArgs, Variables2JsonArgs } from "../types";
+import { Variables2JsonArgs } from "../types";
 import { logError, logEvent } from "../utils/logger";
-import { writeFigmaAPITokensExport } from "../figma-api/storage";
 import { createTmpFile, writeToFile } from "../utils/storage";
 import { start as startStyleDictionary } from './../style-dictionary'
 

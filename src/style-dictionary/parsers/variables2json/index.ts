@@ -1,13 +1,12 @@
 import { ExportType, Variable, ExplicitVariable, ParsingResult as ParsingResult } from "./types"
 import { logWarning } from "../../../utils/logger";
-import { DesignToken, DesignTokens, TokenType } from "../../types"
+import { DesignToken, DesignTokens } from "../../types"
 import { addTokenIntoRoute } from "../utils";
-import lodash from "lodash";
 import { Variables2JsonArgs } from "../../../types";
-import { writeFile, writeFileSync } from "fs";
+import { writeFile } from "fs";
 import { parseFigmaStyle } from "./styleParsing";
 import { toJSON } from "../../../utils/utils";
-import VariableRecord, { RecordedVariable } from "./VariableRecord";
+import VariableRecord from "./VariableRecord";
 import { NAME_DIVIDER, getVarType } from "./utils";
 import { parseAliasVariable, PendingAlias } from "./aliasResolution";
 

@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { logWarning } from "../../../utils/logger";
 import { toJSON } from "../../../utils/utils";
-import { DesignToken } from "../../types";
-import VariableRecord, { RecordedVariable } from "./VariableRecord";
-import { AliasVariable, ParsedVariable, ParsingResult, Variable } from "./types";
+import VariableRecord from "./VariableRecord";
+import { AliasVariable, ParsedVariable, ParsingResult } from "./types";
 import { NAME_DIVIDER, getVarType } from "./utils";
-import lodash from "lodash";
 
 class PendingAlias {
   public static pending : AliasVariable[] = [];
