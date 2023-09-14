@@ -9,6 +9,7 @@ import {
   ShadowType,
 } from './types'
 import { addPxUnit, toNumber } from '../utils/utils'
+import { transformFontWeights } from './transformers/transformFontWeight'
 
 const typesWithDefaultPxUnit: TokenType[] = [
   TokenType.borderRadius,
@@ -52,8 +53,9 @@ function addUnitPixelsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
   return (
     typeof originalToken.value === 'number' &&
-    typesWithDefaultPxUnit.includes(originalToken.type) &&
-    originalToken.value !== 0
+    originalToken.value !== 0 &&
+    ((originalToken.type && typesWithDefaultPxUnit.includes(originalToken.type)) ||
+      token.attributes?.category === "size")
   )
 }
 
@@ -66,9 +68,51 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
   return (
     typeof originalToken.value === 'number' &&
-    typesWithMsDefaultUnit.includes(originalToken.type) &&
-    originalToken.value !== 0
+    originalToken.value !== 0 &&
+    ((originalToken.type && typesWithMsDefaultUnit.includes(originalToken.type)) ||
+      token.attributes?.category === "time")
   )
+}
+
+/**
+ * Adds category and type attributes according to custom "type"
+ * property deduced from original source
+ * @param token 
+ */
+function customCTI(token: TransformedToken) {
+  const originalToken = token.original as DesignToken
+  let category: string | undefined;
+  let type: string | undefined;
+
+  switch (originalToken.type) {
+    case TokenType.fontSize:
+    case TokenType.letterSpacing:
+    case TokenType.lineHeight:
+      category = 'size',
+        type = 'font'
+      break;
+    case TokenType.size:
+    case TokenType.space:
+    case TokenType.borderRadius:
+    case TokenType.shadowBlur:
+    case TokenType.shadowOffsetX:
+    case TokenType.shadowOffsetY:
+    case TokenType.shadowSpread:
+    case TokenType.number:
+      category = 'size';
+      break;
+    case TokenType.motionDuration:
+      category = 'time';
+      break;
+    default:
+      category = originalToken.type
+  }
+
+  return {
+    ...token.attributes,
+    category,
+    type,
+  }
 }
 
 /**
@@ -79,9 +123,10 @@ function addUnitMsMatcher(token: TransformedToken): boolean {
  */
 function transformToRemMatcher(token: TransformedToken): boolean {
   const originalToken = token.original as SimpleDesignToken
-  if (!typesWithRemUnit.includes(originalToken.type)) {
-    return false
+  if (originalToken.type && typesWithRemUnit.includes(originalToken.type)) {
+    return true;
   }
+  if (token.attributes?.category !== "size") return false;
   if (typeof originalToken.value === 'number') {
     return true
   }
@@ -103,7 +148,7 @@ function transformSingleShadowValueWeb(
   const offsetY = addPxUnit(shadowValue.y)
   const blur = addPxUnit(shadowValue.blur)
   const color = shadowValue.color
-  const spread = shadowValue.spread
+  const spread = addPxUnit(shadowValue.spread)
   const insetString =
     shadowValue.type === ShadowType.innerShadow ? 'inset ' : ''
   return `${insetString}${offsetX} ${offsetY} ${blur} ${spread} ${color}`
@@ -193,6 +238,15 @@ export function registerTransformers(): void {
     },
   })
   /**
+   * Adds category and type attributes according to custom "type"
+   * property deduced from original source
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.customCTI,
+    type: 'attribute',
+    transformer: customCTI,
+  })
+  /**
    * Parse the value of an aspect ratio token to a web representation.
    */
   StyleDictionary.registerTransform({
@@ -245,5 +299,17 @@ export function registerTransformers(): void {
     transformer(token) {
       return (token.original.value as string).toLowerCase()
     },
+  })
+
+  /**
+   * Transforms fontWeights keywords to number values.
+   */
+  StyleDictionary.registerTransform({
+    name: Transformer.fontWeightToNumber,
+    type: 'value',
+    matcher: (token) => 
+      token.attributes?.category === TokenType.fontWeight &&
+      typeof token.value === "string",
+    transformer: (token) => transformFontWeights(token.value),
   })
 }

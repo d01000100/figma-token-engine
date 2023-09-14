@@ -4,7 +4,7 @@ import { registerTransformers } from './transformers'
 
 const globalTransformers = [
   // Style Dictionary default transformers
-  'attribute/cti',
+  Transformer.customCTI,
   Transformer.toLowerCase,
 ]
 
@@ -19,6 +19,7 @@ const webTransformers = [
   Transformer.parseAspectRatioWeb,
   Transformer.parseShadowValueWeb,
   Transformer.toLowerCase,
+  Transformer.fontWeightToNumber
 ]
 
 /**

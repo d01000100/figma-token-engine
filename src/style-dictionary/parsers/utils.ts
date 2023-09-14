@@ -58,11 +58,11 @@ function rgbHex(
 
 /**
  * Transform 4 numeric RGBA values into a hexcode
- * @param param0 - {r,g,b,a} All numeric
+ * @param param0 - \{r,g,b,a\} All numeric between 0 and 1
  * @returns Hexcode. String starting with #
  * TODO: tests
  */
-export function rgbaToHex({
+export function rgbaToHex_1({
   r,
   g,
   b,
@@ -80,12 +80,33 @@ export function rgbaToHex({
 }
 
 /**
- * Adds a new token inside a token group, in the path specified
- * @param tokenGroup TokenGroupParsed - The original TokenGroup
- * @param route string[] - The levels of structure inside the token group to add the new token
- * @param value SingleTokenObjectParsed - The token to add
- * @returns TokenGroupParsed - Copy of tokenGroup with the new value added
+ * Transform 4 numeric RGBA values into a hexcode
+ * @param param0 - \{r,g,b,a\} All numeric between 0 and 255
+ * @returns Hexcode. String starting with #
  * TODO: tests
+ */
+export function rgbaToHex_255({
+  r,
+  g,
+  b,
+  a,
+}: {
+  r: number
+  g: number
+  b: number
+  a: number
+}): string {
+  const rgba = `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${a.toFixed(2)})`
+  return `#${rgbHex(rgba)}`
+}
+
+/**
+ * Adds a new token inside a token group, in the path specified
+ * @param tokenGroup - TokenGroupParsed - The original TokenGroup
+ * @param route - string[] - The levels of structure inside the token group to add the new token
+ * @param value - SingleTokenObjectParsed - The token to add
+ * @returns TokenGroupParsed - Copy of tokenGroup with the new value added
+ * TODO: tests, can be replaced with lodash.set
  */
 export function addTokenIntoRoute(
   tokenGroup: DesignTokens,

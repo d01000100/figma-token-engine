@@ -9,14 +9,17 @@ export enum TransformGroup {
 }
 
 /** Customm transformer names configured for StyleDictionary */
+
 export enum Transformer {
   addFontFamilyQuotes = 'addQuotes',
   addUnitPixels = 'addUnitPixels',
   addUnitMs = 'addUnitMs',
+  customCTI = 'attribute/customCTI',
   parseAspectRatioWeb = 'parseAspectRatio',
   parseShadowValueWeb = 'shadowValue',
   transformToRem = 'transformToRem',
   toLowerCase = 'toLowerCase',
+  fontWeightToNumber = "value/fontWeightToNumber"
 }
 
 /** File header names implemented for style dictionary */
@@ -27,12 +30,17 @@ export enum FileHeader {
 /*=== Custom Design Tokens ====*/
 /* Mimic StyleDictionary's design token type, but with specific `type` and `value`
   property types */
-
 /** Valid types for the design tokens */
+
 export enum TokenType {
   borderRadius = 'borderRadius',
   borderWidth = 'borderWidth',
   boxShadow = 'boxShadow',
+  shadowBlur = 'blur',
+  shadowOffsetX = 'x',
+  shadowOffsetY = 'y',
+  shadowSpread = 'spread',
+  shadowType = 'type',
   breakpoint = 'breakpoint',
   color = 'color',
   elevation = 'elevation',
@@ -50,6 +58,7 @@ export enum TokenType {
   textTransform = 'textTransform',
   textDecoration = 'textDecoration',
   opacity = 'opacity',
+  number = "number"
 }
 
 export enum ShadowType {
@@ -67,7 +76,9 @@ export type ShadowTokenSingleValue = {
 }
 
 interface DesignTokenCommon extends SDDesignToken {
-  description?: string
+  description?: string,
+  route?: string[],
+  modes?: string[],
 }
 
 export type ShadowDesignToken = DesignTokenCommon & {
@@ -78,7 +89,7 @@ export type ShadowDesignToken = DesignTokenCommon & {
 export type DesignTokenValue = string | number
 
 export type SimpleDesignToken = DesignTokenCommon & {
-  type: TokenType
+  type?: TokenType
   value: DesignTokenValue
 }
 

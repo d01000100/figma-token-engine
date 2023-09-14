@@ -1,7 +1,7 @@
 /** Union of all specific app arguments */
-export type TokenEngineConfigType = TokensStudioArgs | FigmaStylesArgs
+export type TokenEngineConfigType = TokensStudioArgs | FigmaStylesArgs | Variables2JsonArgs
 
-export type TokenFormat = 'FigmaTokens' | 'TokensStudio' | 'FigmaStyles'
+export type TokenFormat = 'FigmaTokens' | 'TokensStudio' | 'FigmaStyles' | 'variables2json'
 
 export const Platforms = [
   '',
@@ -34,4 +34,9 @@ export interface TokensStudioArgs extends AppArgs {
 
 export interface FigmaStylesArgs extends AppArgs {
   figmaFileId: string
+}
+
+export interface Variables2JsonArgs extends AppArgs {
+  parsedTokensFile?: string
+  variableFiles : string | string[]
 }

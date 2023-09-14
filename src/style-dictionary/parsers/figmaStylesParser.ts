@@ -1,5 +1,5 @@
 import { Rectangle, Color, Paint, Effect, Text } from 'figma-js'
-import { addTokenIntoRoute, rgbaToHex } from './utils'
+import { addTokenIntoRoute, rgbaToHex_1 } from './utils'
 import { StyleNode } from './types/figmaStyleType'
 import {
   SimpleDesignToken,
@@ -16,7 +16,7 @@ const NAME_DIVIDER = '/'
 
 function parseSolidColor(color: Color): SimpleDesignToken {
   return {
-    value: rgbaToHex(color),
+    value: rgbaToHex_1(color),
     type: TokenType.color,
   }
 }
@@ -84,7 +84,7 @@ function parseGradientLinear(color: Paint): SimpleDesignToken | null {
     This only works for gradients that go from one end of the space to another */
   const colorSteps = color.gradientStops
     .map(step => {
-      return `${rgbaToHex(step.color)} ${(step.position * 100).toFixed(2)}%`
+      return `${rgbaToHex_1(step.color)} ${(step.position * 100).toFixed(2)}%`
     })
     .join(', ')
   return {
@@ -233,7 +233,7 @@ function parseShadowValue(
   }
 
   return {
-    color: rgbaToHex(shadow.color ?? { r: 0, g: 0, b: 0, a: 0 }),
+    color: rgbaToHex_1(shadow.color ?? { r: 0, g: 0, b: 0, a: 0 }),
     type: figmaShadowTypeToParsed[shadow.type as string],
     x: shadow.offset?.x ?? 0,
     y: shadow.offset?.y ?? 0,
@@ -263,7 +263,7 @@ function buildTokenGroup(tokens: DesignToken[]): DesignTokens {
  * @param styles - List of Figma Styles
  * @returns A multilevel object of DesignTokens
  */
-export function parseFigmaStyles(styles: StyleNode[]): DesignTokens {
+function parseFigmaStyles(styles: StyleNode[]): DesignTokens {
   const parsedStyles = styles
     .map(style => {
       let parsedToken: DesignToken | null
@@ -290,3 +290,5 @@ export function parseFigmaStyles(styles: StyleNode[]): DesignTokens {
     .flat()
   return buildTokenGroup([...parsedStyles, ...typographyStyles])
 }
+
+export { parseFigmaStyles, parseShadowValue }

@@ -5,7 +5,6 @@ dotenv.config()
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const NODE_API = process.env.NODE_API || false
 
-import { printAppName } from './utils/title'
 import { logEvent } from './utils/logger'
 import { generateTemplate } from './utils/config'
 
@@ -13,6 +12,9 @@ import { processTokensStudio } from './tokens-studio'
 import { processFigmaStyles } from './figma-styles'
 
 import { TokenEngineConfigType } from './types'
+
+import { processVariables2JSON } from './variables-2-json'
+import { printAppName } from './utils/title'
 
 export async function runTokenEngine(
   opts: TokenEngineConfigType,
@@ -42,6 +44,11 @@ export async function runTokenEngine(
     // left here for retro compatibility purposes
     global.tokenEngineConfig.tokenFormat === 'FigmaTokens') {
     await processTokensStudio()
+  }
+
+  if(global.tokenEngineConfig.tokenFormat === 'variables2json') {
+    // No fetching or preprocessing necessary. Export from plugin is stored in inputFile
+    await processVariables2JSON()
   }
 
   return true

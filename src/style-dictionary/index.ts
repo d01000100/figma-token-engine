@@ -4,12 +4,13 @@ import { logEvent } from '../utils/logger'
 import { buildStyleDictionary } from './config'
 import { parseFigmaStyles } from './parsers/figmaStylesParser'
 import { parseTokensStudio } from './parsers/tokensStudioParser'
+import { parseVariables2JSON } from './parsers/variables2json'
 
 /**
- *
- * @param inputFile
- * @param outputDir
- * @param platforms
+ * Start the StyleDictionary process
+ * @param inputFile - The filename where the tokens are
+ * @param outputDir - The directory where to write the parsed tokens
+ * @param platforms - Optional. The platforms to output. If undefined, will export to all supported platforms
  */
 export function start({
   tokenFormat,
@@ -23,7 +24,7 @@ export function start({
   logEvent('Style Dictionary')
 
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-  let parser: (tokens: any) => DesignTokens
+  let parser: (tokens: any) => DesignTokens = (tokens) => tokens
 
   switch (tokenFormat) {
     case 'FigmaStyles':
@@ -33,6 +34,8 @@ export function start({
     case 'FigmaTokens':
       parser = parseTokensStudio
       break
+      case 'variables2json':
+      parser = parseVariables2JSON
   }
 
   const generator = buildStyleDictionary(inputFile, outputDir, parser)
