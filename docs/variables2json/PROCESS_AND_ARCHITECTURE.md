@@ -1,3 +1,9 @@
+# variables2json parsing
+
+This file describes the algorithm to parse variables2json exports, from simple cases to the most complex.
+
+The version that matches the code is the last one. I leave all the other versions to have a more thorough understanding on how the algorithm was made.
+
 ## Just base variables, no alias, no modes, (1 collection)
 
 1. For each colection:
