@@ -34,6 +34,8 @@ The Figma Token Engine is a project dependency that transforms design tokens (ei
 
 <br/>
 
+## [Architecture](/.docs/architecture.md)
+
 ## 📓 Config Files
 
 The Figma Token Engine (FTE) requires two files which can be created using `npx figma-token-engine --init`.
@@ -185,7 +187,7 @@ Run the token engine using npm scripts:
 - **`figma-token-engine TOKEN_CONFIG_FILENAME`** A single flagless param will specify a custom `.tokens.config.json` file to read the FTE configuration from.
 - **`--init`**: Create necessary environment files (.env, .tokens.config.json) to run the token engine with example content.
 - **`--sd-config-file SD_CONFIG_FILENAME`**: Location of a [StyleDictionary configuration file](https://amzn.github.io/style-dictionary/#/config) to merge with the one FTE uses. This can be used to extend platforms, filters, tokens location, etc.
-  
+
   Example of a config file:
 
   <details>

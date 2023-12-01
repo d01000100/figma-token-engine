@@ -18,11 +18,11 @@ The version that matches the code is the last one. I leave all the other version
             2. type === "number" => attributes.category = size
          3. Determinte TokenType
             1. "color" = Color
-            
+
             **!! No way to determine further detail on TokenType. We would have to rely on name convention !!**
 
             ~~Let's see if the attributes are enough for our existing transforms~~ So far, is enough for variables and we can still rely on TokenType for other inputs
-      2. Put in result object 
+      2. Put in result object
          1. Divide the name by /
          2. Insert or create levels on the result object, starting with collection and for each part of the divided name
          3. Insert token on the final level
@@ -44,7 +44,7 @@ The version that matches the code is the last one. I leave all the other version
             2. Create location of referenced token with collection and divided name
             3. If referenced token already parsed, copy value
             4. If not, add this token to "pending" list
-      2. Put in result object 
+      2. Put in result object
          1. Divide the name by /
          2. Insert or create levels on the result object, starting with collection and for each part of the divided name
          3. Insert token on the final level
@@ -54,7 +54,7 @@ The version that matches the code is the last one. I leave all the other version
 
 1. For each colection:
    1. Take the name of the collection
-   2. Count the modes 
+   2. Count the modes
    3. If there's 1 mode, ignore it
    4. If there's more than 1, store the name of the mode
    5. For each variable in the mode:
@@ -68,7 +68,7 @@ The version that matches the code is the last one. I leave all the other version
             2. Create location of referenced token with collection and divided name
             3. If referenced token already parsed, copy value
             4. If not, add this token to "pending" list
-      2. Put in result object 
+      2. Put in result object
          1. Divide the name by /
          2. Insert or create levels on the result object, starting with collection, mode (if there's more than 1) and for each part of the divided name
          3. Insert token on the final level
@@ -79,7 +79,7 @@ The version that matches the code is the last one. I leave all the other version
 1. For each colection:
    1. Take the name of the collection
    3. For the rest of the collections
-   4. Count the modes 
+   4. Count the modes
    5. If there's 1 mode, ignore it
    6. If there's more than 1, store the name of the mode
    7. For each variable in the mode:
@@ -97,7 +97,7 @@ The version that matches the code is the last one. I leave all the other version
             2. Create location of referenced token with collection and divided name
             3. If referenced token already parsed, copy value
             4. If not, add this token to "pending" list
-      3. Put in result object 
+      3. Put in result object
          1. Divide the name by /
          2. Insert or create levels on the result object, starting with collection, mode (if there's more than 1) and for each part of the divided name
          3. Insert token on the final level
@@ -113,8 +113,8 @@ The version that matches the code is the last one. I leave all the other version
 
 - Each alias variable has the name of the variable it references, no collection or modes
 - ¿Do we need to assume the variable names are unique?
-  
-  If they're not, we could identify what collection/mode do they come from
+
+  If they're not, we could not identify what collection/mode do they come from
 - **We need to merge the two files before entering the parser**
   - We just need to append the collections array on each one
 - We could search the variable name on the existing parsed variables and get the modes and collections of matches (they are already added when we process the variables)
@@ -133,14 +133,14 @@ The version that matches the code is the last one. I leave all the other version
 
 1. **First pass**
    1. Add each variable to a **variableRecord**, that will keep track if a variable has been resolved or not.
-     - Each variable should have:º
+     - Each variable should have:
        - name
        - isAlias
        - collection
        - mode (if there's more than 1)
        - value, either explicit or as a reference to other variable
 2. For each colection:
-   1. Count the modes 
+   1. Count the modes
    2. If there's 1 mode, ignore it
    3. If there's more than 1, store the name of the mode
    4. For each variable in the mode:
@@ -155,7 +155,7 @@ The version that matches the code is the last one. I leave all the other version
                1. type === "color" => attributes.category = color
                2. type === "number" => attributes.category = size
             2. If not alias, copy value
-         3. Put in result object 
+         3. Put in result object
             1. Divide the name by /
             2. Insert or create levels on the result object, starting with collection, mode (if there's more than 1) and for each part of the divided name
             3. Insert token on the final level
@@ -169,7 +169,7 @@ The version that matches the code is the last one. I leave all the other version
    1. If no matches, **log warning about no matches** **EXIT**
    2. If some matches are alias, add alias variable to pending **EXIT**
    3. If all the matches are explicit, remove og variable entry from the **variableRecord**
-   4. Store if there's more than 1 collection or modes
+   4. Store if there's more than 1 collection or modes on the results
    5. For each match:
       1. If it's an explicit value, extract `collection`, `mode`, `isAlias` and `value`
       2. Create the route
@@ -208,9 +208,9 @@ The version that matches the code is the last one. I leave all the other version
 
 - addVariable(v : Variable)
 - removeVariable(v : Variable)
-  
+
   It removes the variable from the record that matches with v on collection, mode, and name
 - updateVariable(v : Variable)
-  
+
   It updates the variable on the record that matches with v on collection, mode, and name and replaces the rest of v's properties
 - searchReferences(name : string, collection? : string) : Variable[]
